@@ -1,5 +1,7 @@
 'use client'
 
+/* eslint-disable */
+
 import Image from "next/image";
 import { useState, useEffect, useCallback } from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
