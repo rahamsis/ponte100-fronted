@@ -388,40 +388,6 @@ const Results = ({
                         </TabPanel>
                     </Tabs>
 
-                    {/* Lista de preguntas con respuestas correctas o incorrectas */}
-                    {/* <ul className="space-y-4">
-                    {questions.map((question, index) => (
-                        <li key={index} className="p-4 border rounded-lg">
-                            <p className="font-semibold">{question.question}</p>
-                            {selectedAnswers[index + 1] == null ? (
-                                <p className="text-blue-600">Θ Respuesta sin responder *</p>
-                            ) :
-                                question.correctAnswer === selectedAnswers[index + 1] ? (
-                                    <p className="text-green-600">✔ Respuesta correcta</p>
-                                ) : (
-                                    <p className="text-red-500">✘ Respuesta incorrecta</p>
-                                )}
-                            <p className="text-gray-500">
-                                Tu respuesta: <span className="text-xs">
-                                    {question.options.map((option) => {
-                                        const [optionId, optionText] = option.split("@");
-                                        return selectedAnswers[index + 1] === optionId ? optionText : "";
-                                    })}
-                                </span>
-                            </p>
-                            <p className="text-gray-700 font-semibold">
-                                Respuesta correcta: <span className="text-xs">
-                                    {question.options.map((option) => {
-                                        const [optionId, optionText] = option.split("@");
-                                        return question.correctAnswer === optionId ? optionText : "";
-                                    })}
-                                </span>
-                            </p>
-                        </li>
-                    ))}
-                </ul> */}
-
-
                     <div className="flex justify-center">
                         <button
                             className="mt-4 bg-green-600 py-3 px-3 rounded-xl text-white hover:bg-green-600 mb-4"

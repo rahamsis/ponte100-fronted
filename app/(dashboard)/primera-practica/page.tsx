@@ -11,7 +11,7 @@ import { fetchQuestionRamdonWithLimit, fetchSaveIncorrectQuestions } from "@/app
 import ExamenConBalotario from "@/app/examenes/examenconbalotario";
 
 import { ModalTimeExpired } from "@/app/components/modales/modalTimeExpired";
-import Results from "../result/page";
+import Results from "../../components/result/page";
 
 type Question = {
     id: string;

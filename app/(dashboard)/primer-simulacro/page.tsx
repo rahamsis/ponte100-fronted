@@ -17,7 +17,7 @@ import ExamenSinBalotario from "@/app/examenes/examensinbalotario";
 import ExamenSiecopol from "@/app/examenes/examensiecopol";
 
 import { ModalTimeExpired } from "@/app/components/modales/modalTimeExpired";
-import Results from "../result/page";
+import Results from "../../components/result/page";
 
 type Question = {
     id: string;
