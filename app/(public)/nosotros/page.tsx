@@ -37,7 +37,7 @@ function Work() {
                                         </h2>
                                         <div className=" text-white px-6 py-3 mt-6 rounded-lg">
                                             <a
-                                                href="#contactanos"
+                                                href="/contactanos"
                                                 className="border-2 border-white text-white px-6 py-3 mt-6 rounded-lg inline-block"
                                             >
                                                 Contáctanos
@@ -139,7 +139,7 @@ function Members() {
         {
             profile: "/images/miembros/miembro3.png",
             testimonio: "Ejecutivo senior con experiencia en Contabilidad, Administración y RRHH, experto en liderazgo y negociación. Enfocado en crear estrategias, resolver conflictos y generar alianzas.",
-            nombre: "Evar, Zegarra"
+            nombre: "Evart, Zegarra"
         },
         {
             profile: "/images/miembros/miembro4.png",
