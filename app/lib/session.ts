@@ -3,6 +3,7 @@
 
 export const fetchUserLogin = async (email: string, password: string): Promise<any> => {
     try {
+        console.log("TEST: ", email, password)
         const response = await fetch(`${process.env.APP_BACK_END}/backendApi/login`, {
             method: 'POST',
             headers: {
@@ -17,7 +18,7 @@ export const fetchUserLogin = async (email: string, password: string): Promise<a
         });
         
         const data = await response.json();
-
+        console.log("TEST- data:", data)
         return data;
     } catch (error) {
         console.error('Error al iniciar sesión:', error);
