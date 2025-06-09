@@ -85,7 +85,7 @@ export default function AuthModal({ onClose, onLogin }: AuthModalProps) {
                     Cookies.set("welcome", "0", { path: "/", sameSite: "Lax" });
                     //redirigo a la pagina de bienvenida
                     router.push('/bienvenida');
-                 } else {
+                } else {
                     router.push('/inicio'); // o lo que necesites
                 }
             }, 500); // 500ms suele ser suficiente, puedes ajustar si es necesario
@@ -225,8 +225,11 @@ export default function AuthModal({ onClose, onLogin }: AuthModalProps) {
                     </button>
                 </form>
 
-                <button onClick={() => cleanForm()} className="mt-4 font-semibold text-secondary hover:underline" >
-                    <a href="/planes">¿No tienes cuenta? Regístrate</a>
+                <button
+                    disabled={true}
+                    onClick={() => cleanForm()} className="mt-4 font-semibold text-opacity-30 text-secondary hover:underline" >
+                    {/* <a href="/planes">¿No tienes cuenta? Regístrate</a> */}
+                    <a href="/">¿No tienes cuenta? Regístrate</a>
                 </button>
                 <button onClick={onClose} className="absolute top-2 right-5 text-gray-500 text-3xl hover:text-gray-700">
                     &times;

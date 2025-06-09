@@ -1,3 +1,5 @@
+'use client'
+
 import React from "react";
 import { ArrowLeft, CircleCheck, CircleX, CircleMinus, Info } from "lucide-react";
 import { Tab, TabPanel, TabList, Tabs } from "react-tabs";
