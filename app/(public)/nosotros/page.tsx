@@ -128,7 +128,7 @@ function Members() {
     const arrayMembers = [
         {
             profile: "/images/miembros/miembro1.png",
-            testimonio: "Licenciado en Eduación y administración, creador del método de estudio Ponte 100, docente calificado en formación continua, con amplia experiencia en el sector educativo policial.",
+            testimonio: "Licenciado en Educación y administración, creador del método de estudio Ponte 100, docente calificado en formación continua, con amplia experiencia en el sector educativo policial.",
             nombre: "Guillermo, Vasquez  Manco"
         },
         {
