@@ -11,7 +11,7 @@ import { fetchQuestionByIdTema, fetchSaveIncorrectQuestions } from "@/app/lib/ac
 import ExamenConBalotario from "@/app/examenes/examenconbalotario";
 
 import { ModalTimeExpired } from "@/app/components/modales/modalTimeExpired";
-import Results from "../../components/result/page";
+import Results from "../../components/result/result";
 
 type Question = {
     id: string;

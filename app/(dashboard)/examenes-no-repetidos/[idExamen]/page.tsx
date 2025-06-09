@@ -12,7 +12,7 @@ import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 import { ModalTimeExpired } from "@/app/components/modales/modalTimeExpired";
-import Results from "../../../components/result/page";
+import Results from "../../../components/result/result";
 
 interface Question {
     id: string;

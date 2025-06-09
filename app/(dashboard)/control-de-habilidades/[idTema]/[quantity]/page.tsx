@@ -6,7 +6,7 @@ import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 
-import Results from "@/app/components/result/page";
+import Results from "@/app/components/result/result";
 
 import ExamenSinBalotario from "@/app/examenes/examensinbalotario";
 import { ModalTimeExpired } from "@/app/components/modales/modalTimeExpired";

@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 import { RadioGroup } from "@headlessui/react";
 import { useSession } from "next-auth/react";
 
-import Results from "@/app/components/result/page";
+import Results from "@/app/components/result/result";
 
 import { ModalTimeExpired } from "@/app/components/modales/modalTimeExpired";
 
