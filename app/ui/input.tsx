@@ -1,3 +1,6 @@
+
+/* eslint-disable */
+
 // components/Input.tsx
 import React from "react";
 

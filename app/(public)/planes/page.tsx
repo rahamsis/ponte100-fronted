@@ -1,8 +1,7 @@
 'use client'
 
 import { Check, Star, Zap, Crown, Rocket, ClipboardList, Shapes, BookOpen, ChevronLeft, ChevronRight, } from "lucide-react"
-import { useEffect, useState, useRef } from 'react';
-import { getFormToken } from "@/app/lib/actions";
+import { useRef } from 'react';
 import { useProductStore } from "../stores/usePrecioStore";
 import { useRouter } from 'next/navigation';
 

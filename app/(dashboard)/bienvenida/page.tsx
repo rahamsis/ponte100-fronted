@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from 'react';
-import { signIn, signOut, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { getGrados } from '../../lib/actions';
 
 interface Grado {
@@ -13,7 +13,7 @@ interface Grado {
 
 export default function Bienvenida() {
   const router = useRouter();
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
 
   const [grados, setGrados] = useState<Grado[]>([]);
   const [selectedGrado, setSelectedGrado] = useState('');

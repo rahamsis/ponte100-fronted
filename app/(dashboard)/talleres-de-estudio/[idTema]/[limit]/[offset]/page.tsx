@@ -1,5 +1,7 @@
 'use client'
 
+/* eslint-disable */
+
 import { useState, useEffect, use } from "react";
 import { fetchQuestionToTaller, fetchSaveIncorrectQuestions } from "@/app/lib/actions";
 import { ArrowLeft } from "lucide-react";

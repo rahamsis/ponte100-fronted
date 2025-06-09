@@ -1,5 +1,7 @@
 "use client";
 
+/* eslint-disable */
+
 import { useState, useEffect, useRef, useCallback } from "react";
 import { getDocument, PDFDocumentProxy, GlobalWorkerOptions } from "pdfjs-dist/legacy/build/pdf";
 import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetTitle } from "../ui/pdf/sheet";

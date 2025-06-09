@@ -34,7 +34,7 @@ const formatTime = (seconds: number) => {
 
 
 export default function Examen({ params }: { params: Promise<{ idExamen: string }> }) {
-    const { data: session, status } = useSession();
+    const { data: session } = useSession();
     const { idExamen } = use(params);
     const router = useRouter();
 

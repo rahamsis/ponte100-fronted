@@ -175,10 +175,11 @@ function Zona() {
     )
 }
 
+
 function Aprende() {
-    const { data: session, status } = useSession();
+    const { data: session } = useSession();
     const [activeModal, setActiveModal] = useState<string | null>(null);
-    const [currentRoute, setCurrentRoute] = useState('');
+    // const [currentRoute, setCurrentRoute] = useState('');
     const [quantityFallidas, setQuantityFallidas] = useState(0);
     const router = useRouter();
 
@@ -234,7 +235,7 @@ function Aprende() {
 
     const openModal = (modalType: string, route: string) => {
         setActiveModal(modalType);
-        setCurrentRoute(route);
+        // setCurrentRoute(route);
     };
 
     const closeModal = () => setActiveModal(null);

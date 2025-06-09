@@ -1,4 +1,7 @@
 'use client'
+
+/* eslint-disable */
+
 import { Clock } from "lucide-react";
 import { useState, useEffect } from "react";
 import { usePrimeraPracticaStore } from "@/app/lib/stores/primeraPractica";

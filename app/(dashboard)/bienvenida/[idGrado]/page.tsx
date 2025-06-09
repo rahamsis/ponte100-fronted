@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import { getGradosById } from '@/app/lib/actions';
 import { use } from 'react';
 import { Check } from 'lucide-react';
-import { signIn, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { updateGradoByUserId } from '@/app/lib/actions';
 import Cookies from 'js-cookie';
 

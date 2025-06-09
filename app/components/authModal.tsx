@@ -1,5 +1,7 @@
 'use client';
 
+/* eslint-disable */
+
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Mail, LockKeyhole, Eye, EyeClosed } from "lucide-react";

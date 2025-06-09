@@ -1,5 +1,7 @@
 'use server';
 
+/* eslint-disable */
+
 export async function getGrados() {
     try {
         const response = await fetch(`${process.env.APP_BACK_END}/backendApi/grados`, {

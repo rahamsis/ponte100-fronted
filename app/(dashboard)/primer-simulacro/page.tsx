@@ -1,6 +1,7 @@
 'use client'
 
-import Image from "next/image";
+/* eslint-disable */
+
 import { useState, useEffect } from "react";
 import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";

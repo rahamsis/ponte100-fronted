@@ -1,6 +1,15 @@
 import { createContext, useContext, useState } from "react";
 
-const SidebarContext = createContext<any>(null);
+interface SidebarContextType {
+  isOpen: boolean;
+  toggleSidebar: () => void;
+  openSidebar: () => void;
+  closeSidebar: () => void;
+  showHeaderContent: boolean;
+  setShowHeaderContent: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const SidebarContext = createContext<SidebarContextType | null>(null);
 
 export const SidebarProvider = ({ children }: { children: React.ReactNode }) => {
   const [isOpen, setIsOpen] = useState(false);

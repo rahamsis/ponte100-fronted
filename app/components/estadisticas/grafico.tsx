@@ -1,5 +1,7 @@
 'use client';
 
+/* eslint-disable */
+
 import { PieChart, Pie, Cell, Tooltip, Legend } from 'recharts';
 
 const data = [

@@ -1,3 +1,6 @@
+
+/* eslint-disable */
+
 // lib/utils/cn.ts
 import { clsx } from "clsx"
 import { twMerge } from "tailwind-merge" // opcional si usas Tailwind

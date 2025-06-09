@@ -1,9 +1,5 @@
 'use client'
-import { Clock } from "lucide-react";
-import { useState, useEffect } from "react";
-import SelectorOne from "../selectors/selectorOne";
-import { usePracticeStore } from "@/app/lib/stores/practice";
-import { useRouter } from 'next/navigation';
+
 import Image from "next/image";
 
 interface ModalTimeExpired {

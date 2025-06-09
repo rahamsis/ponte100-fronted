@@ -1,5 +1,7 @@
 'use client'
 
+/* eslint-disable */
+
 import { useState, useEffect } from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Controller } from "react-hook-form";

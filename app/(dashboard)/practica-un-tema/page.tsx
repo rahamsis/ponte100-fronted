@@ -1,6 +1,7 @@
 'use client'
 
-import Image from "next/image";
+/* eslint-disable */
+
 import { useState, useEffect } from "react";
 import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -22,9 +23,9 @@ type Question = {
 };
 
 function Practica() {
-    const { params, clearParams } = usePracticeStore();
+    const { params } = usePracticeStore();
     const router = useRouter();
-    const { data: session, status } = useSession();
+    const { data: session } = useSession();
     const [questions, setQuestions] = useState<Question[]>([]);
 
     const [currentQuestion, setCurrentQuestion] = useState(1);

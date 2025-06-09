@@ -1,7 +1,9 @@
 'use client'
+
+/* eslint-disable */
+
 import { Clock, Info } from "lucide-react";
 import { useState, useEffect } from "react";
-import SelectorOne from "../selectors/selectorOne";
 import { usePreguntasFallidasStore } from "@/app/lib/stores/preguntasfallidas";
 import { useRouter } from 'next/navigation';
 

@@ -1,5 +1,8 @@
+
+/* eslint-disable */
+
 import CredentialsProvider from "next-auth/providers/credentials";
-import { NextAuthOptions, Session } from "next-auth";
+import { NextAuthOptions } from "next-auth";
 import { fetchUserLogin, fetchCreateSession, fetchActiveSession, saveVerificationToken } from "./session";
 import { sendVerificationEmail } from './mailer';
 

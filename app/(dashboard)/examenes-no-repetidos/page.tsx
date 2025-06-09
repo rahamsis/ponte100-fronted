@@ -6,15 +6,6 @@ import { useRouter } from "next/navigation";
 import { Search, ClipboardList } from "lucide-react";
 import { fetchTableExams, } from "@/app/lib/actions";
 
-type Question = {
-    id: string;
-    question: string;
-    tema: string;
-    options: string[];
-    correctAnswer: string;
-    intentos: number;
-};
-
 type Examen = {
     idExamen: string;
     titulo: string;

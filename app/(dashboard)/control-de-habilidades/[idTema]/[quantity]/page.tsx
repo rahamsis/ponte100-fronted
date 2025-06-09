@@ -22,7 +22,7 @@ type Question = {
 
 export default function Habilidades({ params }: { params: Promise<{ idTema: string, quantity: string }> }) {
     const { idTema, quantity } = use(params);
-    const { data: session, status } = useSession();
+    const { data: session } = useSession();
     const router = useRouter();
     const [questions, setQuestions] = useState<Question[]>([]);
     const [loading, setLoading] = useState(true);

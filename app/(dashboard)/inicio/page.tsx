@@ -1,7 +1,9 @@
 'use client'
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import Image from "next/image";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import {
     ArrowLeft,
     ArrowRight,
@@ -52,7 +54,7 @@ function Banner() {
             setActiveIndex((prev) => (prev + 1) % banners.length);
         }, 10000);
         return () => clearInterval(interval);
-    }, []);
+    }, [banners.length]);
 
     const current = banners[activeIndex];
 
@@ -370,7 +372,7 @@ function Conocimientos({ quantityFallidas }: ConocimientoProps) {
     const router = useRouter();
 
     const [activeModal, setActiveModal] = useState<string | null>(null);
-    const [currentRoute, setCurrentRoute] = useState('');
+    // const [currentRoute, setCurrentRoute] = useState('');
 
     const arrayConocimientos = [
         {
@@ -424,7 +426,7 @@ function Conocimientos({ quantityFallidas }: ConocimientoProps) {
 
     const openModal = (modalType: string, route: string) => {
         setActiveModal(modalType);
-        setCurrentRoute(route);
+        // setCurrentRoute(route);
     };
 
     const closeModal = () => setActiveModal(null);

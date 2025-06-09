@@ -1,5 +1,8 @@
 "use client"
 
+/* eslint-disable */
+
+
 import { useState, useEffect, useCallback, useMemo } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"

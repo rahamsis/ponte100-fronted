@@ -17,7 +17,6 @@ export default function Inteligencia({ params }: { params: Promise<{ idTema: str
     const { idTema } = use(params);
     const router = useRouter();
     const [questions, setQuestions] = useState<Question[]>([]);
-    const [currentQuestion, setCurrentQuestion] = useState(1);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
@@ -170,7 +169,7 @@ export default function Inteligencia({ params }: { params: Promise<{ idTema: str
                                 {/* Contenedor central (absoluto centrado) */}
                                 <div className=" pt-8 left-1/2 text-center border pb-4 rounded-xl w-full lg:w-1/2 min-w-fit">
                                     <h2 className="mb-0 text-[10px] leading-[12px] md:text-xl text-slate-800 font-semibold">
-                                        <span className="text-button">{questions[currentQuestion - 1]?.tema?.toUpperCase()}</span>
+                                        <span className="text-button">{questions[0]?.tema?.toUpperCase()}</span>
                                     </h2>
                                     <h2 className="text-secondary text-[8px] lg:text-base font-bold">Total de preguntas: {questions.length}</h2>
                                 </div>

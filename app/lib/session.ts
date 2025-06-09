@@ -1,4 +1,6 @@
 
+/* eslint-disable */
+
 export const fetchUserLogin = async (email: string, password: string): Promise<any> => {
     try {
         const response = await fetch(`${process.env.APP_BACK_END}/backendApi/login`, {

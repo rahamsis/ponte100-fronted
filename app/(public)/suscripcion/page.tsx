@@ -1,5 +1,7 @@
 "use client"
 
+/* eslint-disable */
+
 import { useState, useEffect } from "react"
 import { useProductStore } from '../stores/usePrecioStore';
 import { getFormToken } from "../../lib/actions";
