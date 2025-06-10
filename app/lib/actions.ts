@@ -469,7 +469,7 @@ export async function saveOrUpdateProgress(idUsuario: string, tipoExamen: string
 
 export async function getGradoObjetivoByUserId(userId: string) {
     try {
-        const response = await fetch(`${process.env.APP_BACK_END}/backendApi/gradoByUserId?userId=${userId}`, {
+        const response = await fetch(`${process.env.APP_BACK_END}/backendApi/gradoObjetivoByUserId?userId=${userId}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -482,7 +482,7 @@ export async function getGradoObjetivoByUserId(userId: string) {
         return data;
 
     } catch (error) {
-        console.error('Error al traer los datos del grado por el userId (getGradoByUserId):', error);
+        console.error('Error al traer los datos del grado por el userId (gradoObjetivoByUserId):', error);
     }
 }
 

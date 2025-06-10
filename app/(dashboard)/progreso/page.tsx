@@ -35,6 +35,7 @@ type ProgresoProps = {
     quantityFallidas: number | 0;
     loading: boolean;
     loadingImageGrado: boolean;
+    nombreGradoObjetivo: string | null;
     imageGradoObjetivo: string | null;
     tiempoDeUso: number | 0;
     primeraPractica: number | 0;
@@ -67,7 +68,7 @@ const formatTime = (seconds: number) => {
 };
 
 function Zona({ loading, quantityFallidas, tiempoDeUso,
-    loadingImageGrado, imageGradoObjetivo,
+    loadingImageGrado, imageGradoObjetivo, nombreGradoObjetivo,
     primeraPractica, totalPrimeraPractica, totalCorrectasPrimeraPractica,
     practicaUnTema, totalPracticaUnTema, totalCorrectasPracticaUnTema,
     simulacros, totalSimulacros, totalCorrectasSimulacros, totalPreguntas,
@@ -328,14 +329,18 @@ function Zona({ loading, quantityFallidas, tiempoDeUso,
                                             </div>
                                             <div className="flex flex-col border p-3 rounded-lg space-x-3 bg-white">
                                                 <div className="flex w-full items-center justify-center">
-                                                    {loadingImageGrado  ? "..." :
-                                                        <Image src={imageGradoObjetivo!= null ? imageGradoObjetivo : "/images/galardon.png"} height={50} width={50} alt="frame" priority />
+                                                    {loadingImageGrado ? "..." :
+                                                        <Image src={imageGradoObjetivo != null ? imageGradoObjetivo : "/images/galardon.png"} height={50} width={50} alt="frame" priority />
                                                     }
                                                     {/* <Image src="/images/galardon.png" height={50} width={50} alt="frame" priority /> */}
                                                 </div>
                                                 <div className="">
                                                     <div className="flex justify-center  py-4">
-                                                        <a className="text-base font-bold text-primary">suboficial de 2da</a>
+                                                        <a className="text-base font-bold text-primary">
+                                                            {loadingImageGrado ? "..." :
+                                                                (nombreGradoObjetivo != null || nombreGradoObjetivo != undefined ? nombreGradoObjetivo : "pendiente")
+                                                            }
+                                                        </a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -391,6 +396,7 @@ export default function Progreso() {
     const { data: session, status } = useSession()
     const [quantityFallidas, setQuantityFallidas] = useState<number | 0>(0)
     const [gradoObjetivo, setGradoObjetivo] = useState("");
+    const [nombreGradoObjetivo, setNombreGradoObjetivo] = useState("");
     const [loadingImageGrado, setLoadingImageGrado] = useState(true)
 
     const [loading, setLoading] = useState(true)
@@ -594,6 +600,7 @@ export default function Progreso() {
                     const data = await getGradoObjetivoByUserId(session.user.userId)
                     // const data = await getTemas();
                     setGradoObjetivo(data[0].imagen);
+                    setNombreGradoObjetivo(data[0].nombreGrado)
                 } catch (error) {
                     console.error("Error obteniendo el grado by userId:", error);
                     setGradoObjetivo("")
@@ -611,6 +618,7 @@ export default function Progreso() {
 
             <Zona
                 quantityFallidas={quantityFallidas}
+                nombreGradoObjetivo={nombreGradoObjetivo}
                 imageGradoObjetivo={gradoObjetivo}
                 loadingImageGrado={loadingImageGrado}
                 loading={loading}
