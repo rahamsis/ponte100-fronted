@@ -77,7 +77,7 @@ export default function Examen({ params }: { params: Promise<{ idExamen: string 
 
     // Contador o timer
     useEffect(() => {
-        if (isFinished || timeExpired) return;
+        if (isFinished || timeExpired || questions.length === 0 || timer === 0) return;
 
         const countdown = setInterval(() => {
             setTimer((prev) => {
@@ -94,6 +94,8 @@ export default function Examen({ params }: { params: Promise<{ idExamen: string 
     }, [
         isFinished,
         timeExpired,
+        questions.length,
+        timer
     ]);
 
     const handleAnswer = (value: string) => {
@@ -417,7 +419,7 @@ export default function Examen({ params }: { params: Promise<{ idExamen: string 
             </div>
 
             {/* Renderizado de modales */}
-            {timeExpired && (
+            {timeExpired && questions.length > 0 && (
                 <ModalTimeExpired onClose={() => { }} handleFinish={handleFinish} />
             )}
         </div>

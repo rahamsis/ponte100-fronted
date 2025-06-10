@@ -156,7 +156,7 @@ export default function Suscripcion() {
 
             try {
                 const response = await getFormToken(formData, token);
-                console.log("RESPONSE: ", response)
+                
                 const result = await response.json();
                 if (response.ok) {
                     router.push('/gracias'); // Página de éxito
