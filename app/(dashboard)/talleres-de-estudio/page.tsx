@@ -25,7 +25,7 @@ const talleresData = Array.from({ length: 5 }, (_, tIndex) => ({
         sesiones: Array.from({ length: 3 }, (_, sIndex) => ({
             nombre: `Sesión ${sIndex + 1}`,
             limit: (sIndex === 2 ? 40 : 30),
-            offset: (sIndex === 2 ? 40 : 30),
+            offset: (sIndex === 0 ? 0 : sIndex === 1 ? 30 : 60),
         })),
     })),
 }));

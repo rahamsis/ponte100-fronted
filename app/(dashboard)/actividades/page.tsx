@@ -242,34 +242,27 @@ function Aprende() {
 
     const closeModal = () => setActiveModal(null);
 
-    const fetchQuantityFallidas = useCallback(async () => {
-        // setLoading(true); // ✅ Muestra el mensaje de carga
-        try {
-            if (session?.user?.userId) {
+    useEffect(() => {
+        const fetchQuantityFallidas = async () => {
+            if (!session?.user?.userId) return; // validación aquí
+
+            try {
                 const data = await fetchResultProgress(session.user.userId);
 
-                // Sumar todas las incorrectas y nulas de todos los registros
                 const totalFallidas = data.reduce((acc: number, item: any) => {
                     const incorrectas = item.incorrectas ?? 0;
                     const nulas = item.nulas ?? 0;
                     return acc + incorrectas + nulas;
                 }, 0);
 
-                // Si lo encuentra, seteamos las incorrectas, si no, seteamos 0
                 setQuantityFallidas(totalFallidas);
-            } else {
-                console.error("User ID is not available Fallidas class");
+            } catch (error) {
+                console.error("Error obteniendo las preguntas:", error);
             }
-        } catch (error) {
-            console.error("Error obteniendo las preguntas:", error);
-        } finally {
-            // setLoading(false);
-        }
-    }, [session?.user?.userId]);
+        };
 
-    useEffect(() => {
-        fetchQuantityFallidas();
-    }, [fetchQuantityFallidas]);
+        fetchQuantityFallidas(); // ya no necesitas condicional afuera
+    }, [session?.user?.userId]);
 
     // Inicio del carrusel de Conocimientos
     const [conocimientoActive, setConocimientoActive] = useState(0)
@@ -382,7 +375,7 @@ function Aprende() {
             </section>
 
             {/* Renderizado de modales */}
-            {activeModal && (() => {
+            {activeModal && session?.user?.userId && (() => {
                 const Modal = modalComponents[activeModal];
                 return <Modal onClose={closeModal} extra={quantityFallidas} />; //quantityFallidas solo sirve para preguntas fallidas
             })()}
