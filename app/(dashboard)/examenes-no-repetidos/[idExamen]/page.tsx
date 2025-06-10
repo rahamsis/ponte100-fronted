@@ -38,6 +38,9 @@ export default function Examen({ params }: { params: Promise<{ idExamen: string 
     const { idExamen } = use(params);
     const router = useRouter();
 
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+
     const [questions, setQuestions] = useState<Question[]>([]);
     const [startTimer, setStartTimer] = useState(0);
     const [timer, setTimer] = useState(0);
@@ -56,12 +59,17 @@ export default function Examen({ params }: { params: Promise<{ idExamen: string 
 
         const fetchQuestions = async () => {
             try {
+                setLoading(true);
+                setError(null);
                 const data = await fetchQuestionSiecopolWhitOffset(idExamen);
                 setQuestions(data);
                 setStartTimer(data.length * 72); //72
                 setTimer(data.length * 72); //72 tiempo oficial
             } catch (error) {
                 console.error("Error obteniendo las preguntas:", error);
+                setError("Error al cargar las preguntas. Por favor intenta nuevamente.");
+            } finally {
+                setLoading(false);
             }
         };
         fetchQuestions();
@@ -171,6 +179,45 @@ export default function Examen({ params }: { params: Promise<{ idExamen: string 
         setTimer(0);
 
         router.push("/Examenes-no-repetidos")
+    }
+
+    if (loading) {
+        return (
+            <div className="flex min-h-[80vh] items-center justify-center">
+                <div className="text-center">
+                    <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-green-600 border-r-transparent">
+                        <span className="sr-only">Cargando...</span>
+                    </div>
+                    <p className="mt-4 text-button">Cargando preguntas...</p>
+                </div>
+            </div>
+        );
+    }
+
+    if (error) {
+        return (
+            <div className="flex min-h-[80vh] items-center justify-center">
+                <div className="text-center p-4 bg-red-100 rounded-lg max-w-md">
+                    <p className="text-red-700 font-medium">{error}</p>
+                    <button
+                        onClick={() => window.location.reload()}
+                        className="mt-4 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition"
+                    >
+                        Reintentar
+                    </button>
+                </div>
+            </div>
+        );
+    }
+
+    if (questions.length === 0 && !loading) {
+        return (
+            <div className="flex min-h-[80vh] items-center justify-center">
+                <div className="text-center">
+                    <p className="text-gray-600">No se encontraron preguntas para este tema.</p>
+                </div>
+            </div>
+        );
     }
 
     if (isFinished) {
