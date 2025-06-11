@@ -202,7 +202,8 @@ export default function Estudio({ params }: { params: Promise<{ idTema: string, 
                 <div className="text-center p-4 bg-red-100 rounded-lg max-w-md">
                     <p className="text-red-700 font-medium">{error}</p>
                     <button
-                        onClick={() => window.location.reload()}
+                        // onClick={() => window.location.reload()}
+                        onClick={()=>router.push("/talleres-de-estudio")}
                         className="mt-4 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition"
                     >
                         Reintentar
