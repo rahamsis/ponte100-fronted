@@ -32,7 +32,7 @@ function Videos() {
             imagen: "/images/videos/video.png",
             title: "Taller 1",
             subtitle: "Clase 1/ Sesión 1",
-            ponente: `Arturo Guillermo`,
+            ponente: `Guillermo Arturo`,
             fecha: "01/06/2025",
             hora: "1H 20min"
         },
@@ -143,7 +143,7 @@ function VideosWithSearch({ videos }: { videos: { imagen: string; title: string;
                     <Search className="absolute w-8 h-8 mt-[10px] ml-2 text-secondary" />
                     <input
                         type="text"
-                        placeholder="Buscar libros..."
+                        placeholder="Buscar videos..."
                         className="pl-16 w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary"
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}

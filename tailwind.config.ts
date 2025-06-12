@@ -45,6 +45,7 @@ const config: Config = {
         sidebarback: "#3737529C",
         balotario:"#AAAAB9",
         timeexpired:"#2F80ED",
+        borderProgreso: "#008b8b",
       },
       fontFamily: {
         poppins: ["Roboto", "sans-serif"],

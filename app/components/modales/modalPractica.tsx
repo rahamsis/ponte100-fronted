@@ -21,11 +21,20 @@ export const ModalPracticaTema = ({ onClose, extra }: ModalPractica) => {
 
     const [quantity, setQuantity] = useState(50);
 
+    const [showMessageAlert, setShowMessageAlert] = useState(false);
+    const [messageAlert, setMessageAlert] = useState('')
+
     const selectedQuantity = (quantity: number) => {
         setQuantity(quantity)
     }
 
     const handleNavigation = () => {
+        if(selectedTheme == ''){
+            setShowMessageAlert(true);
+            setMessageAlert('Por favor, selecciona un tema antes de continuar.');
+            return;
+        }
+        
         // Zustand (primario)
         usePracticeStore.getState().setParams({ selectedTheme, quantity });
 
@@ -45,6 +54,13 @@ export const ModalPracticaTema = ({ onClose, extra }: ModalPractica) => {
                 <div className='text-primary font-semibold'>
                     <h2>selecciona un tema</h2>
                     <SelectorOne onThemeSelect={setSelectedTheme} />
+                    {
+                        showMessageAlert && (
+                            <div className="text-red-500 mt-2 text-sm">
+                                {messageAlert}
+                            </div>
+                        )
+                    }
                 </div>
 
                 <div className='text-sm md:text-base text-primary font-semibold mt-5'>

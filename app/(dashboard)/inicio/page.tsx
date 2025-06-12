@@ -52,7 +52,7 @@ function Banner() {
     useEffect(() => {
         const interval = setInterval(() => {
             setActiveIndex((prev) => (prev + 1) % banners.length);
-        }, 10000);
+        }, 50000);
         return () => clearInterval(interval);
     }, [banners.length]);
 
@@ -80,11 +80,11 @@ function Banner() {
                                 {current.button}
                             </button>}
 
-                            { current.id === 2 && <a href={'/document/ponte100 ppt.pdf'} target="_blank" className="border-2 my-auto text-white rounded-lg border-white px-4 py-2">
+                            {current.id === 2 && <a href={'/document/ponte100 ppt.pdf'} target="_blank" className="border-2 my-auto text-white rounded-lg border-white px-4 py-2">
                                 {current.button}
-                            </a> 
+                            </a>
                             }
-                            
+
                         </div>
                     </div>
                 </div>
@@ -103,15 +103,28 @@ function Banner() {
                             </div>
                         </div>
                     </div>
-                    <div className="absolute left-0 top-0 h-full w-5/12 z-0 transform -ml-8 translate-x-10">
+                    {current.id === 1 ? (
+                        <div className="absolute left-0 top-0 h-full w-5/12 z-0 transform -ml-8 translate-x-10">
+                            <Image
+                                src={current.image}
+                                alt="banner"
+                                fill
+                                className="object-cover rounded-l-3xl"
+                                priority
+                            />
+                        </div>
+                    ) : (
+                        <div className="absolute w-5/12 z-0 transform -ml-4 translate-x-10">
                         <Image
                             src={current.image}
                             alt="banner"
-                            fill
+                            width={100}
+                            height={100}
                             className="object-cover rounded-l-3xl"
                             priority
                         />
-                    </div>
+                        </div>
+                    )}
                 </div>
 
                 {/* Dots navigation */}
@@ -157,7 +170,7 @@ function Progreso({ loading, quantityFallidas, tiempoDeUso, practicas, simulacro
                 </div>
                 <div className="">
                     <div className=" grid lg:grid-cols-5 grid-cols-2 gap-8 ">
-                        <div className="flex flex-row border p-3 rounded-lg space-x-3">
+                        <div className="flex flex-row border border-borderProgreso p-3 rounded-lg space-x-3">
                             <div className="flex w-1/5 items-center justify-center">
                                 <Image src="/assets/frames/frame10.png" height={20} width={20} alt="frame" style={{ height: 'auto' }} priority />
                             </div>
@@ -170,7 +183,7 @@ function Progreso({ loading, quantityFallidas, tiempoDeUso, practicas, simulacro
                                 </div>
                             </div>
                         </div>
-                        <div className="flex flex-row border p-3 rounded-lg space-x-3">
+                        <div className="flex flex-row border border-borderProgreso p-3 rounded-lg space-x-3">
                             <div className="flex w-1/5 items-center justify-center">
                                 <Image src="/assets/frames/frame11.png" height={30} width={30} alt="frame" style={{ height: 'auto' }} priority />
                             </div>
@@ -183,7 +196,7 @@ function Progreso({ loading, quantityFallidas, tiempoDeUso, practicas, simulacro
                                 </div>
                             </div>
                         </div>
-                        <div className="flex flex-row border p-3 rounded-lg space-x-3 col-span-2 lg:col-span-1">
+                        <div className="flex flex-row border border-borderProgreso p-3 rounded-lg space-x-3 col-span-2 lg:col-span-1">
                             <div className="flex w-1/5 items-center justify-center">
                                 <Image src="/assets/frames/frame12.png" height={30} width={30} alt="frame" style={{ height: 'auto' }} priority />
                             </div>
@@ -196,7 +209,7 @@ function Progreso({ loading, quantityFallidas, tiempoDeUso, practicas, simulacro
                                 </div>
                             </div>
                         </div>
-                        <div className="flex flex-row border p-3 rounded-lg space-x-3">
+                        <div className="flex flex-row border border-borderProgreso p-3 rounded-lg space-x-3">
                             <div className="flex w-1/5 items-center justify-center">
                                 <Image src="/assets/frames/frame13.png" height={30} width={30} alt="frame" style={{ height: 'auto' }} priority />
                             </div>
@@ -209,7 +222,7 @@ function Progreso({ loading, quantityFallidas, tiempoDeUso, practicas, simulacro
                                 </div>
                             </div>
                         </div>
-                        <div className="flex flex-row border p-3 rounded-lg space-x-3">
+                        <div className="flex flex-row border border-borderProgreso p-3 rounded-lg space-x-3">
                             <div className="flex w-1/5 items-center justify-center">
                                 <Image src="/assets/frames/frame14.png" height={30} width={30} alt="frame" style={{ height: 'auto' }} priority />
                             </div>
