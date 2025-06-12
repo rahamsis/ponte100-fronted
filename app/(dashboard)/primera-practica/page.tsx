@@ -7,7 +7,11 @@ import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { usePrimeraPracticaStore } from "@/app/lib/stores/primeraPractica";
 import { useSession } from "next-auth/react";
-import { fetchQuestionRamdonWithLimit, fetchSaveIncorrectQuestions } from "@/app/lib/actions";
+import {
+    fetchQuestionRamdonWithLimit,
+    fetchSaveIncorrectQuestions,
+    saveOrUpdateProgress
+} from "@/app/lib/actions";
 import ExamenConBalotario from "@/app/examenes/examenconbalotario";
 
 import { ModalTimeExpired } from "@/app/components/modales/modalTimeExpired";
@@ -27,6 +31,9 @@ function PrimeraPractica() {
     const router = useRouter();
     const { data: session, status } = useSession();
     const [questions, setQuestions] = useState<Question[]>([]);
+
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
 
     const [currentQuestion, setCurrentQuestion] = useState(1);
     const [answers, setAnswers] = useState<{ [key: number]: string }>({});
@@ -55,8 +62,9 @@ function PrimeraPractica() {
         }
     }, []);
 
+    // Contador o timer
     useEffect(() => {
-        if (isFinished || timeExpired) return;
+        if (isFinished || timeExpired || questions.length === 0 || timer === 0) return;
         const countdown = setInterval(() => {
             setTimer((prev) => {
                 if (prev <= 1) {
@@ -72,18 +80,25 @@ function PrimeraPractica() {
     }, [
         isFinished,
         timeExpired,
+        questions.length,
+        timer
     ]);
 
     useEffect(() => {
         const fetchQuestions = async () => {
             try {
+                setLoading(true);
+                setError(null);
                 const quantity = params?.quantity ?? 0;
                 const data = await fetchQuestionRamdonWithLimit(quantity);
                 setQuestions(data);
-                setStartTimer(data.length * 2); //72
-                setTimer(data.length * 2); //72 tiempo oficial
+                setStartTimer(data.length * 6); //72
+                setTimer(data.length * 6); //72 tiempo oficial
             } catch (error) {
                 console.error("Error obteniendo las preguntas:", error);
+                setError("Error al cargar las preguntas. Por favor intenta nuevamente.");
+            } finally {
+                setLoading(false);
             }
         };
         fetchQuestions();
@@ -105,8 +120,22 @@ function PrimeraPractica() {
 
         setScore(correctAnswers);
 
+        // Inicializar valores para guardar el progreso del usuario
+        console.log("inicio del guardado de datos de progreso")
+        const time = startTimer - timer;
+        const totalPreguntas = questions.length;
+        const correctas = correctAnswers;
+        const incorrectas = Object.keys(answers).length - correctAnswers;
+        const nulas = questions.length - Object.keys(answers).length;
+
+
         if (session?.user?.userId) {
-            await fetchSaveIncorrectQuestions(session.user.userId, incorrectIds);
+            try {
+                await fetchSaveIncorrectQuestions(session.user.userId, incorrectIds);
+                await saveOrUpdateProgress(session.user.userId, "primera-practica", time, totalPreguntas, correctas, incorrectas, nulas,);
+            } catch (error) {
+                console.error("Error al guardar progreso o fallidas (primera-practica):", error);
+            }
         } else {
             console.error("User ID is not available Practica class");
         }
@@ -125,12 +154,50 @@ function PrimeraPractica() {
         router.push("/actividades")
     }
 
-    if (isFinished) {
+    if (loading) {
+        return (
+            <div className="flex min-h-[80vh] items-center justify-center">
+                <div className="text-center">
+                    <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-green-600 border-r-transparent">
+                        <span className="sr-only">Cargando...</span>
+                    </div>
+                    <p className="mt-4 text-button">Cargando preguntas...</p>
+                </div>
+            </div>
+        );
+    }
 
+    if (error) {
+        return (
+            <div className="flex min-h-[80vh] items-center justify-center">
+                <div className="text-center p-4 bg-red-100 rounded-lg max-w-md">
+                    <p className="text-red-700 font-medium">{error}</p>
+                    <button
+                        // onClick={() => window.location.reload()}
+                        onClick={() => router.push("/examenes-no-repetidos")}
+                        className="mt-4 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition"
+                    >
+                        Reintentar
+                    </button>
+                </div>
+            </div>
+        );
+    }
+
+    if (questions.length === 0 && !loading) {
+        return (
+            <div className="flex min-h-[80vh] items-center justify-center">
+                <div className="text-center">
+                    <p className="text-gray-600">No se encontraron preguntas para este tema.</p>
+                </div>
+            </div>
+        );
+    }
+
+    if (isFinished) {
         return (
             <Results
                 idUsuario={session?.user?.userId ?? ""}
-                tipoExamen="primera-practica"
                 score={score}
                 questions={questions}
                 selectedAnswers={answers}
@@ -173,7 +240,7 @@ function PrimeraPractica() {
             </section>
 
             {/* Renderizado de modales */}
-            {timeExpired && (
+            {timeExpired && questions.length > 0 && (
                 <ModalTimeExpired onClose={() => { }} handleFinish={handleFinish} />
             )}
         </div>

@@ -6,7 +6,8 @@ import { useSession } from "next-auth/react";
 import { use } from 'react';
 import {
     fetchQuestionSiecopolWhitOffset,
-    fetchSaveIncorrectQuestions
+    fetchSaveIncorrectQuestions,
+    saveOrUpdateProgress
 } from "@/app/lib/actions";
 import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -162,8 +163,21 @@ export default function Examen({ params }: { params: Promise<{ idExamen: string 
 
         setScore(correctAnswers);
 
+        // Inicializar valores para guardar el progreso del usuario
+        console.log("inicio del guardado de datos de progreso")
+        const time = startTimer - timer;
+        const totalPreguntas = questions.length;
+        const correctas = correctAnswers;
+        const incorrectas = Object.keys(selectedAnswers).length - correctAnswers;
+        const nulas = questions.length - Object.keys(selectedAnswers).length;
+
         if (session?.user?.userId) {
-            await fetchSaveIncorrectQuestions(session.user.userId, incorrectIds);
+            try {
+                await fetchSaveIncorrectQuestions(session.user.userId, incorrectIds);
+                await saveOrUpdateProgress(session.user.userId, "examenes-no-repetidos", time, totalPreguntas, correctas, incorrectas, nulas,);
+            } catch (error) {
+                console.error("Error al guardar progreso o fallidas (examenes-no-repetidos):", error);
+            }
         } else {
             console.error("User ID is not available Practica class");
         }
@@ -175,8 +189,6 @@ export default function Examen({ params }: { params: Promise<{ idExamen: string 
         setSelectedAnswers({});
         setIsFinished(false);
         setScore(0);
-        // setQuantitySelect(0);
-        // setExamStarted(false);
         setStartTimer(0);
         setTimer(0);
 
@@ -202,7 +214,8 @@ export default function Examen({ params }: { params: Promise<{ idExamen: string 
                 <div className="text-center p-4 bg-red-100 rounded-lg max-w-md">
                     <p className="text-red-700 font-medium">{error}</p>
                     <button
-                        onClick={() => window.location.reload()}
+                        // onClick={() => window.location.reload()}
+                        onClick={() => router.push("/examenes-no-repetidos")}
                         className="mt-4 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition"
                     >
                         Reintentar
@@ -226,7 +239,6 @@ export default function Examen({ params }: { params: Promise<{ idExamen: string 
         return (
             <Results
                 idUsuario={session?.user?.userId ?? ""}
-                tipoExamen="examenes-no-repetidos"
                 score={score}
                 questions={questions}
                 selectedAnswers={selectedAnswers}

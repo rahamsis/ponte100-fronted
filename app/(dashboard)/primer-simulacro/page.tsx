@@ -10,7 +10,8 @@ import { useSession } from "next-auth/react";
 import {
     fetchQuestionSiecopol,
     fetchSaveIncorrectQuestions,
-    fetchValidatePersonByCipAndDni
+    fetchValidatePersonByCipAndDni,
+    saveOrUpdateProgress
 } from "@/app/lib/actions";
 import ExamenConBalotario from "@/app/examenes/examenconbalotario";
 import ExamenSinBalotario from "@/app/examenes/examensinbalotario";
@@ -53,6 +54,9 @@ function Practica() {
     const router = useRouter();
     const { data: session, status } = useSession();
     const [questions, setQuestions] = useState<Question[]>([]);
+
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
 
     const [currentQuestion, setCurrentQuestion] = useState(1);
     const [answers, setAnswers] = useState<{ [key: number]: string }>({});
@@ -98,7 +102,7 @@ function Practica() {
 
     // timer
     useEffect(() => {
-        if (isFinished || timeExpired) return;
+        if (isFinished || timeExpired || questions.length === 0 || timer === 0) return;
 
         const countdown = setInterval(() => {
             setTimer((prev) => {
@@ -115,6 +119,8 @@ function Practica() {
     }, [
         isFinished,
         timeExpired,
+        questions.length,
+        timer
     ]);
 
     // timer Siecopol
@@ -143,6 +149,8 @@ function Practica() {
     useEffect(() => {
         const fetchQuestions = async () => {
             try {
+                setLoading(true);
+                setError(null);
                 const quantity = params?.quantity ?? 0;
                 const data = await fetchQuestionSiecopol(quantity);
                 setQuestions(data);
@@ -151,6 +159,9 @@ function Practica() {
                 setTimerSiecopol(data.length * 72) //un timer independiente para siecopol
             } catch (error) {
                 console.error("Error obteniendo las preguntas:", error);
+                setError("Error al cargar las preguntas. Por favor intenta nuevamente.");
+            } finally {
+                setLoading(false);
             }
         };
         fetchQuestions();
@@ -193,10 +204,22 @@ function Practica() {
         }, 0);
 
         setScore(correctAnswers);
-        // setIncorrectQuestions(incorrectIds);
+
+        // Inicializar valores para guardar el progreso del usuario
+        console.log("inicio del guardado de datos de progreso")
+        const time = startTimer - timer;
+        const totalPreguntas = questions.length;
+        const correctas = correctAnswers;
+        const incorrectas = Object.keys(answers).length - correctAnswers;
+        const nulas = questions.length - Object.keys(answers).length;
 
         if (session?.user?.userId) {
-            await fetchSaveIncorrectQuestions(session.user.userId, incorrectIds);
+            try {
+                await fetchSaveIncorrectQuestions(session.user.userId, incorrectIds);
+                await saveOrUpdateProgress(session.user.userId, "primer-simulacro", time, totalPreguntas, correctas, incorrectas, nulas,);
+            } catch (error) {
+                console.error("Error al guardar progreso o fallidas (primer-simulacro):", error);
+            }
         } else {
             console.error("User ID is not available Practica class");
         }
@@ -217,12 +240,50 @@ function Practica() {
         router.push("/actividades")
     }
 
-    if (isFinished) {
+    if (loading) {
+        return (
+            <div className="flex min-h-[80vh] items-center justify-center">
+                <div className="text-center">
+                    <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-green-600 border-r-transparent">
+                        <span className="sr-only">Cargando...</span>
+                    </div>
+                    <p className="mt-4 text-button">Cargando preguntas...</p>
+                </div>
+            </div>
+        );
+    }
 
+    if (error) {
+        return (
+            <div className="flex min-h-[80vh] items-center justify-center">
+                <div className="text-center p-4 bg-red-100 rounded-lg max-w-md">
+                    <p className="text-red-700 font-medium">{error}</p>
+                    <button
+                        // onClick={() => window.location.reload()}
+                        onClick={() => router.push("/examenes-no-repetidos")}
+                        className="mt-4 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition"
+                    >
+                        Reintentar
+                    </button>
+                </div>
+            </div>
+        );
+    }
+
+    if (questions.length === 0 && !loading) {
+        return (
+            <div className="flex min-h-[80vh] items-center justify-center">
+                <div className="text-center">
+                    <p className="text-gray-600">No se encontraron preguntas para este tema.</p>
+                </div>
+            </div>
+        );
+    }
+
+    if (isFinished) {
         return (
             <Results
                 idUsuario={session?.user?.userId ?? ""}
-                tipoExamen="primer-simulacro"
                 score={score}
                 questions={questions}
                 selectedAnswers={answers}
@@ -363,7 +424,7 @@ function Practica() {
 
             {/* Renderizado de modales */}
             {
-                timeExpired && (
+                timeExpired && questions.length > 0 && (
                     <ModalTimeExpired onClose={() => { }} handleFinish={handleFinish} />
                 )
             }

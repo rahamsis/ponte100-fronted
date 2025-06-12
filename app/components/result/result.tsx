@@ -19,7 +19,6 @@ interface Question {
 
 interface ResultsProps {
     idUsuario: string;
-    tipoExamen: string
     score: number;
     questions: Question[];
     selectedAnswers: { [key: string]: string };
@@ -38,7 +37,6 @@ const formatTime = (seconds: number) => {
 
 const Results = ({
     idUsuario,
-    tipoExamen,
     score,
     questions,
     selectedAnswers,
@@ -62,26 +60,6 @@ const Results = ({
             router.push('/actividades');
         }
     };
-
-    useEffect(() => {
-        if (effectRan.current === false) {
-
-            const guardar = async () => {
-                console.log("inicio del gusraddo de datos de progreso")
-                const time = startTimer - timer;
-                const totalPreguntas = questions.length;
-                const correctas = score;
-                const incorrectas = Object.keys(selectedAnswers).length - score;
-                const nulas = questions.length - Object.keys(selectedAnswers).length;
-
-                saveOrUpdateProgress(idUsuario, tipoExamen, time, totalPreguntas, correctas, incorrectas, nulas,);
-                console.log("fin del gusraddo de datos de progreso")
-            }
-            guardar();
-
-            effectRan.current = true;  // Marcar que ya corrió
-        }
-    }, []);
 
     return (
         <>

@@ -272,6 +272,26 @@ export async function fetchIncorrectQuestions(userId: string, quantity: number) 
     }
 }
 
+export async function updateIncorrectQuestions(userId: string, correctQuestionsIds: string[], incorrectQuestionIds: string[]) {
+    try {
+        const response = await fetch(`${process.env.APP_BACK_END}/backendApi/update-incorrect-questions`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'accept': '/'
+            },
+            body: JSON.stringify({ userId, correctQuestionsIds, incorrectQuestionIds }),
+            next: { revalidate: 0 }
+        });
+
+        const data = await response.json();
+        return data;
+
+    } catch (error) {
+        console.error('Error al actualizar las preguntas fallidas (updateIncorrectQuestions):', error);
+    }
+}
+
 export async function fetchTableExams() {
     try {
         const response = await fetch(`${process.env.APP_BACK_END}/backendApi/table-exams`, {

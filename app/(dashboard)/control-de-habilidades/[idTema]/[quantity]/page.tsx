@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, use } from "react";
-import { fetchQuestionHabilidades, fetchSaveIncorrectQuestions } from "@/app/lib/actions";
+import { fetchQuestionHabilidades, fetchSaveIncorrectQuestions, saveOrUpdateProgress } from "@/app/lib/actions";
 import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
@@ -25,6 +25,7 @@ export default function Habilidades({ params }: { params: Promise<{ idTema: stri
     const { data: session } = useSession();
     const router = useRouter();
     const [questions, setQuestions] = useState<Question[]>([]);
+    
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
@@ -62,7 +63,7 @@ export default function Habilidades({ params }: { params: Promise<{ idTema: stri
 
     // Contador o timer
     useEffect(() => {
-        if (isFinished || timeExpired) return;
+        if (isFinished || timeExpired || questions.length === 0 || timer === 0) return;
 
         const countdown = setInterval(() => {
             setTimer((prev) => {
@@ -79,6 +80,8 @@ export default function Habilidades({ params }: { params: Promise<{ idTema: stri
     }, [
         isFinished,
         timeExpired,
+        questions.length,
+        timer
     ]);
 
     const handleFinish = async () => {
@@ -96,10 +99,23 @@ export default function Habilidades({ params }: { params: Promise<{ idTema: stri
         }, 0);
 
         setScore(correctAnswers);
-        // setIncorrectQuestions(incorrectIds);
+
+        // Inicializar valores para guardar el progreso del usuario
+        console.log("inicio del guardado de datos de progreso")
+        const time = startTimer - timer;
+        const totalPreguntas = questions.length;
+        const correctas = correctAnswers;
+        const incorrectas = Object.keys(answers).length - correctAnswers;
+        const nulas = questions.length - Object.keys(answers).length;
+
 
         if (session?.user?.userId) {
-            await fetchSaveIncorrectQuestions(session.user.userId, incorrectIds);
+            try {
+                await fetchSaveIncorrectQuestions(session.user.userId, incorrectIds);
+                await saveOrUpdateProgress(session.user.userId, "control-de-habilidades", time, totalPreguntas, correctas, incorrectas, nulas,);
+            } catch (error) {
+                console.error("Error al guardar progreso o fallidas (practica un tema):", error);
+            }
         } else {
             console.error("User ID is not available Practica class");
         }
@@ -162,7 +178,6 @@ export default function Habilidades({ params }: { params: Promise<{ idTema: stri
         return (
             <Results
                 idUsuario={session?.user?.userId ?? ""}
-                tipoExamen="control-de-habilidades"
                 score={score}
                 questions={questions}
                 selectedAnswers={answers}
@@ -204,7 +219,7 @@ export default function Habilidades({ params }: { params: Promise<{ idTema: stri
             </div>
 
             {/* Renderizado de modales */}
-            {timeExpired && (
+            {timeExpired && questions.length > 0 && (
                 <ModalTimeExpired onClose={() => { }} handleFinish={handleFinish} />
             )}
         </div>

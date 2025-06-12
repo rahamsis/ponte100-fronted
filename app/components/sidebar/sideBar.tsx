@@ -42,14 +42,14 @@ const mainMenu = [
   {
     idMenu: "MN0001",
     nombre: "Inicio",
-    ruta: "inicio",
+    ruta: "/inicio",
     icon: "inicio",
     otrasRutas: ["/inicio"]
   },
   {
     idMenu: "MN0002",
     nombre: "Actividades",
-    ruta: "actividades",
+    ruta: "/actividades",
     icon: "actividades",
     otrasRutas: ["/actividades","/talleres-de-estudio", "/despierta-tu-inteligencia", "/control-de-habilidades", "/practica-un-tema", 
       "/primera-practica", "/primer-simulacro", "/preguntas-fallidas", "/examenes-no-repetidos"]
@@ -57,21 +57,21 @@ const mainMenu = [
   {
     idMenu: "MN0003",
     nombre: "Progreso",
-    ruta: "progreso",
+    ruta: "/progreso",
     icon: "progreso",
     otrasRutas: ["/progreso"]
   },
   {
     idMenu: "MN0004",
     nombre: "Temario",
-    ruta: "temario",
+    ruta: "/temario",
     icon: "temario",
     otrasRutas: ["/temario"]
   },
   {
     idMenu: "MN0005",
     nombre: "Videos",
-    ruta: "videos",
+    ruta: "/videos",
     icon: "videos",
     otrasRutas: ["/videos"]
   },

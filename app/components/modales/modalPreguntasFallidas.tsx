@@ -60,7 +60,7 @@ export const ModalPreguntasFalladas = ({ onClose, extra }: ModalPreguntasFallida
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
             <div className="bg-white p-6 rounded-lg max-w-2xl w-full mx-3 lg:mx-0">
-                <h2 className="text-xl font-bold mb-4 text-secondary">Practica un tema</h2>
+                <h2 className="text-xl font-bold mb-4 text-secondary">Practica las preguntas falladas</h2>
                 <div className='text-primary font-semibold'>
                     <h2 className="text-red-500 text-sm">Total de preguntas fallidas: {extra}</h2>
                     {/* <SelectorOne onThemeSelect={setSelectedTheme} /> */}
@@ -88,7 +88,7 @@ export const ModalPreguntasFalladas = ({ onClose, extra }: ModalPreguntasFallida
                     <h2>Tiempo</h2>
                     <div className="text-gray3 pt-3">
                         <label className="flex flex-row border rounded-lg py-2 px-5 w-full lg:w-3/12 space-x-3">
-                            <Clock /> <h1>{quantity > 0 ? formatTime(quantity * 72) : "--:--:--"} </h1> {/* Paso el numero de preguntas por el tiempo oficial que es 72 */}
+                            <Clock /> <h1>{quantity > 0 ? formatTime(quantity * 6) : "--:--:--"} </h1> {/* Paso el numero de preguntas por el tiempo oficial que es 72 */}
                         </label>
                     </div>
                 </div>

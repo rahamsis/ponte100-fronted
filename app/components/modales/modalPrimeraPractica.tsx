@@ -76,7 +76,7 @@ export const ModalPrimeraPractica = ({ onClose, extra }: ModalTuPrimeraPractica)
                     <h2>Tiempo</h2>
                     <div className="text-gray3 pt-3">
                         <label className="flex flex-row border rounded-lg py-2 px-5 w-full lg:w-3/12 space-x-3">
-                            <Clock /> <h1>{quantity > 0 ? formatTime(quantity * 72) : "--:--:--"} </h1> {/* Paso el numero de preguntas por el tiempo oficial que es 72 */}
+                            <Clock /> <h1>{quantity > 0 ?  formatTime(quantity * 6) : "--:--:--"} </h1> {/* Paso el numero de preguntas por el tiempo oficial que es 72 */}
                         </label>
                     </div>
                 </div>

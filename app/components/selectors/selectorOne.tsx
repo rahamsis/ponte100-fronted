@@ -9,10 +9,11 @@ import { Search, X } from "lucide-react"
 interface Tema {
   idTema: string
   tema: string
+  quantity: number
 }
 
 interface SelectorOneProps {
-  onThemeSelect: (themeId: string) => void
+  onThemeSelect: (themeId: string, quantityTheme: number) => void
   className?: string
 }
 
@@ -54,7 +55,7 @@ const SelectorOne = ({ onThemeSelect, className = "" }: SelectorOneProps) => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(e.target.value)
     if (e.target.value === "") {
-      setSelectedTema(null)
+      setSelectedTema(null) // Reiniciar cantidad de temas
     }
   }
 
@@ -63,7 +64,7 @@ const SelectorOne = ({ onThemeSelect, className = "" }: SelectorOneProps) => {
     setSelectedTema(tema)
     setQuery(tema.tema)
     setIsFocused(false)
-    onThemeSelect(tema.idTema)
+    onThemeSelect(tema.idTema, tema.quantity)
   }
 
   // Limpiar selección
@@ -71,7 +72,7 @@ const SelectorOne = ({ onThemeSelect, className = "" }: SelectorOneProps) => {
     setQuery("")
     setSelectedTema(null)
     setIsFocused(true)
-    onThemeSelect("")
+    onThemeSelect("", 0)
   }
 
   // Animaciones

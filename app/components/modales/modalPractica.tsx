@@ -6,7 +6,7 @@ import { Clock } from "lucide-react";
 import { useState, useEffect } from "react";
 import SelectorOne from "../selectors/selectorOne";
 import { usePracticeStore } from "@/app/lib/stores/practice";
-import { useRouter } from 'next/navigation'; 
+import { useRouter } from 'next/navigation';
 
 interface ModalPractica {
     onClose: () => void;
@@ -14,10 +14,22 @@ interface ModalPractica {
     // router?: any;
 }
 
-export const ModalPracticaTema = ({ onClose, extra }: ModalPractica) => {
-     const router = useRouter();
+const formatTime = (seconds: number) => {
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const secs = seconds % 60;
 
-    const [selectedTheme, setSelectedTheme] = useState<string>('');
+    return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
+};
+
+
+export const ModalPracticaTema = ({ onClose, extra }: ModalPractica) => {
+    const router = useRouter();
+
+    const [selectedTheme, setSelectedTheme] = useState<{ id: string; quantity: number }>({
+        id: '',
+        quantity: 0
+    });
 
     const [quantity, setQuantity] = useState(50);
 
@@ -29,23 +41,30 @@ export const ModalPracticaTema = ({ onClose, extra }: ModalPractica) => {
     }
 
     const handleNavigation = () => {
-        if(selectedTheme == ''){
+        if (selectedTheme.id == '') {
             setShowMessageAlert(true);
             setMessageAlert('Por favor, selecciona un tema antes de continuar.');
             return;
         }
-        
+
         // Zustand (primario)
-        usePracticeStore.getState().setParams({ selectedTheme, quantity });
+        usePracticeStore.getState().setParams({ selectedTheme:selectedTheme.id, quantity });
 
         // SessionStorage (fallback para recargas)
         sessionStorage.setItem('practiceParams', JSON.stringify({
-            selectedTheme,
+            selectedTheme: selectedTheme.id,
             quantity
         }));
 
         router.push("practica-un-tema");
     };
+
+    useEffect(() => {
+        // Limpiar el estado al cerrar el modal
+        if (selectedTheme.id != '') {
+            setShowMessageAlert(false);
+        }
+    }, [selectedTheme]);
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -53,7 +72,7 @@ export const ModalPracticaTema = ({ onClose, extra }: ModalPractica) => {
                 <h2 className="text-xl font-bold mb-4 text-secondary">Practica un tema</h2>
                 <div className='text-primary font-semibold'>
                     <h2>selecciona un tema</h2>
-                    <SelectorOne onThemeSelect={setSelectedTheme} />
+                    <SelectorOne onThemeSelect={(id, quantity) => setSelectedTheme({ id, quantity })} />
                     {
                         showMessageAlert && (
                             <div className="text-red-500 mt-2 text-sm">
@@ -82,7 +101,7 @@ export const ModalPracticaTema = ({ onClose, extra }: ModalPractica) => {
                     <h2>Tiempo</h2>
                     <div className="text-gray3 pt-3">
                         <label className="flex flex-row border rounded-lg py-2 px-5 w-full lg:w-3/12 space-x-3">
-                            <Clock /> <h1>{quantity === 50 ? '1 Hora' : '2 horas'}</h1>
+                            <Clock /> <h1>{quantity === 50 ? '1 Hora' : quantity === 100 ? '2 horas' : formatTime(selectedTheme.quantity *72) }</h1>
                         </label>
                     </div>
                 </div>

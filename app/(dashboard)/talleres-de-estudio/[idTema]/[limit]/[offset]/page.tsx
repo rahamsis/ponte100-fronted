@@ -3,7 +3,11 @@
 /* eslint-disable */
 
 import { useState, useEffect, use } from "react";
-import { fetchQuestionToTaller, fetchSaveIncorrectQuestions } from "@/app/lib/actions";
+import {
+    fetchQuestionToTaller,
+    fetchSaveIncorrectQuestions,
+    saveOrUpdateProgress
+} from "@/app/lib/actions";
 import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { RadioGroup } from "@headlessui/react";
@@ -78,7 +82,7 @@ export default function Estudio({ params }: { params: Promise<{ idTema: string, 
 
     // Contador o timer
     useEffect(() => {
-        if (isFinished || timeExpired) return;
+        if (isFinished || timeExpired || questions.length === 0 || timer === 0) return;
 
         const countdown = setInterval(() => {
             setTimer((prev) => {
@@ -95,6 +99,8 @@ export default function Estudio({ params }: { params: Promise<{ idTema: string, 
     }, [
         isFinished,
         timeExpired,
+        questions.length,
+        timer
     ]);
 
     const handleAnswer = (value: string) => {
@@ -161,8 +167,21 @@ export default function Estudio({ params }: { params: Promise<{ idTema: string, 
 
         setScore(correctAnswers);
 
+        // Inicializar valores para guardar el progreso del usuario
+        console.log("inicio del guardado de datos de progreso")
+        const time = startTimer - timer;
+        const totalPreguntas = questions.length;
+        const correctas = correctAnswers;
+        const incorrectas = Object.keys(selectedAnswers).length - correctAnswers;
+        const nulas = questions.length - Object.keys(selectedAnswers).length;
+
         if (session?.user?.userId) {
-            await fetchSaveIncorrectQuestions(session.user.userId, incorrectIds);
+            try {
+                await fetchSaveIncorrectQuestions(session.user.userId, incorrectIds);
+                await saveOrUpdateProgress(session.user.userId, "talleres-de-estudio", time, totalPreguntas, correctas, incorrectas, nulas,);
+            } catch (error) {
+                console.error("Error al guardar progreso o fallidas (talleres-de-estudio):", error);
+            }
         } else {
             console.error("User ID is not available Practica class");
         }
@@ -203,7 +222,7 @@ export default function Estudio({ params }: { params: Promise<{ idTema: string, 
                     <p className="text-red-700 font-medium">{error}</p>
                     <button
                         // onClick={() => window.location.reload()}
-                        onClick={()=>router.push("/talleres-de-estudio")}
+                        onClick={() => router.push("/talleres-de-estudio")}
                         className="mt-4 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition"
                     >
                         Reintentar
@@ -227,7 +246,6 @@ export default function Estudio({ params }: { params: Promise<{ idTema: string, 
         return (
             <Results
                 idUsuario={session?.user?.userId ?? ""}
-                tipoExamen="talleres-de-estudio"
                 score={score}
                 questions={questions}
                 selectedAnswers={selectedAnswers}
@@ -416,7 +434,7 @@ export default function Estudio({ params }: { params: Promise<{ idTema: string, 
             </div>
 
             {/* Renderizado de modales */}
-            {timeExpired && (
+            {timeExpired && questions.length > 0 && (
                 <ModalTimeExpired onClose={() => { }} handleFinish={handleFinish} />
             )}
         </div>
