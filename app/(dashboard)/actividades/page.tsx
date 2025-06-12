@@ -13,7 +13,7 @@ import { ModalPrimeraPractica } from "@/app/components/modales/modalPrimeraPract
 import { ModalPrimerSimulacro } from "@/app/components/modales/modalPrimerSimulacro";
 import { ModalPreguntasFalladas } from "@/app/components/modales/modalPreguntasFallidas";
 
-import { fetchResultProgress } from "@/app/lib/actions";
+import { getQuantityFallidas } from "@/app/lib/actions";
 
 function Inicio() {
     // Inicio del carrusel de Actividades
@@ -247,15 +247,16 @@ function Aprende() {
             if (!session?.user?.userId) return; // validación aquí
 
             try {
-                const data = await fetchResultProgress(session.user.userId);
+                // const data = await fetchResultProgress(session.user.userId);
+                const result = await getQuantityFallidas(session.user.userId)
 
-                const totalFallidas = data.reduce((acc: number, item: any) => {
-                    const incorrectas = item.incorrectas ?? 0;
-                    const nulas = item.nulas ?? 0;
-                    return acc + incorrectas + nulas;
-                }, 0);
+                // const totalFallidas = data.reduce((acc: number, item: any) => {
+                //     const incorrectas = item.incorrectas ?? 0;
+                //     const nulas = item.nulas ?? 0;
+                //     return acc + incorrectas + nulas;
+                // }, 0);
 
-                setQuantityFallidas(totalFallidas);
+                setQuantityFallidas(result[0].cantidadFallidas ?? 0);
             } catch (error) {
                 console.error("Error obteniendo las preguntas:", error);
             }
@@ -339,7 +340,7 @@ function Aprende() {
                                     <div className={`p-3 rounded-full ${conocimientoActive == 0 ? "bg-button3 bg-opacity-20 text-button3" : "bg-button bg-opacity-10 text-button"}`}>
                                         <ArrowLeft onClick={prevConocimiento} />
                                     </div>
-                                    <div className={`p-3 rounded-full ${conocimientoActive == 3 ? "bg-button3 bg-opacity-20 text-button3" : "bg-button bg-opacity-10 text-button"}`}>
+                                    <div className={`p-3 rounded-full ${conocimientoActive == 4 ? "bg-button3 bg-opacity-20 text-button3" : "bg-button bg-opacity-10 text-button"}`}>
                                         <ArrowRight onClick={nextConocimiento} />
                                     </div>
                                 </div>
@@ -357,7 +358,7 @@ function Aprende() {
                                     <h3 className="text-xl font-bold mb-2 text-primary">{arrayActividades[conocimientoActive].title}</h3>
                                     <p className="text-concepto font-semibold mb-2">{arrayActividades[conocimientoActive].subtitle}</p>
                                     <p className="text-concepto text-sm text-justify">{arrayActividades[conocimientoActive].concept}</p>
-                                    <div className={`w-full ${arrayActividades[conocimientoActive].modalType !== "none" && "hidden"}`}>
+                                    <div className={`w-full ${arrayActividades[conocimientoActive].modalType == "none" && "hidden"}`}>
                                         <button onClick={() => openModal(arrayActividades[conocimientoActive].modalType, arrayActividades[conocimientoActive].ruta)} className="text-button font-bold underline text-lg mt-6 mb-3">
                                             Empezar
                                         </button>

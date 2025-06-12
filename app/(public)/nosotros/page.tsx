@@ -139,12 +139,12 @@ function Members() {
         {
             profile: "/images/miembros/miembro3.png",
             testimonio: "Ejecutivo senior con experiencia en Contabilidad, Administración y RRHH, experto en liderazgo y negociación. Enfocado en crear estrategias, resolver conflictos y generar alianzas.",
-            nombre: "Evart, Zegarra"
+            nombre: "Evart, Zegarra Enciso"
         },
         {
             profile: "/images/miembros/miembro4.png",
             testimonio: "Técnico en Administración con experiencia en sector público y formación continua. Ofrece consultoría y soluciones personalizadas para optimizar la gestión administrativa.",
-            nombre: "Kevin, Cieza"
+            nombre: "Kevin, Cieza Bautista"
         },
         {
             profile: "/images/miembros/miembro5.png",

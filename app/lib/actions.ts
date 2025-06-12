@@ -453,7 +453,7 @@ export async function fetchResultProgress(userId: string) {
             intentos: row.intentos,
             totalPreguntas: row.totalPreguntas,
             correctas: row.correctas,
-            incorrectas: row.incorrectas,
+            // incorrectas: row.incorrectas,
             nulas: row.nulas,
             createdDate: row.createdDate,
             updatedDate: row.updatedDate
@@ -462,6 +462,28 @@ export async function fetchResultProgress(userId: string) {
     } catch (error) {
         console.error('Error al obtener el reultado del progreso (fetchResultProgress):', error);
         throw new Error("Error al obtener el reultado del progreso (fetchResultProgress");
+    }
+}
+
+export async function getQuantityFallidas(userId: string) {
+    try {
+        const response = await fetch(`${process.env.APP_BACK_END}/backendApi/quantityFallidas?userId=${userId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'accept': '*/*'
+            },
+            next: { revalidate: 0 }
+        });
+
+        const data = await response.json();
+        
+        return data.map((row: any) => ({
+            cantidadFallidas: row.cantidadFallidas,
+        }));
+
+    } catch (error) {
+        console.error('Error al traer los datos del grado por el userId (gradoObjetivoByUserId):', error);
     }
 }
 

@@ -50,7 +50,7 @@ function Footer3() {
           </div>
           <div className="relative">
             <h3 className="text-lg font-semibold mb-4">Contacto</h3>
-            <p className="text-white">Email: info@ponte100.com</p>
+            <p className="text-white">Email: metodoponte100@gmail.com</p>
             <a className="text-white" href="tel:+51933123949">Teléfono: +51 933 123 949</a>
             {/* <p className="text-white" >juegos xd</p> */}
           </div>

@@ -66,7 +66,7 @@ const personalInfoSchema = z.object({
     // grupo: z.string(),
     // grado: z.string(),
     dni: z.string().min(8, { message: "Introduce un DNI válido" }).max(8, { message: "Introduce un DNI válido" }),
-    cip: z.string().min(6, { message: "Introduce un codigo CIP válido" }).max(6, { message: "Introduce un DNI válido" }),
+    cip: z.string().min(6, { message: "Introduce un codigo CIP válido" }).max(8, { message: "Introduce un codigo CIP válido" }),
     fechaNacimiento: z
         .string({
             required_error: "La fecha de nacimiento es requerida",
@@ -312,7 +312,7 @@ function Personal() {
                 // console.log("COMPLETE_FORM_DATA", completeFormData)
 
                 setTimeout(() => {
-                    console.log("ya entrooo aqui")
+                    // console.log("ya entrooo aqui")
                     updateDataToUser(completeFormData)
                     setIsSubmitting(false)
                     setIsRegistered(true)
@@ -404,7 +404,7 @@ function Personal() {
                         </div>
                         <h3 className="text-2xl font-semibold">¡Registro Completado!</h3>
                         <p className="text-muted-foreground max-w-md">
-                            Tus datos han sido actualizados exitosamente. 
+                            Tus datos han sido actualizados exitosamente. Para ver los cambios reflejados. favor de volver a iniciar sesión. 
                         </p>
                         <Link href={"/inicio"}>
                             <button className="w-full bg-button text-xs md:text-base text-center text-white px-4 py-2 rounded transition-colors duration-300">
@@ -428,15 +428,15 @@ function Personal() {
                 <div className="lg:mx-20">
                     <div className="flex flex-wrap justify-center items-center">
                         <div className="w-full lg:w-3/4">
-                            <Tabs selectedIndex={tabIndex} onSelect={(index) => setTabIndex(index)} className="w-full">
+                            <Tabs selectedIndex={tabIndex} onSelect={() => false} className="w-full">
                                 <TabList className="grid w-full grid-cols-3 bg-gray-200 p-1 border-b-2 border-gray-200 rounded-lg mb-8">
-                                    <Tab className={`p-3 text-sm md:text-xl text-center font-semibold cursor-pointer transition-all duration-200 border-b-4 border-transparent outline-none focus:outline-none rounded-lg ${tabIndex === 0 ? "bg-white text-green-700 font-bold" : "text-gray-600"}`}>
+                                    <Tab className={`p-3 text-sm md:text-xl text-center font-semibold transition-all duration-200 border-b-4 border-transparent outline-none focus:outline-none rounded-lg ${tabIndex === 0 ? "bg-white text-green-700 font-bold" : "text-gray-600"}`}>
                                         Mi perfil
                                     </Tab>
-                                    <Tab className={`p-3 text-sm md:text-xl text-center font-semibold cursor-pointer transition-all duration-200 border-b-4 border-transparent outline-none focus:outline-none rounded-lg ${tabIndex === 1 ? "bg-white text-green-700 font-bold" : "text-gray-600"}`}>
+                                    <Tab className={`p-3 text-sm md:text-xl text-center font-semibold transition-all duration-200 border-b-4 border-transparent outline-none focus:outline-none rounded-lg ${tabIndex === 1 ? "bg-white text-green-700 font-bold" : "text-gray-600"}`}>
                                         Credenciales
                                     </Tab>
-                                    <Tab className={`p-3 text-sm md:text-xl text-center font-semibold cursor-pointer transition-all duration-200 border-b-4 border-transparent outline-none focus:outline-none rounded-lg ${tabIndex === 2 ? "bg-white text-green-700 font-bold" : "text-gray-600"}`}>
+                                    <Tab className={`p-3 text-sm md:text-xl text-center font-semibold transition-all duration-200 border-b-4 border-transparent outline-none focus:outline-none rounded-lg ${tabIndex === 2 ? "bg-white text-green-700 font-bold" : "text-gray-600"}`}>
                                         Dirección
                                     </Tab>
                                 </TabList>
@@ -614,11 +614,11 @@ function Personal() {
                                                             pattern="[0-9]*"
                                                             inputMode="numeric"
                                                             placeholder="Tu CIP"
-                                                            maxLength={6}
+                                                            maxLength={8}
                                                             className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2"
                                                             onChange={(e) => {
                                                                 const value = e.target.value.replace(/\D/g, ""); // ❌ Elimina letras
-                                                                field.onChange(value.slice(0, 6)); // 🔢 Máximo 8 números
+                                                                field.onChange(value.slice(0, 8)); // 🔢 Máximo 8 números
                                                             }}
                                                         />
                                                         {fieldState.error && (

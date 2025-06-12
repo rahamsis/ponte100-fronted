@@ -18,7 +18,7 @@ import { ModalPrimeraPractica } from "@/app/components/modales/modalPrimeraPract
 import { ModalPrimerSimulacro } from "@/app/components/modales/modalPrimerSimulacro";
 import { ModalPreguntasFalladas } from "@/app/components/modales/modalPreguntasFallidas";
 
-import { fetchResultProgress } from "@/app/lib/actions";
+import { fetchResultProgress, getQuantityFallidas } from "@/app/lib/actions";
 
 function Banner() {
     const router = useRouter();
@@ -115,14 +115,14 @@ function Banner() {
                         </div>
                     ) : (
                         <div className="absolute w-5/12 z-0 transform -ml-4 translate-x-10">
-                        <Image
-                            src={current.image}
-                            alt="banner"
-                            width={100}
-                            height={100}
-                            className="object-cover rounded-l-3xl"
-                            priority
-                        />
+                            <Image
+                                src={current.image}
+                                alt="banner"
+                                width={100}
+                                height={100}
+                                className="object-cover rounded-l-3xl"
+                                priority
+                            />
                         </div>
                     )}
                 </div>
@@ -566,7 +566,7 @@ function Videos() {
             imagen: "/images/videos/video.png",
             title: "Taller 1",
             subtitle: "Clase 1/ Sesión 1",
-            ponente: `Arturo Guillermo`,
+            ponente: `Guillermo Arturo Vasquez`,
             fecha: "hace 1 día",
             hora: "1H 20min"
         },
@@ -574,7 +574,7 @@ function Videos() {
             imagen: "/images/videos/video.png",
             title: "Taller 1",
             subtitle: "Clase 1/ Sesión 2",
-            ponente: `Arturo Guillermo`,
+            ponente: `Kevin Cieza Bautista`,
             fecha: "hace 1 día",
             hora: "1H 20min"
         },
@@ -582,7 +582,7 @@ function Videos() {
             imagen: "/images/videos/video.png",
             title: "Taller 1",
             subtitle: "Clase 1/ Sesión 3",
-            ponente: `Arturo Guillermo`,
+            ponente: `Evart Zegarra Enciso`,
             fecha: "hace 1 día",
             hora: "1H 20min"
         },
@@ -590,7 +590,7 @@ function Videos() {
             imagen: "/images/videos/video.png",
             title: "Taller 1",
             subtitle: "Clase 1/ Sesión 1",
-            ponente: `Arturo Guillermo`,
+            ponente: `Guillermo Arturo Vasquez`,
             fecha: "hace 1 día",
             hora: "1H 20min"
         },
@@ -722,13 +722,16 @@ export default function Main() {
             if (status === "authenticated" && session?.user?.userId) {
                 try {
                     const data = await fetchResultProgress(session.user.userId,)
+                    const result = await getQuantityFallidas(session.user.userId)
+
+                    setQuantityFallidas(result[0].cantidadFallidas ?? 0);
 
                     // Sumar todas las incorrectas y nulas de todos los registros
-                    const totalFallidas = data.reduce((acc: number, item: any) => {
-                        const incorrectas = item.incorrectas ?? 0;
-                        const nulas = item.nulas ?? 0;
-                        return acc + incorrectas + nulas;
-                    }, 0);
+                    // const totalFallidas = data.reduce((acc: number, item: any) => {
+                    //     const incorrectas = item.incorrectas ?? 0;
+                    //     const nulas = item.nulas ?? 0;
+                    //     return acc + incorrectas + nulas;
+                    // }, 0);
 
                     // Sumar todas las horas de todos los registros
                     const horasRealizadas = data.reduce((acc: number, item: any) => {
@@ -753,7 +756,7 @@ export default function Main() {
                         .reduce((acc: number, item: any) => acc + (item.intentos ?? 0), 0);
 
                     // Si lo encuentra, seteamos las incorrectas, si no, seteamos 0
-                    setQuantityFallidas(totalFallidas);
+
                     setTiempoDeUso(horasRealizadas);
                     setTotalPreguntas(preguntasTotal);
                     setSimulacros(totalSimulacros);

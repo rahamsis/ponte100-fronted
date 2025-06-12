@@ -7,7 +7,11 @@ import { useState, useEffect, useCallback } from "react";
 import { Tab, TabPanel, TabList, Tabs } from "react-tabs";
 import { signIn, useSession } from "next-auth/react";
 
-import { fetchResultProgress, getGradoObjetivoByUserId } from "@/app/lib/actions";
+import {
+    fetchResultProgress,
+    getGradoObjetivoByUserId,
+    getQuantityFallidas
+} from "@/app/lib/actions";
 
 function Inicio() {
     // Inicio del carrusel de Actividades
@@ -433,13 +437,15 @@ export default function Progreso() {
             if (status === "authenticated" && session?.user?.userId) {
                 try {
                     const data = await fetchResultProgress(session.user.userId,)
+                    const result = await getQuantityFallidas(session.user.userId)
+                    setQuantityFallidas(result[0].cantidadFallidas ?? 0);
 
                     // Sumar todas las incorrectas y nulas de todos los registros
-                    const totalFallidas = data.reduce((acc: number, item: any) => {
-                        const incorrectas = item.incorrectas ?? 0;
-                        const nulas = item.nulas ?? 0;
-                        return acc + incorrectas + nulas;
-                    }, 0);
+                    // const totalFallidas = data.reduce((acc: number, item: any) => {
+                    //     const incorrectas = item.incorrectas ?? 0;
+                    //     const nulas = item.nulas ?? 0;
+                    //     return acc + incorrectas + nulas;
+                    // }, 0);
 
                     // Sumar todas las horas de todos los registros
                     const horasRealizadas = data.reduce((acc: number, item: any) => {
@@ -552,7 +558,7 @@ export default function Progreso() {
                         .reduce((acc: number, item: any) => acc + (item.correctas ?? 0), 0);
 
                     // Si lo encuentra, seteamos las incorrectas, si no, seteamos 0
-                    setQuantityFallidas(totalFallidas);
+                    
                     setTiempoDeUso(horasRealizadas);
                     setTotalPreguntas(preguntasTotal);
 

@@ -32,7 +32,7 @@ function Videos() {
             imagen: "/images/videos/video.png",
             title: "Taller 1",
             subtitle: "Clase 1/ Sesión 1",
-            ponente: `Guillermo Arturo`,
+            ponente: `Guillermo Arturo Vasquez`,
             fecha: "01/06/2025",
             hora: "1H 20min"
         },
@@ -40,7 +40,7 @@ function Videos() {
             imagen: "/images/videos/video.png",
             title: "Taller 2",
             subtitle: "Clase 1/ Sesión 2",
-            ponente: `Evart`,
+            ponente: `Evart Zegarra Enciso`,
             fecha: "02/06/2025",
             hora: "1H 20min"
         },
@@ -48,7 +48,7 @@ function Videos() {
             imagen: "/images/videos/video.png",
             title: "Taller 3",
             subtitle: "Clase 1/ Sesión 3",
-            ponente: `Kevin`,
+            ponente: `Kevin Cieza Bautista`,
             fecha: "03/06/2025",
             hora: "1H 20min"
         },
@@ -56,7 +56,7 @@ function Videos() {
             imagen: "/images/videos/video.png",
             title: "Taller 4",
             subtitle: "Clase 1/ Sesión 1",
-            ponente: `Arturo Guillermo`,
+            ponente: `Guillermo Arturo Vasquez`,
             fecha: "04/06/2025",
             hora: "1H 20min"
         },
