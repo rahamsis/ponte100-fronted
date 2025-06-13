@@ -28,7 +28,7 @@ function Banner() {
         {
             id: 1,
             image: '/images/banners/imgBanner1.png',
-            title: 'Conoce las estadísticas del Proceso de Ascenso 2024 - Promoción 2025',
+            title: 'Conoce las estadísticas de los Procesos de Ascenso de la Policía Nacional del Perú, años 2023 - 2024',
             description: 'Conoce los principales resultados del proceso de ascenso de grado de la Policía Nacional del Perú',
             link: '/estadisticas',
             ancho: 500,

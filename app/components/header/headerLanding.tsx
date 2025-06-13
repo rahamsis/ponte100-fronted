@@ -59,9 +59,9 @@ const HeaderLanding = () => {
                     <div className="overflow-hidden ml-2">
                         {/* <span className={` font-bold text-2xl md:text-4xl text-green-800 font-sans inline-block transition-transform duration-300 ease-in-out ${scrolled ? "-translate-x-full" : "translate-x-0"}`}> */}
                         <span className={` font-bold text-2xl md:text-4xl text-green-800 font-sans inline-block transition-transform duration-300 ease-in-out`}>
-                            <div className="flex">PONTE100
+                            <div className="flex">PONTE100<span className="text-xs">TM</span>
                                 <span className=" top-0  text-base">
-                                    {deviceType === "celular" ?
+                                    {/* {deviceType === "celular" ?
                                         <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" fill="currentColor" className="bi bi-r-circle" viewBox="0 0 16 16">
                                             <path d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.5 4.002h3.11c1.71 0 2.741.973 2.741 2.46 0 1.138-.667 1.94-1.495 2.24L11.5 12H9.98L8.52 8.924H6.836V12H5.5zm1.335 1.09v2.777h1.549c.995 0 1.573-.463 1.573-1.36 0-.913-.596-1.417-1.537-1.417z" />
                                         </svg>
@@ -69,7 +69,7 @@ const HeaderLanding = () => {
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-r-circle" viewBox="0 0 16 16">
                                             <path d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.5 4.002h3.11c1.71 0 2.741.973 2.741 2.46 0 1.138-.667 1.94-1.495 2.24L11.5 12H9.98L8.52 8.924H6.836V12H5.5zm1.335 1.09v2.777h1.549c.995 0 1.573-.463 1.573-1.36 0-.913-.596-1.417-1.537-1.417z" />
                                         </svg>
-                                    }
+                                    } */}
                                 </span>
                             </div>
                             <div className="leading-[1px] md:leading-[10px]">

@@ -336,7 +336,7 @@ function EstadisticaFinal() {
                                         <td className=""></td>
                                         <td className=""></td>
                                         <td className=""></td>
-                                        <td className="border px-4 py-2 bg-gray-300 text-red-500 font-bold">13582</td>
+                                        <td className="border px-4 py-2 bg-gray-300 text-red-500 font-bold">13,582</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -434,7 +434,7 @@ function EstadisticaFinal() {
                                         <td className="border px-4 py-2 text-red-500">340</td>
                                         <td className="border px-4 py-2 text-red-500">4</td>
                                         <td className="border px-4 py-2 text-red-500"></td>
-                                        <td className="border px-4 py-2 text-xl">1544</td>
+                                        <td className="border px-4 py-2">1544</td>
                                     </tr>
                                     <tr>
                                         <td className="border px-4 py-2">ST1</td>
@@ -444,7 +444,7 @@ function EstadisticaFinal() {
                                         <td className="border px-4 py-2 text-red-500">329</td>
                                         <td className="border px-4 py-2 text-red-500">11</td>
                                         <td className="border px-4 py-2 text-red-500"></td>
-                                        <td className="border px-4 py-2 text-xl">840</td>
+                                        <td className="border px-4 py-2">840</td>
                                     </tr>
                                     <tr>
                                         <td className="border px-4 py-2">ST2</td>
@@ -454,7 +454,7 @@ function EstadisticaFinal() {
                                         <td className="border px-4 py-2 text-red-500">261</td>
                                         <td className="border px-4 py-2 text-red-500">11</td>
                                         <td className="border px-4 py-2 text-red-500"></td>
-                                        <td className="border px-4 py-2 text-xl">1,027</td>
+                                        <td className="border px-4 py-2">1,027</td>
                                     </tr>
                                     <tr>
                                         <td className="border px-4 py-2">ST3</td>
@@ -464,7 +464,7 @@ function EstadisticaFinal() {
                                         <td className="border px-4 py-2 text-red-500">127</td>
                                         <td className="border px-4 py-2 text-red-500">1</td>
                                         <td className="border px-4 py-2 text-red-500">1</td>
-                                        <td className="border px-4 py-2 text-xl">857</td>
+                                        <td className="border px-4 py-2">857</td>
                                     </tr>
                                     <tr>
                                         <td className="border px-4 py-2">S1</td>
@@ -474,7 +474,7 @@ function EstadisticaFinal() {
                                         <td className="border px-4 py-2 text-red-500">115</td>
                                         <td className="border px-4 py-2 text-red-500">6</td>
                                         <td className="border px-4 py-2 text-red-500"></td>
-                                        <td className="border px-4 py-2 text-xl">2,121</td>
+                                        <td className="border px-4 py-2">2,121</td>
                                     </tr>
                                     <tr>
                                         <td className="border px-4 py-2">S2</td>
@@ -484,7 +484,7 @@ function EstadisticaFinal() {
                                         <td className="border px-4 py-2 text-red-500">560</td>
                                         <td className="border px-4 py-2 text-red-500">26</td>
                                         <td className="border px-4 py-2 text-red-500">1</td>
-                                        <td className="border px-4 py-2 text-xl">3,587</td>
+                                        <td className="border px-4 py-2">3,587</td>
                                     </tr>
                                     <tr>
                                         <td className="border px-4 py-2">S3</td>
@@ -494,7 +494,7 @@ function EstadisticaFinal() {
                                         <td className="border px-4 py-2 text-red-500">5,184</td>
                                         <td className="border px-4 py-2 text-red-500">60</td>
                                         <td className="border px-4 py-2 text-red-500">5</td>
-                                        <td className="border px-4 py-2 text-xl">13,681</td>
+                                        <td className="border px-4 py-2">13,681</td>
                                     </tr>
                                     <tr>
                                         <td className=""></td>

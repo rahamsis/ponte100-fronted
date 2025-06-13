@@ -8,8 +8,8 @@ export default function FooterAuth() {
                 <div className="flex flex-col items-center justify-between gap-2 lg:flex-row">
 
 
-                    <p className=" lg:ml-36 text-white text-sm text-center">
-                        &copy; {new Date().getFullYear()} Método Ponte 100. Todos los derechos reservados.
+                    <p className=" lg:ml-36 text-white text-sm text-center flex flex-row">
+                        &copy; {new Date().getFullYear()} <span className="flex flex-row">Método Ponte 100<span className="text-xs">TM</span>. Todos los derechos reservados.</span>
                     </p>
                     <div className="flex items-center text-sm text-white">
                         Diseñado con <Heart className="h-4 w-4 mx-1 text-red-500" /> por Rahamsis CG.

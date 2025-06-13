@@ -161,7 +161,8 @@ function Zona() {
                                                             }}
                                                             className="w-3/4 2xl:w-1/2 mt-4 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-500 transition"
                                                         >
-                                                            Leer ahora
+                                                            <span className="hidden lg:block">Leer ahora</span>
+                                                            <span className="lg:hidden block">Leer</span>
                                                         </button>
                                                     </div>
                                                 </div>

@@ -9,11 +9,11 @@ function CommonHero() {
                     <div className="mx-auto px-3 max-w-full my-10 md:my-20">
                         <h1 className="mb-5 mt-8 text-2xl lg:text-4xl font-bold leading-tight text-button">Sobre PONTE 100</h1>
                         <p className="text-justify text-primary">
-                            El método de estudio PONTE 100® es una estrategia educativa diseñada para ayudar a las personas a alcanzar sus metas y objetivos.
-                            A través de la autoevaluación y la motivación, este método emplea técnicas de estudio que mejoran la memoria y la retención de la información.
-                            Utiliza la asociación de palabras en preguntas y respuestas de manera significativa y fácil de visualizar, facilitando así el proceso de aprendizaje.
-                            Este método esta registrado en INDECOPI, está protegido por derechos de autor mediante RESOLUCIÓN N°3094-2023/DDA-INDECOPI, del 20DIC23. También cuenta
-                            con un registro de signos distintivos, certificado con el registro N°00154860, y la resolución N°009022-2024/DSD-INDECOPI, del 26MAR2024.
+                            Es un método innovador, práctico, 100% efectivo. Potencia la memoria, mejora la retención y estimula el 
+                            pensamiento eficaz mediante técnicas visuales, palabras clave, asociaciones significativas. Basado en neurociencia 
+                            cognitiva, motivación y autoevaluación, está diseñado para ayudarte a alcanzar tus metas académicas o profesionales. 
+                            Protección legal: Registrado en INDECOPI - Derechos de Autor (Resolución N.º 3094-2023/DDA); Signo Distintivo (Certificado N.º 
+                            00154860 - Resolución N.º 009022-2024/DSD).
                         </p>
                     </div>
                 </div>
@@ -102,7 +102,7 @@ function PostWork() {
                         <div>
                             <div className="py-16">
                                 <div className="text-xl lg:text-4xl font-bold text-secondary pb-10">
-                                    ¿Por qué PONTE 100?
+                                    ¡Por qué método de estudio PONTE100™!
                                 </div>
                                 <div className="grid grid-cols-1 md:grid-cols-6 gap-8">
                                     {arrayUno.map((object, i) => (
@@ -143,7 +143,7 @@ function Members() {
         },
         {
             profile: "/images/miembros/miembro4.png",
-            testimonio: "Técnico en Administración con experiencia en sector público y formación continua. Ofrece consultoría y soluciones personalizadas para optimizar la gestión administrativa.",
+            testimonio: "Técnico en Administración con experiencia en sector público y formación continua. Experto en soluciones personalizadas para optimizar la gestión educativa y administrativa.",
             nombre: "Kevin, Cieza Bautista"
         },
         {
@@ -165,8 +165,9 @@ function Members() {
                                 </div>
                                 <div className="pb-14 mx-auto">
                                     <p className="text-primary mx-20 text-lg lg:text-xl font-medium">
-                                        Somos un equipo multidisciplinario en Ponte 100, comprometido con transformar la educación usando neurociencia, motivación y
-                                        estrategias efectivas de aprendizaje.
+                                        Somos un equipo multidisciplinario decidido a transformar la educación, integrando la neurociencia, la motivación 
+                                        y estrategias de aprendizaje innovadoras. Creemos en el poder del conocimiento para despertar mentes, encender 
+                                        propósitos y cambiar vidas, a través de una enseñanza que inspira, conecta y deja huella.
                                     </p>
                                 </div>
                                 <div className="flex flex-wrap justify-center gap-8">
