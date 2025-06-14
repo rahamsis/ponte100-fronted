@@ -744,7 +744,7 @@ function Ceremonia() {
                 <div className="py-10 md:mx-28 max-w-full">
                     <div>
                         <div className="items-center text-center">
-                            <h2 className="text-button text-lg lg:text-3xl font-bold">Contribución del Método PONTE 100</h2>
+                            <h2 className="text-button text-lg lg:text-3xl font-bold">Contribución del método de estudio PONTE 100<span className="text-xs align-super">TM</span></h2>
                         </div>
                         <div className="items-center text-center">
                             <p className="py-4 text-base lg:text-xl">

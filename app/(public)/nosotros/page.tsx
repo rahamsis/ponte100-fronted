@@ -7,7 +7,7 @@ function CommonHero() {
             <div className="">
                 <div className="mt-6 mx-5 lg:mx-28 text-center">
                     <div className="mx-auto px-3 max-w-full my-10 md:my-20">
-                        <h1 className="mb-5 mt-8 text-2xl lg:text-4xl font-bold leading-tight text-button">Sobre PONTE 100</h1>
+                        <h1 className="mb-5 mt-8 text-2xl lg:text-4xl font-bold leading-tight text-button">Sobre el método de estudio PONTE 100™</h1>
                         <p className="text-justify text-primary">
                             Es un método innovador, práctico, 100% efectivo. Potencia la memoria, mejora la retención y estimula el 
                             pensamiento eficaz mediante técnicas visuales, palabras clave, asociaciones significativas. Basado en neurociencia 
@@ -161,7 +161,7 @@ function Members() {
                         <div>
                             <div className="py-16">
                                 <div className="text-xl lg:text-4xl font-bold text-button pb-10">
-                                    Conoce al equipo detrás del método PONTE 100®
+                                    Conoce al equipo detrás del método PONTE 100™
                                 </div>
                                 <div className="pb-14 mx-auto">
                                     <p className="text-primary mx-20 text-lg lg:text-xl font-medium">

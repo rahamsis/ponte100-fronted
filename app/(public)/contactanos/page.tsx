@@ -60,7 +60,7 @@ function Content() {
                         </div>
 
                         <div className="pt-10">
-                            <div className="py-4">
+                            <div className="py-4 ">
                                 <h1 className="text-white text-lg font-bold">Siguenos:</h1>
                             </div>
                             <div className="flex flex-row">
@@ -71,7 +71,7 @@ function Content() {
                                         </svg>
                                     </a>
                                 </div>
-                                <div className="px-6">
+                                <div className="pl-6">
                                     <div className="text-white w-12 h-12 rounded-full bg-terciary bg-opacity-5 flex items-center">
                                         <a href="https://www.instagram.com/metodoponte100?igsh=MW51ZDdudXVtbDRtcg==" target="_blank" className="mx-auto">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" className="bi bi-instagram" viewBox="0 0 16 16">
@@ -80,11 +80,20 @@ function Content() {
                                         </a>
                                     </div>
                                 </div>
-                                <div>
+                                <div className="px-6">
                                     <div className="text-white w-12 h-12 rounded-full bg-terciary bg-opacity-5 flex items-center">
                                         <a href="https://www.tiktok.com/@metodoponte100?_t=ZM-8wgHyUnBF9Z&_r=1" target="_blank" className="mx-auto">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" className="bi bi-tiktok" viewBox="0 0 16 16">
                                                 <path d="M9 0h1.98c.144.715.54 1.617 1.235 2.512C12.895 3.389 13.797 4 15 4v2c-1.753 0-3.07-.814-4-1.829V11a5 5 0 1 1-5-5v2a3 3 0 1 0 3 3z" />
+                                            </svg>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div className="text-white w-12 h-12 rounded-full bg-terciary bg-opacity-5 flex items-center">
+                                        <a href="https://x.com/metodoponte100?s=21&t=HprwhaRQY8eCCTUjoNO7RA" target="_blank" className="mx-auto">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-twitter-x" viewBox="0 0 16 16">
+                                                <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865z" />
                                             </svg>
                                         </a>
                                     </div>
