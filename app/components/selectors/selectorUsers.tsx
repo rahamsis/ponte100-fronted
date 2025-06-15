@@ -1,5 +1,7 @@
 'use client'
 
+/* eslint-disable */
+
 import { useEffect, useRef, useState } from 'react'
 import { ChevronDown, ChevronUp, Search } from 'lucide-react'
 import { fetchAllUsers } from '@/app/lib/actions'

@@ -1,6 +1,4 @@
 
-/* eslint-disable */
-
 import Link from "next/link"
 
 function Footer3() {

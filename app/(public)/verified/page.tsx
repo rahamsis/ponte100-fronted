@@ -11,7 +11,7 @@ export default function VerifiedPage() {
         setTimeout(() => {
             router.push("/"); // Después de 3 segundos redirige al login
         }, 3000);
-    }, []);
+    }, [router]);
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
