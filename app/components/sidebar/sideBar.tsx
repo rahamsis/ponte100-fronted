@@ -11,7 +11,7 @@ import { cn } from "@/app/lib/utils/cn"
 // import { getMainMenu } from "@/app/lib/actions"
 import Image from "next/image"
 import { useSidebar } from "@/app/providers"
-import getSvgIcon from "@/app/lib/utils/icon"
+import getSvgIcon from "@/app/lib/utils/icon.helper"
 
 type SubmenuItem = {
   nombreSubMenu: string
