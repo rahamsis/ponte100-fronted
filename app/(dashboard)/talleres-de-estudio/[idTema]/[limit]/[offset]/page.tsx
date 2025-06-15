@@ -168,7 +168,6 @@ export default function Estudio({ params }: { params: Promise<{ idTema: string, 
         setScore(correctAnswers);
 
         // Inicializar valores para guardar el progreso del usuario
-        console.log("inicio del guardado de datos de progreso")
         const time = startTimer - timer;
         const totalPreguntas = questions.length;
         const correctas = correctAnswers;

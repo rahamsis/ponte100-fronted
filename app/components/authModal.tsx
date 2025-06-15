@@ -66,8 +66,6 @@ export default function AuthModal({ onClose, onLogin }: AuthModalProps) {
                 redirect: false, // Evita redirección automática
             });
 
-            console.log("Response", response)
-
             if (!response?.ok) {
                 setIsLoading(false);
                 setMessage(response?.error!);

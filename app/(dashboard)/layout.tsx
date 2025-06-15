@@ -7,7 +7,8 @@ import "../../app/globals.css";
 import HeaderAuth from "../components/header/headerAuth";
 import FooterAuth from "../components/footer/footerAuth";
 import { metadata } from './metadata';
-
+import { getServerSession } from "next-auth";
+import authOptions from '../lib/authOptions';
 const inter = Inter({ subsets: ['latin'] });
 
 // export const metadata: Metadata = {
@@ -19,7 +20,8 @@ const inter = Inter({ subsets: ['latin'] });
 //     return <LoadingSpinner />;
 //   }
 
-export default function RootLayout({ children, }: Readonly<{ children: React.ReactNode; }>) {
+export default async function RootLayout({ children, }: Readonly<{ children: React.ReactNode; }>) {
+  const session = await getServerSession(authOptions);
 
   const getImageUrl = () => {
     if (Array.isArray(metadata.openGraph?.images)) {
@@ -54,7 +56,7 @@ export default function RootLayout({ children, }: Readonly<{ children: React.Rea
       <body className={`flex min-h-screen overflow-x-hidden ${inter.className}`}>
         <Providers>
           <div className="flex flex-row w-full">
-            <Sidebar />
+            <Sidebar session={session} />
             <div className="flex flex-col flex-1">
               <HeaderAuth />
               <main className="lg:pl-32 flex-1 overflow-auto">

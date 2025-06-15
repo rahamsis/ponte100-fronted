@@ -50,16 +50,16 @@ function PrimeraPractica() {
         if (params?.quantity == null || params?.quantity < 0) {
             router.push("/actividades")
         }
-        if (params) {
-            console.log('Datos desde Zustand:', params);
-        }
+        // if (params) {
+        //     console.log('Datos desde Zustand:', params);
+        // }
 
         // Fallback a sessionStorage
-        const sessionData = sessionStorage.getItem('primeraPracticaParams');
-        if (sessionData) {
-            console.log('Datos desde sessionStorage:', JSON.parse(sessionData));
-            // sessionStorage.removeItem('primeraPracticaParams');
-        }
+        // const sessionData = sessionStorage.getItem('primeraPracticaParams');
+        // if (sessionData) {
+        //     console.log('Datos desde sessionStorage:', JSON.parse(sessionData));
+        //     // sessionStorage.removeItem('primeraPracticaParams');
+        // }
     }, []);
 
     // Contador o timer
@@ -121,7 +121,6 @@ function PrimeraPractica() {
         setScore(correctAnswers);
 
         // Inicializar valores para guardar el progreso del usuario
-        console.log("inicio del guardado de datos de progreso")
         const time = startTimer - timer;
         const totalPreguntas = questions.length;
         const correctas = correctAnswers;

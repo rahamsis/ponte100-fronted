@@ -109,7 +109,6 @@ export async function fetchTemas() {
 
 export async function fetchQuestionByIdTema(idTema: string, limit: number) {
     try {
-        console.log("IDTEMA: ", idTema, " Limit: ", limit)
         const response = await fetch(`${process.env.APP_BACK_END}/backendApi/questions-by-idtema`, {
             method: 'POST',
             headers: {
@@ -401,6 +400,26 @@ export async function fetchQuestionHabilidades(idTema: string, limit: number) {
     }
 }
 
+export async function fetchTallerByUserId(idUsuario:string) {
+    try {
+        const response = await fetch(`${process.env.APP_BACK_END}/backendApi/talleres-by-userId?userId=${idUsuario}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'accept': '*/*'
+            },
+            // next: { revalidate: 0 }
+        });
+
+        const data = await response.json();
+        return data;
+
+    } catch (error) {
+        console.error('Error al obtener las preguntas (fetchTallerByUserId):', error);
+        throw new Error("Error al obtener las preguntas (fetchTallerByUserId");
+    }
+}
+
 export async function fetchQuestionToTaller(index: number, limit: number, offset: number) {
     try {
         const response = await fetch(`${process.env.APP_BACK_END}/backendApi/questions-taller`, {
@@ -590,6 +609,66 @@ export async function updatetUserdata(userId: string, data: any) {
     }
 }
 
+export async function fetchAllUsers() {
+    try {
+        const response = await fetch(`${process.env.APP_BACK_END}/backendApi/all-users`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'accept': '*/*'
+            },
+            // next: { revalidate: 0 }
+        });
+
+        const data = await response.json();
+        return data;
+
+    } catch (error) {
+        console.error('Error al obtener id de los usuarios (fetchAllUsers):', error);
+        throw new Error("Error al obtener id de los usuarios (fetchAllUsers");
+    }
+}
+
+export async function fetchAllTalleres() {
+    try {
+        const response = await fetch(`${process.env.APP_BACK_END}/backendApi/all-talleres`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'accept': '*/*'
+            },
+            // next: { revalidate: 0 }
+        });
+
+        const data = await response.json();
+        return data;
+
+    } catch (error) {
+        console.error('Error al obtener los Ids de los talleres (fetchAllTalleres):', error);
+        throw new Error("Error al obtener Ids de los talleres (fetchAllTalleres");
+    }
+}
+
+export async function InsertOrUpdateTallerToOneUser(idUsuario: string, idTaller: string, activo : boolean, idUsuarioregistro:string) {
+    try {
+        const response = await fetch(`${process.env.APP_BACK_END}/backendApi/set-taller-user`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'accept': '/'
+            },
+            body: JSON.stringify({ idUsuario, idTaller, activo, idUsuarioregistro }),
+            next: { revalidate: 0 }
+        });
+
+        const responseData = await response.json();
+        return responseData;
+
+    } catch (error) {
+        console.error('Error al actualizar los datos del usuario and taller (InsertOrUpdateTallerToOneUser):', error);
+    }
+}
+
 export async function getSignature(userId: string) {
     const response = await fetch(`${process.env.APP_BACK_END}/cloudinary/signature?public_id=${userId}`);
     const data = await response.json();
@@ -649,10 +728,10 @@ export async function getFormToken(formData: FormDataToPay, token: string) {
         }
 
         const data = await response.json();
-        console.log('Respuesta del servidor:', data);
         return data;
 
     } catch (error) {
         console.error('Error al crear el pago (createPaymentIntent):', error);
     }
 }
+

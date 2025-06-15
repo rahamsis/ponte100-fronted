@@ -84,7 +84,7 @@ function Practica() {
             return;
         }
         if (params) {
-            console.log('Datos desde Zustand:', params);
+            // console.log('Datos desde Zustand:', params);
             sessionStorage.setItem('primerSimulacroParams', JSON.stringify(params));
             setCodeSimulador(params?.codeSimulador ?? '');
             // setSelectedTheme(params.selectedTheme);
@@ -95,7 +95,7 @@ function Practica() {
         // Fallback a sessionStorage
         const sessionData = sessionStorage.getItem('primerSimulacroParams');
         if (sessionData) {
-            console.log('Datos desde sessionStorage:', JSON.parse(sessionData));
+            // console.log('Datos desde sessionStorage:', JSON.parse(sessionData));
             setCodeSimulador(JSON.parse(sessionData).codeSimulador ?? '');
         }
     }, [params]);

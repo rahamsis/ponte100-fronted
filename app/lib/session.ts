@@ -17,7 +17,7 @@ export const fetchUserLogin = async (email: string, password: string): Promise<a
         });
         
         const data = await response.json();
-        return data;
+        return data.user;
     } catch (error) {
         console.error('Error al iniciar sesión:', error);
         return null;

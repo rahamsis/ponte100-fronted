@@ -101,7 +101,6 @@ export default function Habilidades({ params }: { params: Promise<{ idTema: stri
         setScore(correctAnswers);
 
         // Inicializar valores para guardar el progreso del usuario
-        console.log("inicio del guardado de datos de progreso")
         const time = startTimer - timer;
         const totalPreguntas = questions.length;
         const correctas = correctAnswers;

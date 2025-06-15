@@ -56,5 +56,6 @@ export const config = {
         '/talleres-de-estudio', '/talleres-de-estudio/:idTema*',
         '/temario',
         '/videos',
+        '/configuracion',
     ],
 };

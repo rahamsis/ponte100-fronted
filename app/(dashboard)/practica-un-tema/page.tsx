@@ -47,17 +47,13 @@ function Practica() {
             router.push("/actividades")
         }
         if (params) {
-            console.log('Datos desde Zustand:', params);
-            // setSelectedQuantity(params.quantity);
-            // setSelectedTheme(params.selectedTheme);
-            // clearParams();
-            // return;
+            // console.log('Datos desde Zustand:', params);
         }
 
         // Fallback a sessionStorage
         const sessionData = sessionStorage.getItem('practiceParams');
         if (sessionData) {
-            console.log('Datos desde sessionStorage:', JSON.parse(sessionData));
+            // console.log('Datos desde sessionStorage:', JSON.parse(sessionData));
         }
     }, []);
 
@@ -122,7 +118,6 @@ function Practica() {
         setScore(correctAnswers);
 
         // Inicializar valores para guardar el progreso del usuario
-        console.log("inicio del guardado de datos de progreso")
         const time = startTimer - timer;
         const totalPreguntas = questions.length;
         const correctas = correctAnswers;

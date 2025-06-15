@@ -337,7 +337,7 @@ function Personal() {
     }
 
     async function uploadImage(userId: string, file: File): Promise<string> {
-        console.log("entro a subir imagen")
+        // console.log("entro a subir imagen")
         if (!allowedFormats.includes(file.type)) {
             throw new Error("Formato de imagen no soportado");
         }

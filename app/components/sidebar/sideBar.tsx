@@ -8,11 +8,10 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { ChevronDown, ChevronRight, X, Bell } from "lucide-react"
 import { cn } from "@/app/lib/utils/cn"
-import { getMainMenu } from "@/app/lib/actions"
-import { useSession } from "next-auth/react"
+// import { getMainMenu } from "@/app/lib/actions"
 import Image from "next/image"
-import { House, NotebookPen, ChartSpline, TvMinimalPlay, ScrollText } from "lucide-react"
 import { useSidebar } from "@/app/providers"
+import { getSvgIcon } from "@/app/lib/utils/icon"
 
 type SubmenuItem = {
   nombreSubMenu: string
@@ -28,6 +27,7 @@ type MenuItem = {
   icon?: string
   otrasRutas?: string[]
   submenu?: SubmenuItem[]
+  estado?: boolean
 }
 
 // const ICON_MAP: Record<string, React.ComponentType<any>> = {
@@ -38,48 +38,52 @@ type MenuItem = {
 //   videos: TvMinimalPlay
 // }
 
-const mainMenu = [
-  {
-    idMenu: "MN0001",
-    nombre: "Inicio",
-    ruta: "/inicio",
-    icon: "inicio",
-    otrasRutas: ["/inicio"]
-  },
-  {
-    idMenu: "MN0002",
-    nombre: "Actividades",
-    ruta: "/actividades",
-    icon: "actividades",
-    otrasRutas: ["/actividades","/talleres-de-estudio", "/despierta-tu-inteligencia", "/control-de-habilidades", "/practica-un-tema", 
-      "/primera-practica", "/primer-simulacro", "/preguntas-fallidas", "/examenes-no-repetidos"]
-  },
-  {
-    idMenu: "MN0003",
-    nombre: "Progreso",
-    ruta: "/progreso",
-    icon: "progreso",
-    otrasRutas: ["/progreso"]
-  },
-  {
-    idMenu: "MN0004",
-    nombre: "Temario",
-    ruta: "/temario",
-    icon: "temario",
-    otrasRutas: ["/temario"]
-  },
-  {
-    idMenu: "MN0005",
-    nombre: "Videos",
-    ruta: "/videos",
-    icon: "videos",
-    otrasRutas: ["/videos"]
-  },
-]
+// const mainMenu = [
+//   {
+//     idMenu: "MN0001",
+//     nombre: "Inicio",
+//     ruta: "/inicio",
+//     icon: "inicio",
+//     otrasRutas: ["/inicio"]
+//   },
+//   {
+//     idMenu: "MN0002",
+//     nombre: "Actividades",
+//     ruta: "/actividades",
+//     icon: "actividades",
+//     otrasRutas: ["/actividades","/talleres-de-estudio", "/despierta-tu-inteligencia", "/control-de-habilidades", "/practica-un-tema", 
+//       "/primera-practica", "/primer-simulacro", "/preguntas-fallidas", "/examenes-no-repetidos"]
+//   },
+//   {
+//     idMenu: "MN0003",
+//     nombre: "Progreso",
+//     ruta: "/progreso",
+//     icon: "progreso",
+//     otrasRutas: ["/progreso"]
+//   },
+//   {
+//     idMenu: "MN0004",
+//     nombre: "Temario",
+//     ruta: "/temario",
+//     icon: "temario",
+//     otrasRutas: ["/temario"]
+//   },
+//   {
+//     idMenu: "MN0005",
+//     nombre: "Videos",
+//     ruta: "/videos",
+//     icon: "videos",
+//     otrasRutas: ["/videos"]
+//   },
+// ]
 
-export default function Sidebar() {
+type Props = {
+  session: any; // o Session si tienes el tipo importado
+}
+
+export default function Sidebar({ session }: Props) {
+  const mainMenu: MenuItem[] = session.user.menu;
   const { isOpen, closeSidebar } = useSidebar()
-  const { data: session, status } = useSession()
   const pathname = usePathname()
   const [isMobile, setIsMobile] = useState(false)
 
@@ -100,34 +104,6 @@ export default function Sidebar() {
   // const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
-  // Cargar menú con caché básica
-  // const loadMenu = useCallback(async () => {
-  //   try {
-  //     setLoading(true)
-  //     const cachedMenu = sessionStorage.getItem('menuCache')
-
-  //     if (cachedMenu) {
-  //       setMenuItems(JSON.parse(cachedMenu))
-  //       return
-  //     }
-
-  //     const data = await getMainMenu()
-  //     setMenuItems(data)
-  //     sessionStorage.setItem('menuCache', JSON.stringify(data))
-  //   } catch (err) {
-  //     console.error("Error loading menu:", err)
-  //     setError("Error al cargar el menú")
-  //   } finally {
-  //     setLoading(false)
-  //   }
-  // }, [])
-
-  // useEffect(() => {
-  //   if (status === "authenticated") {
-  //     loadMenu()
-  //   }
-  // }, [status, loadMenu])
-
   const closeAllMenus = useCallback(() => {
     setOpenMenus({})
   }, [])
@@ -147,8 +123,8 @@ export default function Sidebar() {
 
   const renderMenuItem = useCallback((item: MenuItem, index: number) => {
     // const isActive = `/${item.ruta}` === pathname
-    const rutas = Array.isArray(item.otrasRutas) ? item.otrasRutas : [`${item.otrasRutas}`];
-    const isActive = rutas.some((ruta) => pathname.startsWith(ruta));
+    const rutas = Array.isArray(item.otrasRutas) ? item.otrasRutas : JSON.parse(`${item.otrasRutas}`);
+    const isActive: boolean = (rutas as string[]).some((ruta: string) => pathname.startsWith(ruta));
     const hasSubmenu = item.submenu && item.submenu.length > 0
     const isSubmenuOpen = openMenus[item.nombre]
     const hasActiveChild = item.submenu?.some(sub => sub.hrefSubMenu === pathname)
@@ -160,7 +136,7 @@ export default function Sidebar() {
       <div key={`${item.idMenu}-${index}`} className="mb-1">
         {item.ruta && !hasSubmenu ? (
           <Link
-            href={item.ruta}
+            href={"/"+item.ruta}
             onClick={() => {
               closeAllMenus()
               if (isMobile) closeSidebar()
@@ -173,33 +149,7 @@ export default function Sidebar() {
             aria-current={isActive ? "page" : undefined}
           >
             <div className={`shrink-0 p-1 ${isOpen ? "" : "rounded-md bg-white bg-opacity-30"}`}>
-              {/* {IconComponent && <IconComponent size={20} />} */}
-              {
-                item.icon === "inicio" ?
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-house-door-fill" viewBox="0 0 16 16">
-                    <path d="M6.5 14.5v-3.505c0-.245.25-.495.5-.495h2c.25 0 .5.25.5.5v3.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5" />
-                  </svg> :
-                  item.icon === "actividades" ?
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-file-earmark-check-fill" viewBox="0 0 16 16">
-                      <path d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1m1.354 4.354-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708.708" />
-                    </svg> :
-                    item.icon === "progreso" ?
-                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-clipboard2-pulse-fill" viewBox="0 0 16 16">
-                        <path d="M10 .5a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5.5.5 0 0 1-.5.5.5.5 0 0 0-.5.5V2a.5.5 0 0 0 .5.5h5A.5.5 0 0 0 11 2v-.5a.5.5 0 0 0-.5-.5.5.5 0 0 1-.5-.5" />
-                        <path d="M4.085 1H3.5A1.5 1.5 0 0 0 2 2.5v12A1.5 1.5 0 0 0 3.5 16h9a1.5 1.5 0 0 0 1.5-1.5v-12A1.5 1.5 0 0 0 12.5 1h-.585q.084.236.085.5V2a1.5 1.5 0 0 1-1.5 1.5h-5A1.5 1.5 0 0 1 4 2v-.5q.001-.264.085-.5M9.98 5.356 11.372 10h.128a.5.5 0 0 1 0 1H11a.5.5 0 0 1-.479-.356l-.94-3.135-1.092 5.096a.5.5 0 0 1-.968.039L6.383 8.85l-.936 1.873A.5.5 0 0 1 5 11h-.5a.5.5 0 0 1 0-1h.191l1.362-2.724a.5.5 0 0 1 .926.08l.94 3.135 1.092-5.096a.5.5 0 0 1 .968-.039Z" />
-                      </svg> :
-                      item.icon === "temario" ?
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-file-earmark-text-fill" viewBox="0 0 16 16">
-                          <path d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1M4.5 9a.5.5 0 0 1 0-1h7a.5.5 0 0 1 0 1zM4 10.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m.5 2.5a.5.5 0 0 1 0-1h4a.5.5 0 0 1 0 1z" />
-                        </svg> :
-                        item.icon === "videos" ?
-                          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-collection-play-fill" viewBox="0 0 16 16">
-                            <path d="M2.5 3.5a.5.5 0 0 1 0-1h11a.5.5 0 0 1 0 1zm2-2a.5.5 0 0 1 0-1h7a.5.5 0 0 1 0 1zM0 13a1.5 1.5 0 0 0 1.5 1.5h13A1.5 1.5 0 0 0 16 13V6a1.5 1.5 0 0 0-1.5-1.5h-13A1.5 1.5 0 0 0 0 6zm6.258-6.437a.5.5 0 0 1 .507.013l4 2.5a.5.5 0 0 1 0 .848l-4 2.5A.5.5 0 0 1 6 12V7a.5.5 0 0 1 .258-.437" />
-                          </svg> :
-                          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-highlights" viewBox="0 0 16 16">
-                            <path d="M16 8A8 8 0 1 0 0 8a8 8 0 0 0 16 0m-8 5v1H4.5a.5.5 0 0 0-.093.009A7 7 0 0 1 3.1 13zm0-1H2.255a7 7 0 0 1-.581-1H8zm-6.71-2a7 7 0 0 1-.22-1H8v1zM1 8q0-.51.07-1H8v1zm.29-2q.155-.519.384-1H8v1zm.965-2q.377-.54.846-1H8v1zm2.137-2A6.97 6.97 0 0 1 8 1v1z" />
-                          </svg>
-              }
+              <div className="shrink-0" dangerouslySetInnerHTML={{ __html: getSvgIcon(item.icon || "default") }}/>
             </div>
             <span className={cn("transition-opacity", !isSidebarOpen && "opacity-0 hidden md:block md:opacity-0")}>
               {item.nombre}
