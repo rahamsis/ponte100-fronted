@@ -55,7 +55,7 @@ function Banner() {
                                         </h1>
 
                                         <p className="text-sm md:text-xl text-primary text-justify">
-                                            Conoce el método PONTE 100®, diseñado con neurociencia educativa para que estudies de forma más eficiente.
+                                            Conoce el método PONTE 100™, diseñado con neurociencia educativa para que estudies de forma más eficiente.
                                         </p>
                                     </div>
 
@@ -514,32 +514,32 @@ function Recomendaciones() {
         {
             profile: "/images/recomendaciones/user1.png",
             name: "Rosario Calderon",
-            message: 'El método de estudio Ponte 100® me ayudó a comprender los conceptos de forma clara y efectiva. Destaco también al docente, ' +
+            message: 'El método de estudio Ponte 100™ me ayudó a comprender los conceptos de forma clara y efectiva. Destaco también al docente, ' +
                 'cuya paciencia, entrega y motivación fueron claves para seguir adelante y luchar por el ascenso. ¡Gracias por tanto apoyo y enseñanza!.',
         },
         {
             profile: "/images/recomendaciones/user2.png",
             name: "Manuel Alfaro",
-            message: 'Estoy profundamente agradecido con el método de estudio Ponte 100®. En tan solo veinte minutos logré obtener una calificación perfecta.' +
+            message: 'Estoy profundamente agradecido con el método de estudio Ponte 100™. En tan solo veinte minutos logré obtener una calificación perfecta.' +
                 ' Es un método increíble que me ayudó a concentrarme, comprender los temas con claridad y rendir al máximo. Lo recomiendo al 100%.',
 
         },
         {
             profile: "/images/recomendaciones/user3.png",
             name: "Angel Carlos",
-            message: 'Ponte 100® ha sido el método de estudio más efectivo que he probado. Me permitió alcanzar mis metas con rapidez, confianza y seguridad.' +
+            message: 'Ponte 100™ ha sido el método de estudio más efectivo que he probado. Me permitió alcanzar mis metas con rapidez, confianza y seguridad.' +
                 ' Lo recomiendo a quienes quieran mejorar su rendimiento y avanzar con firmeza en su desarrollo académico.',
         },
         {
             profile: "/images/recomendaciones/user4.png",
             name: "Mario Peña",
-            message: 'Para quienes se preparan para el examen de ascenso, les recomiendo con total confianza el método de estudio Ponte 100®. Es una herramienta' +
+            message: 'Para quienes se preparan para el examen de ascenso, les recomiendo con total confianza el método de estudio Ponte 100™. Es una herramienta' +
                 ' efectiva que me ha ayudado a aprender mejor, reforzar mis conocimientos y avanzar con seguridad. Su enfoque claro y motivador marca la diferencia. ¡Mucho éxito en su camino al ascenso!',
         },
         {
             profile: "/images/recomendaciones/user5.png",
             name: "Mirella Melendez",
-            message: 'Ponte 100® transformó por completo mi forma de estudiar. Mejoré mi concentración, gestioné mejor mi tiempo y gané confianza. Gracias' +
+            message: 'Ponte 100™ transformó por completo mi forma de estudiar. Mejoré mi concentración, gestioné mejor mi tiempo y gané confianza. Gracias' +
                 ' a este método, superé mis límites y alcancé mis metas. ¡Lo recomiendo totalmente!',
         }
     ]

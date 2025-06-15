@@ -2,7 +2,6 @@
 /* eslint-disable */
 
 import Link from "next/link"
-import Image from "next/image";
 
 function Footer3() {
   return (
@@ -24,12 +23,12 @@ function Footer3() {
             </div>
             <div>
               <div className="pt-6 text-white hidden md:block">
-                <p>&copy; {new Date().getFullYear()} Ponte100. Todos los derechos reservados.</p>
+                <p>&copy; {new Date().getFullYear()} Ponte100<span className="text-[8px] align-super">TM</span> Todos los derechos reservados.</p>
               </div>
             </div>
           </div>
           <div>
-            <h3 className="text-lg font-semibold mb-4">Product</h3>
+            <h3 className="text-lg font-semibold mb-4">Productos</h3>
             <ul className="space-y-2">
               {/* <li>
                 <Link href="/actividades" className="text-white hover:text-white">
@@ -56,7 +55,7 @@ function Footer3() {
           </div>
         </div>
         <div className="mt-8 pt-8 border-t border-gray-700 text-center text-white lg:hidden">
-          <p>&copy; {new Date().getFullYear()} Ponte100. Todos los derechos reservados.</p>
+          <p>&copy; {new Date().getFullYear()} Ponte100<span className="text-[8px] align-super">TM</span> Todos los derechos reservados.</p>
         </div>
       </div>
     </footer>

@@ -39,8 +39,8 @@ function Banner() {
         {
             id: 2,
             image: '/images/banners/imgBanner2.png',
-            title: '¿Quieres entender cómo funciona el método PONTE 100®?',
-            description: 'Conoce en detalle cómo funciona el método PONTE 100® y cómo puede ayudarte a alcanzar tu máximo potencial.',
+            title: '¿Quieres entender cómo funciona el método PONTE 100™?',
+            description: 'Conoce en detalle cómo funciona el método PONTE 100™ y cómo puede ayudarte a alcanzar tu máximo potencial.',
             link: '/public/ponte100 ppt.pdf',
             ancho: 150,
             alto: 150,

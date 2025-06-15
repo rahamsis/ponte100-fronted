@@ -118,7 +118,7 @@ function Zona() {
                                 <TabList className="flex flex-row w-full p-1">
                                     <Tab className={`p-3 text-sm md:text-xl text-left font-semibold cursor-pointer transition-all duration-200 outline-none focus:outline-none ${tabIndex === 0 ? "text-primary font-bold underline underline-offset-8" : "text-gray3"}`}
                                     >
-                                        temario
+                                        Temario
                                     </Tab>
                                     <Tab className={`p-3 text-sm md:text-xl text-left font-semibold cursor-pointer transition-all duration-200 outline-none focus:outline-none ${tabIndex === 1 ? "text-primary font-bold underline underline-offset-8" : "text-gray3"}`}
                                     >
