@@ -1,5 +1,5 @@
 // iconSvgHelper.ts
-export function getSvgIcon(name: string): string {
+export default function getSvgIcon(name: string): string {
     const iconMap: { [key: string]: string } = {
         "inicio": `
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-house-door-fill" viewBox="0 0 16 16">
