@@ -61,7 +61,7 @@ function UpdateTalleres() {
     }
 
     const resetForm = () => {
-        setSelectedUser(null);
+        setSelectedUser({ userId: '', nombre: 'selecciona un usauario', apellidos: '', email: '', telefono: '' });
         setSelectedTaller({ idTaller: '' });
         setActivo(true);
         setShowModal(false);

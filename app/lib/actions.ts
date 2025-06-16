@@ -210,7 +210,6 @@ export async function fetchQuestionSiecopol(limit: number) {
     }
 }
 
-
 export async function fetchValidatePersonByCipAndDni(email: any, cip: string, dni: string) {
     try {
         if (email === null || email === undefined) {
@@ -400,9 +399,8 @@ export async function fetchQuestionHabilidades(idTema: string, limit: number) {
     }
 }
 
-export async function fetchTallerByUserId(idUsuario:string) {
+export async function fetchTallerByUserId(idUsuario: string) {
     try {
-        console.log("USWE: ", idUsuario)
         const response = await fetch(`${process.env.APP_BACK_END}/backendApi/talleres-by-userId?userId=${idUsuario}`, {
             method: 'GET',
             headers: {
@@ -413,7 +411,6 @@ export async function fetchTallerByUserId(idUsuario:string) {
         });
 
         const data = await response.json();
-        console.log("DATA: ", data)
         return data;
 
     } catch (error) {
@@ -498,7 +495,7 @@ export async function getQuantityFallidas(userId: string) {
         });
 
         const data = await response.json();
-        
+
         return data.map((row: any) => ({
             cantidadFallidas: row.cantidadFallidas,
         }));
@@ -517,7 +514,7 @@ export async function saveOrUpdateProgress(idUsuario: string, tipoExamen: string
                 'Content-Type': 'application/json',
                 'accept': '*/*'
             },
-            body: JSON.stringify({ idUsuario, tipoExamen, timer, totalPreguntas, correctas,  incorrectas, nulas}),
+            body: JSON.stringify({ idUsuario, tipoExamen, timer, totalPreguntas, correctas, incorrectas, nulas }),
             next: { revalidate: 0 }
         });
 
@@ -651,7 +648,28 @@ export async function fetchAllTalleres() {
     }
 }
 
-export async function InsertOrUpdateTallerToOneUser(idUsuario: string, idTaller: string, activo : boolean, idUsuarioregistro:string) {
+export async function downloadQuestionsToClase(idClase: number) {
+    console.log("idTaller:", idClase)
+    try {
+        const response = await fetch(`${process.env.APP_BACK_END}/backendApi/download-questions-clase?idClase=${idClase}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'accept': '*/*'
+            },
+            // next: { revalidate: 0 }
+        });
+
+        const data = await response.json();
+        return data;
+
+    } catch (error) {
+        console.error('Error al obtener las preguntas para descargar (downloadQuestionsToClase):', error);
+        throw new Error("Error al obtener las preguntas para descargar (downloadQuestionsToClase");
+    }
+}
+
+export async function InsertOrUpdateTallerToOneUser(idUsuario: string, idTaller: string, activo: boolean, idUsuarioregistro: string) {
     try {
         const response = await fetch(`${process.env.APP_BACK_END}/backendApi/set-taller-user`, {
             method: 'POST',
@@ -671,11 +689,13 @@ export async function InsertOrUpdateTallerToOneUser(idUsuario: string, idTaller:
     }
 }
 
+// *********************************** Cloudinary*********************************************************
 export async function getSignature(userId: string) {
     const response = await fetch(`${process.env.APP_BACK_END}/cloudinary/signature?public_id=${userId}`);
     const data = await response.json();
     return data;
 }
+// ******************************* fin de cloudinary **************************************************
 
 // **************************** Inicio de Culqui **************************************************
 
@@ -740,7 +760,7 @@ export async function getFormToken(formData: FormDataToPay, token: string) {
 // **************************** Fin de Culqui **************************************************
 
 // **************************** Inicio de Zoom Meeting **************************************************
-export async function startMeeting () {
+export async function startMeeting() {
     try {
         const response = await fetch(`${process.env.APP_BACK_END}/zoom/create-meeting`, {
             method: 'GET',
@@ -768,7 +788,7 @@ export async function saveStartMeeting(idUsuario: string) {
                 'Content-Type': 'application/json',
                 'accept': '/'
             },
-            body: JSON.stringify({ idUsuario}),
+            body: JSON.stringify({ idUsuario }),
             next: { revalidate: 0 }
         });
 
@@ -780,7 +800,7 @@ export async function saveStartMeeting(idUsuario: string) {
     }
 }
 
-export async function getActiveMeeting () {
+export async function getActiveMeeting() {
     try {
         const response = await fetch(`${process.env.APP_BACK_END}/zoom/active-meeting`, {
             method: 'GET',
@@ -800,7 +820,7 @@ export async function getActiveMeeting () {
     }
 }
 
-export async function getLastMeeting () {
+export async function getLastMeeting() {
     try {
         const response = await fetch(`${process.env.APP_BACK_END}/zoom/last-meeting`, {
             method: 'GET',
