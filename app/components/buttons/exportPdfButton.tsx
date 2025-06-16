@@ -64,7 +64,7 @@ const ExportPDFButton: React.FC<ExportPDFButtonProps> = ({ data, children, class
 
 
         const lineHeight = 5;
-        let startY = 30;
+        const startY = 30;
         let currentY = startY;
         const maxY = 280; // límite antes de cambiar de página
 
