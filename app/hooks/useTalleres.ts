@@ -5,6 +5,6 @@ export function useTalleres(userId: string | undefined) {
   return useSWR(
     userId ? [userId] : null,
     ([id]) => fetchTallerByUserId(id),
-    { refreshInterval: 10000 }
+    { refreshInterval: 5000 }
   )
 }
