@@ -96,77 +96,160 @@ function Practica() {
                                 </div>
                             </div>
                             ) : (
-                                talleres.map((taller: Taller, i: number) => (
-                                    <div key={i} className="border rounded-lg shadow-md p-4 bg-white">
-                                        {/* Header del taller */}
-                                        <div
-                                            className="flex justify-between items-center cursor-pointer"
-                                            onClick={() => {
-                                                taller.tallerActivo &&
-                                                setTallerAbierto(tallerAbierto === i ? null : i)
-                                            }}
-                                        >
-                                            <div>
-                                                <div className="flex flex-row items-start space-x-3 mb-3">
-                                                    <Image src="/assets/frames/frame15.png" alt="frame15" width={30} height={30} className="" />
-                                                    <div>
-                                                        <h2 className="font-semibold text-primary">{taller.nombre}</h2>
-                                                        <p className="text-sm text-gray-500">
-                                                            {taller.clases.length} clases - {taller.clases.length * 3} sesiones
-                                                        </p>
+                                // talleres.map((taller: Taller, i: number) => (
+                                //     <div key={i} className="border rounded-lg shadow-md p-4 bg-white">
+                                //         {/* Header del taller */}
+                                //         <div
+                                //             className="flex justify-between items-center cursor-pointer"
+                                //             onClick={() => {
+                                //                 taller.tallerActivo &&
+                                //                 setTallerAbierto(tallerAbierto === i ? null : i)
+                                //             }}
+                                //         >
+                                //             <div>
+                                //                 <div className="flex flex-row items-start space-x-3 mb-3">
+                                //                     <Image src="/assets/frames/frame15.png" alt="frame15" width={30} height={30} className="" />
+                                //                     <div>
+                                //                         <h2 className="font-semibold text-primary">{taller.nombre}</h2>
+                                //                         <p className="text-sm text-gray-500">
+                                //                             {taller.clases.length} clases - {taller.clases.length * 3} sesiones
+                                //                         </p>
+                                //                     </div>
+                                //                 </div>
+                                //             </div>
+                                //             <span>{tallerAbierto === i ? <ChevronUp/> : <ChevronDown className={`${taller.tallerActivo ? "" : "text-gray-300"}`}/>}</span>
+                                //         </div>
+
+                                //         {/* Clases del taller */}
+                                //         {tallerAbierto === i && (
+                                //             <div className="mt-4 space-y-4">
+                                //                 {taller.clases.map((clase: Clase, j: number) => (
+                                //                     <div key={j} className="">
+                                //                         {/* Header de clase */}
+                                //                         <div
+                                //                             className="px-4 py-2 flex justify-between items-center cursor-pointer"
+                                //                             onClick={() =>
+                                //                                 setClasesAbiertas((prev: Record<number, number | null>) => ({
+                                //                                     ...prev,
+                                //                                     [i]: prev[i] === j ? null : j,
+                                //                                 }))
+                                //                             }
+                                //                         >
+                                //                             <span>{clase.nombre}</span>
+                                //                             <span>{clasesAbiertas[i] === j ? <ChevronUp /> : <ChevronDown />}</span>
+                                //                         </div>
+
+                                //                         {/* Sesiones de clase */}
+                                //                         {clasesAbiertas[i] === j && (
+                                //                             <div className="p-4 space-y-2">
+                                //                                 {clase.sesiones.map((sesion: Sesion, k: number) => (
+                                //                                     <div
+                                //                                         key={k}
+                                //                                         className="flex justify-between items-center border rounded-lg p-2"
+                                //                                     >
+                                //                                         <div className="flex flex-row items-center space-x-3">
+                                //                                             <Image src="/assets/frames/frame16.png" alt="frame15" width={15} height={15} className="" />
+                                //                                             <span>{sesion.nombre}</span>
+                                //                                         </div>
+                                //                                         <button
+                                //                                             // onClick={() => handleEmpezar((clase.idClase + (taller.clases.length * taller.idTaller)), sesion.limit, sesion.offset)}
+                                //                                             onClick={() => handleEmpezar(sesion.indice, sesion.limit, sesion.offset)}
+                                //                                             className="bg-button text-white px-4 py-1 rounded-md hover:bg-blue-700">
+                                //                                             Empezar
+                                //                                         </button>
+                                //                                     </div>
+                                //                                 ))}
+                                //                             </div>
+                                //                         )}
+                                //                     </div>
+                                //                 ))}
+                                //             </div>
+                                //         )}
+                                //     </div>
+                                // ))
+                                talleres.sort((a: any, b: any) => {
+                                    const numA = parseInt(a.idTaller.replace(/\D/g, ''), 10);
+                                    const numB = parseInt(b.idTaller.replace(/\D/g, ''), 10);
+                                    return numA - numB;
+                                })
+                                    .map((taller: Taller, i: number) => (
+                                        <div key={i} className="border rounded-lg shadow-md p-4 bg-white">
+                                            {/* Header del taller */}
+                                            <div
+                                                className="flex justify-between items-center cursor-pointer"
+                                                onClick={() => {
+                                                    taller.tallerActivo &&
+                                                        setTallerAbierto(tallerAbierto === i ? null : i);
+                                                }}
+                                            >
+                                                <div>
+                                                    <div className="flex flex-row items-start space-x-3 mb-3">
+                                                        <Image src="/assets/frames/frame15.png" alt="frame15" width={30} height={30} />
+                                                        <div>
+                                                            <h2 className="font-semibold text-primary">{taller.nombre}</h2>
+                                                            <p className="text-sm text-gray-500">
+                                                                {taller.clases.length} clases - {taller.clases.length * 3} sesiones
+                                                            </p>
+                                                        </div>
                                                     </div>
                                                 </div>
+                                                <span>
+                                                    {tallerAbierto === i ? <ChevronUp /> : <ChevronDown className={`${taller.tallerActivo ? "" : "text-gray-300"}`} />}
+                                                </span>
                                             </div>
-                                            <span>{tallerAbierto === i ? <ChevronUp/> : <ChevronDown className={`${taller.tallerActivo ? "" : "text-gray-300"}`}/>}</span>
-                                        </div>
 
-                                        {/* Clases del taller */}
-                                        {tallerAbierto === i && (
-                                            <div className="mt-4 space-y-4">
-                                                {taller.clases.map((clase: Clase, j: number) => (
-                                                    <div key={j} className="">
-                                                        {/* Header de clase */}
-                                                        <div
-                                                            className="px-4 py-2 flex justify-between items-center cursor-pointer"
-                                                            onClick={() =>
-                                                                setClasesAbiertas((prev: Record<number, number | null>) => ({
-                                                                    ...prev,
-                                                                    [i]: prev[i] === j ? null : j,
-                                                                }))
-                                                            }
-                                                        >
-                                                            <span>{clase.nombre}</span>
-                                                            <span>{clasesAbiertas[i] === j ? <ChevronUp /> : <ChevronDown />}</span>
-                                                        </div>
+                                            {/* Clases del taller */}
+                                            {tallerAbierto === i && (
+                                                <div className="mt-4 space-y-4">
+                                                    {[...taller.clases]
+                                                        .sort((a, b) => {
+                                                            const numA = a.idClase;
+                                                            const numB = b.idClase;
+                                                            return numA - numB;
+                                                        })
+                                                        .map((clase: Clase, j: number) => (
+                                                            <div key={j}>
+                                                                {/* Header de clase */}
+                                                                <div
+                                                                    className="px-4 py-2 flex justify-between items-center cursor-pointer"
+                                                                    onClick={() =>
+                                                                        setClasesAbiertas((prev: Record<number, number | null>) => ({
+                                                                            ...prev,
+                                                                            [i]: prev[i] === j ? null : j,
+                                                                        }))
+                                                                    }
+                                                                >
+                                                                    <span>{clase.nombre}</span>
+                                                                    <span>{clasesAbiertas[i] === j ? <ChevronUp /> : <ChevronDown />}</span>
+                                                                </div>
 
-                                                        {/* Sesiones de clase */}
-                                                        {clasesAbiertas[i] === j && (
-                                                            <div className="p-4 space-y-2">
-                                                                {clase.sesiones.map((sesion: Sesion, k: number) => (
-                                                                    <div
-                                                                        key={k}
-                                                                        className="flex justify-between items-center border rounded-lg p-2"
-                                                                    >
-                                                                        <div className="flex flex-row items-center space-x-3">
-                                                                            <Image src="/assets/frames/frame16.png" alt="frame15" width={15} height={15} className="" />
-                                                                            <span>{sesion.nombre}</span>
-                                                                        </div>
-                                                                        <button
-                                                                            // onClick={() => handleEmpezar((clase.idClase + (taller.clases.length * taller.idTaller)), sesion.limit, sesion.offset)}
-                                                                            onClick={() => handleEmpezar(sesion.indice, sesion.limit, sesion.offset)}
-                                                                            className="bg-button text-white px-4 py-1 rounded-md hover:bg-blue-700">
-                                                                            Empezar
-                                                                        </button>
+                                                                {/* Sesiones de clase */}
+                                                                {clasesAbiertas[i] === j && (
+                                                                    <div className="p-4 space-y-2">
+                                                                        {[...clase.sesiones]
+                                                                            .sort((a, b) => a.indice - b.indice)
+                                                                            .map((sesion: Sesion, k: number) => (
+                                                                                <div key={k} className="flex justify-between items-center border rounded-lg p-2">
+                                                                                    <div className="flex flex-row items-center space-x-3">
+                                                                                        <Image src="/assets/frames/frame16.png" alt="frame15" width={15} height={15} />
+                                                                                        <span>{sesion.nombre}</span>
+                                                                                    </div>
+                                                                                    <button
+                                                                                        onClick={() => handleEmpezar(sesion.indice, sesion.limit, sesion.offset)}
+                                                                                        className="bg-button text-white px-4 py-1 rounded-md hover:bg-blue-700"
+                                                                                    >
+                                                                                        Empezar
+                                                                                    </button>
+                                                                                </div>
+                                                                            ))}
                                                                     </div>
-                                                                ))}
+                                                                )}
                                                             </div>
-                                                        )}
-                                                    </div>
-                                                ))}
-                                            </div>
-                                        )}
-                                    </div>
-                                ))
+                                                        ))}
+                                                </div>
+                                            )}
+                                        </div>
+                                    ))
                             )
                         }
                     </div>
