@@ -102,7 +102,7 @@ function PostWork() {
                         <div>
                             <div className="py-16">
                                 <div className="text-xl lg:text-4xl font-bold text-secondary pb-10">
-                                    ¿Por qué método de estudio PONTE100™?
+                                    ¿Por qué el método de estudio PONTE100™?
                                 </div>
                                 <div className="grid grid-cols-1 md:grid-cols-6 gap-8">
                                     {arrayUno.map((object, i) => (
@@ -128,7 +128,7 @@ function Members() {
     const arrayMembers = [
         {
             profile: "/images/miembros/miembro1.png",
-            testimonio: "Licenciado en Educación y administración, creador del método de estudio Ponte 100, docente calificado en formación continua, con amplia experiencia en el sector educativo policial.",
+            testimonio: "Licenciado en Educación y administración, creador del método de estudio PONTE 100™, docente calificado en formación continua, con amplia experiencia en el sector educativo policial.",
             nombre: "Guillermo, Vasquez  Manco"
         },
         {
@@ -161,7 +161,7 @@ function Members() {
                         <div>
                             <div className="py-16">
                                 <div className="text-xl lg:text-4xl font-bold text-button pb-10">
-                                    Conoce al equipo detrás del método PONTE 100™
+                                    Conoce al equipo detrás del método de estudio PONTE 100™
                                 </div>
                                 <div className="pb-14 mx-auto">
                                     <p className="text-primary mx-20 text-lg lg:text-xl font-medium">

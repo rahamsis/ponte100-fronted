@@ -21,7 +21,7 @@ function Footer3() {
             </div>
             <div>
               <div className="pt-6 text-white hidden md:block">
-                <p>&copy; {new Date().getFullYear()} Ponte100<span className="text-[8px] align-super">TM</span> Todos los derechos reservados.</p>
+                <p>&copy; {new Date().getFullYear()} PONTE 100<span className="text-[8px] align-super">TM</span> Todos los derechos reservados.</p>
               </div>
             </div>
           </div>
@@ -53,7 +53,7 @@ function Footer3() {
           </div>
         </div>
         <div className="mt-8 pt-8 border-t border-gray-700 text-center text-white lg:hidden">
-          <p>&copy; {new Date().getFullYear()} Ponte100<span className="text-[8px] align-super">TM</span> Todos los derechos reservados.</p>
+          <p>&copy; {new Date().getFullYear()} PONTE 100<span className="text-[8px] align-super">TM</span> Todos los derechos reservados.</p>
         </div>
       </div>
     </footer>

@@ -44,7 +44,7 @@ export default async function RootLayout({ children, }: Readonly<{ children: Rea
   return (
     <html lang="en">
       <head>
-        <title>Ponte 100 - Simulador de Exámenes</title>
+        <title>PONTE 100™ - Simulador de Exámenes</title>
         <meta name="description" content={metadata.description || ""} />
         <meta property="og:title" content={String(metadata.openGraph?.title) || ""} />
         <meta property="og:description" content={String(metadata.openGraph?.description) || ""} />

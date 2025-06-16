@@ -735,3 +735,85 @@ export async function getFormToken(formData: FormDataToPay, token: string) {
     }
 }
 
+// **************************** Fin de Culqui **************************************************
+
+// **************************** Inicio de Zoom Meeting **************************************************
+export async function startMeeting () {
+    try {
+        const response = await fetch(`${process.env.APP_BACK_END}/zoom/create-meeting`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'accept': '/'
+            },
+            // body: JSON.stringify({ phone }),
+            next: { revalidate: 0 }
+        });
+
+        const data = await response.json();
+        return data;
+
+    } catch (error) {
+        console.error('Error al iniciar una reunión (startMeeting):', error);
+    }
+}
+
+export async function saveStartMeeting(idUsuario: string) {
+    try {
+        const response = await fetch(`${process.env.APP_BACK_END}/zoom/save-meeting`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'accept': '/'
+            },
+            body: JSON.stringify({ idUsuario}),
+            next: { revalidate: 0 }
+        });
+
+        const responseData = await response.json();
+        return responseData;
+
+    } catch (error) {
+        console.error('Error al guardar datos de la reunión (saveStartMeeting):', error);
+    }
+}
+
+export async function getActiveMeeting () {
+    try {
+        const response = await fetch(`${process.env.APP_BACK_END}/zoom/active-meeting`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'accept': '/'
+            },
+            // body: JSON.stringify({ phone }),
+            next: { revalidate: 0 }
+        });
+
+        const data = await response.json();
+        return data;
+
+    } catch (error) {
+        console.error('Error al consultar una reunión activa (getActiveMeeting):', error);
+    }
+}
+
+export async function getLastMeeting () {
+    try {
+        const response = await fetch(`${process.env.APP_BACK_END}/zoom/last-meeting`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'accept': '/'
+            },
+            // body: JSON.stringify({ phone }),
+            next: { revalidate: 0 }
+        });
+
+        const data = await response.json();
+        return data;
+
+    } catch (error) {
+        console.error('Error al traer la ultima reunión (startMeeting):', error);
+    }
+}

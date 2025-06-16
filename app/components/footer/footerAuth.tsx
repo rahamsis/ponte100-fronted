@@ -9,7 +9,7 @@ export default function FooterAuth() {
 
 
                     <p className=" lg:ml-36 text-white text-sm text-center flex flex-row">
-                        &copy; {new Date().getFullYear()} <span className="flex flex-row">Método Ponte 100<span className="text-xs">TM</span>. Todos los derechos reservados.</span>
+                        &copy; {new Date().getFullYear()}  <span className="flex flex-row">&nbsp;Método PONTE 100™. Todos los derechos reservados.</span>
                     </p>
                     <div className="flex items-center text-sm text-white">
                         Diseñado con <Heart className="h-4 w-4 mx-1 text-red-500" /> por Rahamsis CG.

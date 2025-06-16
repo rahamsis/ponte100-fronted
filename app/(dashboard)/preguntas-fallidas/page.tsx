@@ -2,7 +2,6 @@
 
 /* eslint-disable */
 
-import Image from "next/image";
 import { useState, useEffect } from "react";
 import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -26,7 +25,7 @@ type Question = {
 function PreguntasFallidas() {
     const { params, clearParams } = usePreguntasFallidasStore();
     const router = useRouter();
-    const { data: session, status } = useSession();
+    const { data: session } = useSession();
     const [questions, setQuestions] = useState<Question[]>([]);
 
     const [loading, setLoading] = useState(true);

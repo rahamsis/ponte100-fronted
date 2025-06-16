@@ -29,25 +29,43 @@ function Inicio() {
     )
 }
 
+type User = {
+    userId: string,
+    nombre: string,
+    apellidos: string,
+    email: string,
+    telefono: string,
+}
+
 function UpdateTalleres() {
     const { data: session } = useSession();
-    const [selectedUser, setSelectedUser] = useState<{ userId: string }>({ userId: '' });
+    const [selectedUser, setSelectedUser] = useState<User | null>(null);
     const [selectedTaller, setSelectedTaller] = useState<{ idTaller: string }>({ idTaller: '' });
     const [activo, setActivo] = useState<boolean>(true);
     const [showModal, setShowModal] = useState(false)
 
-    const hadleActualizarTalleres = async (userId: string, idTaller: string, activo: boolean) => {
-        if (session?.user?.userId) {
-            try {
-                await InsertOrUpdateTallerToOneUser(userId, idTaller, activo, session.user.userId);
-                setShowModal(true)
-            } catch (error) {
-                console.error("Error al actualizar talleres (configuracion - UpdateTalleres):", error);
-            }
-        } else {
-            console.error("User ID is not available Practica class");
+    const hadleActualizarTalleres = async () => {
+        if (!selectedUser || !selectedUser.userId || !selectedTaller.idTaller) return;
+
+        if (!session?.user?.userId) {
+            console.error("User ID is not available");
+            return;
+        }
+
+        try {
+            await InsertOrUpdateTallerToOneUser(selectedUser.userId, selectedTaller.idTaller, activo, session.user.userId);
+            setShowModal(true)
+        } catch (error) {
+            console.error("Error al actualizar talleres (configuracion - UpdateTalleres):", error);
         }
     }
+
+    const resetForm = () => {
+        setSelectedUser(null);
+        setSelectedTaller({ idTaller: '' });
+        setActivo(true);
+        setShowModal(false);
+    };
 
     // Fin del carrusel de Videos
     return (
@@ -61,7 +79,7 @@ function UpdateTalleres() {
                             <div className="w-full flex grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 pt-4">
                                 <div className="flex flex-col">
                                     <div>Usuario: </div>
-                                    <SelectorUsers onUserSelect={(userId) => setSelectedUser({ userId })} selectedUserId={selectedUser.userId} />
+                                    <SelectorUsers onUserSelect={(user) => setSelectedUser(user)} selectedUserId={selectedUser?.userId} />
                                 </div>
                                 <div className="flex flex-col">
                                     <div>Taller: </div>
@@ -77,14 +95,14 @@ function UpdateTalleres() {
                                             onChange={(e) => setActivo(e.target.checked)}
                                         />
                                         <div className="w-5 h-5 rounded-full border border-gray-400 peer-checked:bg-blue-500 peer-checked:border-blue-500 transition-colors"></div>
-                                        <span>{activo  ? "Si" : "No"}</span>
+                                        <span>{activo ? "Si" : "No"}</span>
                                     </label>
                                 </div>
                                 <div className="flex flex-col">
                                     <label className="mb-1 font-medium">Opcion:</label>
                                     <button
-                                        onClick={() => hadleActualizarTalleres(selectedUser.userId, selectedTaller.idTaller, activo)}
-                                        className={`${selectedUser.userId === '' || selectedTaller.idTaller == '' ? "bg-opacity-15" : ""} w-full bg-button2 text-white rounded-lg px-4 py-2 transition-colors`}>
+                                        onClick={() => hadleActualizarTalleres()}
+                                        className={`${selectedUser?.userId === '' || selectedTaller.idTaller == '' ? "bg-opacity-15" : ""} w-full bg-button2 text-white rounded-lg px-4 py-2 transition-colors`}>
                                         Actualizar Talleres
                                     </button>
                                 </div>
@@ -97,12 +115,7 @@ function UpdateTalleres() {
             {showModal && (
                 <ModalUpdateSuccessfull
                     onClose={() => setShowModal(false)}
-                    handleFinish={() => {
-                        setSelectedUser({ userId: '' });
-                        setSelectedTaller({ idTaller: '' });
-                        setActivo(true);
-                        setShowModal(false);
-                    }}
+                    handleFinish={resetForm}
                 />
             )}
         </>

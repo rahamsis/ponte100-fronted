@@ -17,8 +17,10 @@ import { ModalPracticaTema } from "@/app/components/modales/modalPractica";
 import { ModalPrimeraPractica } from "@/app/components/modales/modalPrimeraPractica";
 import { ModalPrimerSimulacro } from "@/app/components/modales/modalPrimerSimulacro";
 import { ModalPreguntasFalladas } from "@/app/components/modales/modalPreguntasFallidas";
+import { ModalZoom } from "@/app/components/modales/modalZoom";
+import { ModalZoomActive } from "@/app/components/modales/modalZoomActive";
 
-import { fetchResultProgress, getQuantityFallidas } from "@/app/lib/actions";
+import { fetchResultProgress, getQuantityFallidas, getActiveMeeting, getLastMeeting } from "@/app/lib/actions";
 
 function Banner() {
     const router = useRouter();
@@ -39,8 +41,8 @@ function Banner() {
         {
             id: 2,
             image: '/images/banners/imgBanner2.png',
-            title: '¿Quieres entender cómo funciona el método PONTE 100™?',
-            description: 'Conoce en detalle cómo funciona el método PONTE 100™ y cómo puede ayudarte a alcanzar tu máximo potencial.',
+            title: '¿Quieres entender cómo funciona el método de estudio PONTE 100™?',
+            description: 'Conoce en detalle cómo funciona el método de estudio PONTE 100™ y cómo puede ayudarte a alcanzar tu máximo potencial.',
             link: '/public/ponte100 ppt.pdf',
             ancho: 150,
             alto: 150,
@@ -246,6 +248,9 @@ function Progreso({ loading, quantityFallidas, tiempoDeUso, practicas, simulacro
 function Actividades() {
     const router = useRouter();
 
+    const [activeModal, setActiveModal] = useState<string | null>(null);
+    const [modalExtra, setModalExtra] = useState<any>(null);
+
     const arrayActividades = [
         {
             imagen: "/images/actividades/actividades1.png",
@@ -253,6 +258,7 @@ function Actividades() {
             subtitle: "Practica según los talleres",
             concept: `Entrena con preguntas usando un simulador SIECOPOL.`,
             ruta: "/talleres-de-estudio",
+            modalType: "none",
         },
         {
             imagen: "/images/actividades/actividades2.png",
@@ -260,6 +266,7 @@ function Actividades() {
             subtitle: "Asocia Palabras",
             concept: "Conecta palabras dentro de un texto y refuerza ideas.",
             ruta: "/despierta-tu-inteligencia",
+            modalType: "none",
         },
         {
             imagen: "/images/actividades/actividades3.png",
@@ -267,15 +274,48 @@ function Actividades() {
             subtitle: "Contra el tiempo",
             concept: "Entrena tu mente para recordar mejor y más rápido.",
             ruta: "/control-de-habilidades",
+            modalType: "none",
         },
         {
             imagen: "/images/actividades/actividades4.png",
             title: "Video call",
             subtitle: "Reunión instantánea",
             concept: "Inicia una reunión en zoom para clases personalizadas",
-            ruta: "/despierta-tu-inteligencia",
+            ruta: "",
+            modalType: "iniciar-zoom",
         },
     ]
+
+    const modalComponents: Record<string, React.ComponentType<any>> = {
+        'iniciar-zoom': ModalZoom,
+        'zoom-active': ModalZoomActive,
+    };
+
+    const searchActiveMeeting = async () => {
+        try {
+            const activeMeeting = await getActiveMeeting();
+            if (activeMeeting.data.meetings && activeMeeting.data.meetings.length > 0) {
+                
+                // consultar a bae de datos si hay una reunión activa
+
+                const lastMeeting = await getLastMeeting();
+
+                const fullname = lastMeeting.data[0].nombre + " " + lastMeeting.data[0].apellidos;
+                openModal('zoom-active', fullname);
+            } else {
+                openModal('iniciar-zoom', '');
+            }
+        } catch (error) {
+            console.error("Error al buscar reunión activa:", error);
+        }
+    }
+
+    const openModal = (modalType: string, extra: string) => {
+        setActiveModal(modalType);
+        setModalExtra(extra);
+    };
+
+    const closeModal = () => setActiveModal(null);
 
     // Inicio del carrusel de Actividades
     const [actividadActive, setActividadActive] = useState(0)
@@ -316,7 +356,15 @@ function Actividades() {
                                             <h3 className="text-base font-bold mb-2 text-concepto mx-2">{object.subtitle}</h3>
                                             <p className="text-concepto text-sm text-justify mx-2">{object.concept}</p>
                                         </div>
-                                        <div className="w-full">
+                                        <div className={`w-full ${object.modalType === "none" && "hidden"}`}>
+                                            <button className="bg-button text-white w-full py-3 rounded-lg mt-6 mb-3" 
+                                            onClick={() => {
+                                                searchActiveMeeting();
+                                                }}>
+                                                Empezar
+                                            </button>
+                                        </div>
+                                        <div className={`w-full ${object.modalType !== "none" && "hidden"}`}>
                                             <button className="bg-button text-white w-full py-3 rounded-lg mt-6 mb-3" onClick={() => router.push(object.ruta)}>
                                                 Empezar
                                             </button>
@@ -362,7 +410,12 @@ function Actividades() {
                                     <h3 className="text-xl font-bold mb-2 text-primary mx-2">{arrayActividades[actividadActive].title}</h3>
                                     <p className="text-concepto font-semibold text-justify mb-2 mx-2">{arrayActividades[actividadActive].subtitle}</p>
                                     <p className="text-concepto text-sm text-justify mx-2">{arrayActividades[actividadActive].concept}</p>
-                                    <div className="w-full">
+                                    <div className={`w-full ${arrayActividades[actividadActive].modalType === "none" && "hidden"}`}>
+                                        <button className="bg-button text-white w-full py-3 rounded-lg mt-6 mb-3" onClick={() => openModal(arrayActividades[actividadActive].modalType, arrayActividades[actividadActive].ruta)}>
+                                            Empezar
+                                        </button>
+                                    </div>
+                                    <div className={`w-full ${arrayActividades[actividadActive].modalType !== "none" && "hidden"}`}>
                                         <button className="bg-button text-white w-full py-3 rounded-lg mt-6 mb-3" onClick={() => router.push(arrayActividades[actividadActive].ruta)}>
                                             Empezar
                                         </button>
@@ -373,6 +426,12 @@ function Actividades() {
                     </div>
                 </div>
             </section>
+
+            {/* Renderizado de modales */}
+            {activeModal && (() => {
+                const Modal = modalComponents[activeModal];
+                return <Modal onClose={closeModal} extra={modalExtra} />;
+            })()}
         </div>
     )
 }
@@ -534,7 +593,7 @@ function Conocimientos({ quantityFallidas }: ConocimientoProps) {
                                     <h3 className="text-xl font-bold mb-2 text-primary">{arrayConocimientos[conocimientoActive].title}</h3>
                                     <p className="text-concepto font-semibold mb-2">{arrayConocimientos[conocimientoActive].subtitle}</p>
                                     <p className="text-concepto text-sm text-justify">{arrayConocimientos[conocimientoActive].concept}</p>
-                                    <div className={`w-full ${arrayConocimientos[conocimientoActive].modalType !== "none" && "hidden"}`}>
+                                    <div className={`w-full ${arrayConocimientos[conocimientoActive].modalType === "none" && "hidden"}`}>
                                         <button onClick={() => openModal(arrayConocimientos[conocimientoActive].modalType, arrayConocimientos[conocimientoActive].ruta)} className="text-button font-bold underline text-lg mt-6 mb-3">
                                             Empezar
                                         </button>

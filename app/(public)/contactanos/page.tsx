@@ -36,7 +36,7 @@ function Content() {
                                     Correo
                                 </div>
                                 <div className="text-white font-medium text-base">
-                                    Ponte100@gmail.com
+                                    metodoponte100@gmail.com
                                 </div>
                             </div>
                         </div>

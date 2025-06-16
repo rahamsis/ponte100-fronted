@@ -21,7 +21,7 @@ export async function sendVerificationEmail(email: string, token: string) {
                     </p>
                     <hr style="border: none; border-top: 1px solid #ddd; margin: 20px 0;">
                     <p style="font-size: 12px; color: #aaa;">
-                        ® ${currentYear} Ponte 100 | Todos los derechos reservados.
+                        ® ${currentYear} PONTE 100™ | Todos los derechos reservados.
                     </p>
                 </div>
             </body>

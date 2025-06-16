@@ -54,7 +54,7 @@ const HeaderAuth = () => {
                         <div className="overflow-hidden ml-2">
                             <span className="font-bold text-lg md:text-4xl text-green-800 font-sans inline-block transition-transform duration-300 ease-in-out">
                                 <div className="flex">
-                                    PONTE100<span className="text-xs">TM</span>
+                                    PONTE 100<span className="text-xs">TM</span>
                                     <span className="top-0 text-base">
                                     </span>
                                 </div>

@@ -16,6 +16,7 @@ type User = {
     sessionToken?: string | null | undefined;
     welcome?: number | null | undefined;
     menu?:string[] | null | undefined;
+    perfil?: string | null | undefined;
 };
 
 declare module "next-auth" {
@@ -63,7 +64,7 @@ const authOptions: NextAuthOptions = {
 
                     await fetchCreateSession(user.userId, device, ip, sessionToken, expires);
 
-                    return { ...user, name: user.username, image: user.profile, sessionToken, id: user.userId, welcome: user.welcome, menu: user.menu }; // Pasar el token en el usuario
+                    return { ...user, name: user.username, perfil: user.idPerfil, image: user.profile, sessionToken, id: user.userId, welcome: user.welcome, menu: user.menu }; // Pasar el token en el usuario
                 } catch (error) {
                     if (error instanceof Error) {
                         throw new Error(error.message || "Error. Credenciales Invalidas");
@@ -83,6 +84,7 @@ const authOptions: NextAuthOptions = {
                 token.sessionToken = (user as User).sessionToken || ""; // Guardar token en el JWT
                 token.userId = (user as User).id || ""; // Agregar userId al token
                 token.welcome = (user as User).welcome;
+                token.perfil = (user as User).perfil || "";
                 token.menu = (user as User).menu || [];
             }
 
@@ -108,6 +110,7 @@ const authOptions: NextAuthOptions = {
             session.user = session.user || {};
             session.user.userId = token.userId as string | undefined;
             session.user.welcome = token.welcome as number | undefined;
+            session.user.perfil = token.perfil as string | undefined;
             session.user.menu = token.menu as string[] | undefined;
             return session;
 

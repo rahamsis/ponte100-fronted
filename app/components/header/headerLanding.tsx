@@ -59,7 +59,7 @@ const HeaderLanding = () => {
                     <div className="overflow-hidden ml-2">
                         {/* <span className={` font-bold text-2xl md:text-4xl text-green-800 font-sans inline-block transition-transform duration-300 ease-in-out ${scrolled ? "-translate-x-full" : "translate-x-0"}`}> */}
                         <span className={` font-bold text-2xl md:text-4xl text-green-800 font-sans inline-block transition-transform duration-300 ease-in-out`}>
-                            <div className="flex">PONTE100<span className="text-xs">TM</span>
+                            <div className="flex">PONTE 100<span className="text-xs">TM</span>
                                 <span className=" top-0  text-base">
                                     {/* {deviceType === "celular" ?
                                         <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" fill="currentColor" className="bi bi-r-circle" viewBox="0 0 16 16">

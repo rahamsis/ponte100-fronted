@@ -125,7 +125,7 @@ export default function Suscripcion() {
 
         window.Culqi.publicKey = process.env.NEXT_PUBLIC_CULQI_PUBLIC_KEY || "";
         window.Culqi.settings({
-            title: "Metodo Ponte100",
+            title: "Metodo PONTE 100™",
             currency: "PEN",
             amount: totalEnCentimos,
             description: formData.nombreProducto,

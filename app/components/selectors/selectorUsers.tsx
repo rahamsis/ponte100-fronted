@@ -11,14 +11,22 @@ type Opcion = {
     usuario: string
 }
 
+type User = {
+    userId: string,
+    nombre: string,
+    apellidos: string,
+    email: string,
+    telefono: string,
+}
+
 interface SelectorUsersProps {
-    onUserSelect: (userId: string,) => void;
+    onUserSelect: (user: User,) => void;
     selectedUserId?: string;
 }
 
 export default function SelectorUsers({ onUserSelect, selectedUserId }: SelectorUsersProps) {
-    const [users, setUsers] = useState<Opcion[]>([])
-    const [selected, setSelected] = useState<Opcion | null>(null)
+    const [users, setUsers] = useState<User[]>([])
+    const [selected, setSelected] = useState<User | null>(null)
     const [isOpen, setIsOpen] = useState(false)
     const [searchTerm, setSearchTerm] = useState('')
     const selectorRef = useRef<HTMLDivElement>(null)
@@ -34,10 +42,10 @@ export default function SelectorUsers({ onUserSelect, selectedUserId }: Selector
         async function cargarUsuarios() {
             try {
                 const data = await fetchAllUsers()
-                const opcionesFormateadas: Opcion[] = [
+                const opcionesFormateadas: User[] = [
                     { userId: '', usuario: 'Selecciona un usuario' }, // 👈 Placeholder
-                    ...data.map((user: any) => ({
-                        userId: user.userId,
+                    ...data.map((user: User) => ({
+                        ...user,
                         usuario: `${user.nombre} ${user.apellidos ?? ''}`,
                     })),
                 ]
@@ -62,7 +70,7 @@ export default function SelectorUsers({ onUserSelect, selectedUserId }: Selector
     }, [])
 
     const filteredOptions = users.filter((opcion) =>
-        opcion.usuario.toLowerCase().includes(searchTerm.toLowerCase())
+        opcion.nombre?.toLowerCase().includes(searchTerm.toLowerCase())
     )
 
     return (
@@ -70,9 +78,9 @@ export default function SelectorUsers({ onUserSelect, selectedUserId }: Selector
             <button
                 type="button"
                 onClick={() => setIsOpen(!isOpen)}
-                className="w-full bg-white border border-gray-300 rounded-xl shadow-sm pl-4 pr-10 py-2 text-left cursor-pointer hover:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500 flex items-center justify-between"
+                className="w-full bg-white border border-gray-300 rounded-xl shadow-sm pl-4 pr-10 py-2 text-left cursor-pointer focus:outline-none flex items-center justify-between"
             >
-                <span className="text-gray-700">{selected?.usuario ?? 'Selecciona un usuario'}</span>
+                <span className="text-gray-700">{selected?.nombre ?? 'Selecciona un usuario'}</span>
                 {isOpen ? (
                     <ChevronUp className="w-5 h-5 text-gray-500" />
                 ) : (
@@ -103,7 +111,7 @@ export default function SelectorUsers({ onUserSelect, selectedUserId }: Selector
                                     onClick={() => {
                                         setSelected(opcion)
                                         if (opcion.userId) {
-                                            onUserSelect(opcion.userId)
+                                            onUserSelect(opcion)
                                         }
                                         setIsOpen(false)
                                         setSearchTerm('')
@@ -111,7 +119,7 @@ export default function SelectorUsers({ onUserSelect, selectedUserId }: Selector
                                     className={`cursor-pointer px-4 py-2 hover:bg-blue-100 ${selected?.userId === opcion.userId ? 'bg-blue-50 font-semibold' : ''
                                         }`}
                                 >
-                                    {opcion.usuario}
+                                    {opcion.nombre}
                                 </li>
                             ))
                         ) : (

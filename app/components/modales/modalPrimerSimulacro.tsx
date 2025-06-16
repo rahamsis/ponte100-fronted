@@ -3,7 +3,7 @@
 /* eslint-disable */
 
 import { Clock } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState, } from "react";
 import { usePrimerSimulacroStore } from "@/app/lib/stores/primerSimulacro";
 import { useRouter } from 'next/navigation';
 
@@ -48,7 +48,7 @@ export const ModalPrimerSimulacro = ({ onClose, extra }: ModalTuPrimerSimulacro)
                     <h2>selecciona un simulador</h2>
                     <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-6 pt-3">
                         <div className={`${codeSimulador === 'SM001' ? "border-2 border-green-600" : "border"} text-center  rounded-lg py-2`}>
-                            <button onClick={() => selectedSimulador('SM001')} className={`${codeSimulador === 'SM001' ? " text-green-600" : "text-concepto"} w-full`}>Ponte 100</button>
+                            <button onClick={() => selectedSimulador('SM001')} className={`${codeSimulador === 'SM001' ? " text-green-600" : "text-concepto"} w-full`}>PONTE 100™</button>
                         </div>
                         <div className={`${codeSimulador === 'SM002' ? "border-2 border-green-600" : "border"} text-center  rounded-lg py-2`}>
                             <button onClick={() => selectedSimulador('SM002')} className={`${codeSimulador === 'SM002' ? " text-green-600" : "text-concepto"} w-full`}>RCG</button>

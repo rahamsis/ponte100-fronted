@@ -141,28 +141,28 @@ function Zona({ loading, quantityFallidas, tiempoDeUso,
             caja: "/images/premios/premio.png",
             xp: "10000XP",
             premio: "images/premios/premio1.png",
-            nombrePremio: "¡Ganaste Un Kit Ponte 100! ",
+            nombrePremio: "¡Ganaste Un Kit PONTE 100™! ",
             detalle: "Envíanos una captura de esta pantalla a nuestro correo: example@info.com para coordinar la entrega del premio."
         },
         {
             caja: "/images/premios/premio.png",
             xp: "10000XP",
             premio: "images/premios/premio1.png",
-            nombrePremio: "¡Ganaste Un Kit Ponte 100! ",
+            nombrePremio: "¡Ganaste Un Kit PONTE 100™! ",
             detalle: "Envíanos una captura de esta pantalla a nuestro correo: example@info.com para coordinar la entrega del premio."
         },
         {
             caja: "/images/premios/premio.png",
             xp: "10000XP",
             premio: "images/premios/premio1.png",
-            nombrePremio: "¡Ganaste Un Kit Ponte 100! ",
+            nombrePremio: "¡Ganaste Un Kit PONTE 100™! ",
             detalle: "Envíanos una captura de esta pantalla a nuestro correo: example@info.com para coordinar la entrega del premio."
         },
         {
             caja: "/images/premios/premio.png",
             xp: "10000XP",
             premio: "images/premios/premio1.png",
-            nombrePremio: "¡Ganaste Un Kit Ponte 100! ",
+            nombrePremio: "¡Ganaste Un Kit PONTE 100™! ",
             detalle: "Envíanos una captura de esta pantalla a nuestro correo: example@info.com para coordinar la entrega del premio."
         }
     ]

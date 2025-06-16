@@ -9,6 +9,7 @@ declare module "next-auth" {
       userId?: string | null;
       welcome?: number | null;
       menu?: string[] | null;
+      perfil?: string | null;
     };
   }
 }
