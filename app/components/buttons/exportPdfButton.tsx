@@ -2,7 +2,6 @@
 
 import { jsPDF } from "jspdf";
 import { downloadQuestionsToClase } from "@/app/lib/actions";
-import { useEffect, useState } from "react";
 
 interface ExportPDFButtonProps {
     data: {
