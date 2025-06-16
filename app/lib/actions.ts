@@ -402,6 +402,7 @@ export async function fetchQuestionHabilidades(idTema: string, limit: number) {
 
 export async function fetchTallerByUserId(idUsuario:string) {
     try {
+        console.log("USWE: ", idUsuario)
         const response = await fetch(`${process.env.APP_BACK_END}/backendApi/talleres-by-userId?userId=${idUsuario}`, {
             method: 'GET',
             headers: {
@@ -412,6 +413,7 @@ export async function fetchTallerByUserId(idUsuario:string) {
         });
 
         const data = await response.json();
+        console.log("DATA: ", data)
         return data;
 
     } catch (error) {

@@ -51,7 +51,7 @@ function Practica() {
     const router = useRouter();
 
     const { data: talleres, isLoading } = useTalleres(userId ?? "123")
-
+    console.log("talleres:", talleres)
 
     const [tallerAbierto, setTallerAbierto] = useState<number | null>(null);
     const [clasesAbiertas, setClasesAbiertas] = useState<Record<number, number | null>>({});
