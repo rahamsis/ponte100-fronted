@@ -18,24 +18,25 @@ type Question = {
     ubicacion: string;
     options: string;
     correctAnswer: string;
-    intentos: number;
+    clave: string;
 };
 
 const ExportPDFButton: React.FC<ExportPDFButtonProps> = ({ data, children, className = "" }) => {
-
     const handleExport = async () => {
-        // const [questions, setQuestions] = useState<Question[]>([]);
-        console.log("Iniciando boton")
         try {
-            // 1. Obtener preguntas al hacer clic
             const questions: Question[] = await downloadQuestionsToClase(data.idClase);
-            if (!questions || questions.length === 0) {
+            if (!questions?.length) {
                 alert("No hay preguntas para exportar.");
                 return;
             }
 
-            // 2. Crear el PDF con jsPDF
             const doc = new jsPDF();
+            // Configuración inicial
+            doc.setFont("helvetica");
+            doc.setFontSize(12);
+            const lineHeight = 6; // Reducido para mejor ajuste
+            const margin = { left: 20, right: 20, top: 30 };
+            let currentY = margin.top;
 
             // 1. Cargar imagen desde URL/ruta y convertirla a base64
             const imageToBase64 = async (url: string): Promise<string> => {
@@ -49,16 +50,9 @@ const ExportPDFButton: React.FC<ExportPDFButtonProps> = ({ data, children, class
                 });
             };
 
+            //         // 2. Agregar logo como marca de agua
             const logoBase64 = await imageToBase64("/images/banners/imgBanner2.png"); // 👈 Usa tu ruta aquí
-
-            // 2. Agregar logo como marca de agua
             doc.addImage(logoBase64, "PNG", 20, 5, 15, 15);
-
-
-            const lineHeight = 5;
-            const startY = 30;
-            let currentY = startY;
-            const maxY = 280; // límite antes de cambiar de página
 
             doc.setFontSize(14);
             const codigo = parseInt(String(data.idClase).replace(/^CL0+/, ""), 10);
@@ -67,91 +61,80 @@ const ExportPDFButton: React.FC<ExportPDFButtonProps> = ({ data, children, class
             const textWidth = doc.getTextWidth(text);
             const centerX = (pageWidth - textWidth) / 2;
             doc.text(text, centerX, 20);
-            doc.setFontSize(12);
-            // doc.text(`Nombre: ${data.idClase}`, 20, 40);
-            // doc.text(`Correo: ${data.correo}`, 20, 50);
-            // doc.text(`Edad: ${data.edad}`, 20, 60);
-            // doc.save("reporte.pdf");
 
+            // Función para agregar texto con control de páginas
+            const addTextWithPageBreak = (text: string | string[], claves?: string | string[], options?: {
+                x?: number;
+                style?: "bold" | "normal";
+                fontSize?: number;
+                indent?: number;
+            }) => {
+                const x = options?.x || margin.left;
+                const style = options?.style || "normal";
+                const fontSize = options?.fontSize || 10;
+                const indent = options?.indent || 0;
+
+                doc.setFont("helvetica", style);
+                doc.setFontSize(fontSize);
+
+                const lines = Array.isArray(text) ? text : doc.splitTextToSize(text, doc.internal.pageSize.width - margin.left - margin.right - indent);
+                const neededHeight = lines.length * lineHeight;
+
+                if (currentY + neededHeight > doc.internal.pageSize.height - 20) {
+                    doc.addPage();
+                    currentY = margin.top;
+                }
+
+                doc.text(lines, x + indent, currentY);
+                currentY += neededHeight;
+            };
+
+            // Procesar preguntas
             questions.forEach((pregunta, index) => {
                 if (!pregunta.question) return;
 
-                // 1. Dividir la pregunta en líneas
-                const textoPregunta = doc.splitTextToSize(`${index + 1}. ${pregunta.question}`, 170);
-                const alturaPregunta = textoPregunta.length * lineHeight;
+                const claves = pregunta.clave ? pregunta.clave.split("||") : null;
 
-                // 2. Procesar opciones desde string tipo: "ALT001@Texto1||ALT002@Texto2"
-                const opcionesRaw = pregunta.options.split("||") || [];
-                const opcionesLimpias = opcionesRaw.map(opt => opt.split("@")[1] || "");
-                const opcionesDivididas = opcionesLimpias.map(opt => doc.splitTextToSize(opt, 160));
-                const alturaOpciones = opcionesDivididas.reduce((sum, lines) => sum + lines.length * lineHeight, 0);
+                // 1. Pregunta (en negrita)
+                addTextWithPageBreak(`${index + 1}. ${pregunta.question}`, "null", {
+                    style: "bold",
+                    fontSize: 11
+                });
 
-                const correctId = pregunta.correctAnswer;
-                let textoRespuestaCorrecta = "";
-
-                // 3. Si no cabe todo, crear nueva página
-                if (currentY + alturaPregunta + alturaOpciones > maxY) {
-                    doc.addPage();
-                    currentY = startY;
-                }
-
-                // 4. Imprimir pregunta
-                doc.setFont("helvetica", "bold");
-                doc.setFontSize(11);
-                doc.text(textoPregunta, 20, currentY);
-                currentY += alturaPregunta;
-
-                // 5. Imprimir opciones con letras (A), B), ...)
-                doc.setFont("helvetica", "normal");
-                doc.setFontSize(9);
-                opcionesDivididas.forEach((lineas, idx) => {
-                    const letra = String.fromCharCode(65 + idx); // A, B, C, ...
-                    lineas.forEach((linea: string, i: number) => {
-                        const texto: string = i === 0 ? `${letra}) ${linea}` : `    ${linea}`;
-                        doc.text(texto, 25, currentY);
-                        currentY += lineHeight;
+                // 3. Opciones (con sangría)
+                const options = pregunta.options.split("||").map(opt => opt.split("@")[1] || "");
+                options.forEach((opt, idx) => {
+                    const letter = String.fromCharCode(65 + idx);
+                    addTextWithPageBreak(`${letter}) ${opt}`, "null", {
+                        indent: 5,
+                        fontSize: 9
                     });
                 });
 
-                // 6. Imprimir respuesta
-                for (const opcion of opcionesRaw) {
-                    const [id, texto] = opcion.split("@");
-                    if (id === correctId) {
-                        textoRespuestaCorrecta = texto;
-                        break;
-                    }
-                }
+                // 4. Respuesta correcta
+                const correctAnswer = pregunta.options.split("||")
+                    .find(opt => opt.startsWith(pregunta.correctAnswer + "@"))
+                    ?.split("@")[1] || "";
 
-                doc.text(`RESPUESTA: ${textoRespuestaCorrecta}`, 20, currentY);
-                currentY += lineHeight;
+                addTextWithPageBreak(`RESPUESTA: ${correctAnswer}`, "null", {
+                    style: "normal"
+                });
 
-                // 7. Imprimir Ubicacion
-                doc.text(`UBICACIÓN: ${pregunta.ubicacion}`, 20, currentY);
-                currentY += lineHeight;
+                // 5. Metadata
+                addTextWithPageBreak(`UBICACIÓN: ${pregunta.ubicacion}`, "null");
+                addTextWithPageBreak(`CÓDIGO: ${pregunta.id}`, "null");
 
-                // 8. Imprimir código
-                doc.text(`CÓDIGO: ${pregunta.id}`, 20, currentY);
-                currentY += lineHeight;
-
-                currentY += 5; // Espacio entre preguntas
+                currentY += 3; // Espacio adicional entre preguntas
             });
-
 
             const pdfBlob = doc.output("blob");
             const pdfUrl = URL.createObjectURL(pdfBlob);
             window.open(pdfUrl);
 
-
-
-
-
-
         } catch (error) {
             console.error("Error al exportar preguntas:", error);
             alert("Ocurrió un error al exportar el PDF.");
         }
-
-
     };
 
     return (
