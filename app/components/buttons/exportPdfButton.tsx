@@ -93,7 +93,7 @@ const ExportPDFButton: React.FC<ExportPDFButtonProps> = ({ data, children, class
             questions.forEach((pregunta, index) => {
                 if (!pregunta.question) return;
 
-                const claves = pregunta.clave ? pregunta.clave.split("||") : null;
+                // const claves = pregunta.clave ? pregunta.clave.split("||") : null;
 
                 // 1. Pregunta (en negrita)
                 addTextWithPageBreak(`${index + 1}. ${pregunta.question}`, "null", {
