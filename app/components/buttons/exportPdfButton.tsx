@@ -2,6 +2,7 @@
 
 import { jsPDF } from "jspdf";
 import { downloadQuestionsToClase } from "@/app/lib/actions";
+import { useState } from "react";
 
 interface ExportPDFButtonProps {
     data: {
@@ -24,7 +25,11 @@ type Question = {
 };
 
 const ExportPDFButton: React.FC<ExportPDFButtonProps> = ({ data, children, className = "" }) => {
+    const [isLoading, setIsLoading] = useState(false);
+
     const handleExport = async () => {
+        setIsLoading(true);
+
         try {
             const questions: Question[] = await downloadQuestionsToClase(data.idClase);
             if (!questions?.length) {
@@ -218,13 +223,22 @@ const ExportPDFButton: React.FC<ExportPDFButtonProps> = ({ data, children, class
         } catch (error) {
             console.error("Error al exportar preguntas:", error);
             alert("Ocurrió un error al exportar el PDF.");
+        } finally {
+            setIsLoading(false);
         }
     };
 
     return (
         <button
-            onClick={() => handleExport()} className={className}>
-            {children}
+            onClick={() => handleExport()} className={className} disabled={isLoading}>
+            {isLoading ? (
+                <svg className="animate-spin h-5 w-5 text-white" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4l4-4-4-4v4a8 8 0 00-8 8H4z"></path>
+                </svg>
+            ) : (
+                children
+            )}
         </button>
     );
 };
