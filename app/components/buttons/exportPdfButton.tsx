@@ -218,7 +218,20 @@ const ExportPDFButton: React.FC<ExportPDFButtonProps> = ({ data, children, class
 
             const pdfBlob = doc.output("blob");
             const pdfUrl = URL.createObjectURL(pdfBlob);
-            window.open(pdfUrl);
+
+            const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+
+            if (isSafari) {
+                const link = document.createElement("a");
+                link.href = pdfUrl;
+                link.download = `${data.tallerName} - ${data.claseName}.pdf`; // nombre del archivo
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(pdfUrl); // libera memoria
+            } else {
+                window.open(pdfUrl);
+            }
 
         } catch (error) {
             console.error("Error al exportar preguntas:", error);
