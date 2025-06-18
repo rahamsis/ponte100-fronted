@@ -32,16 +32,17 @@ function Inicio() {
 function Zona() {
     const [books, setBooks] = useState<{ name: string; url: string; imageUrl: string }[]>([]);
     const [banco, setBanco] = useState<{ name: string; url: string; imageUrl: string }[]>([]);
+    const [normas, setNormas] = useState<{ name: string; url: string; imageUrl: string }[]>([]);
     const [selectedBanco, setSelectedBanco] = useState<string>("");
     const [isPdfViewerOpen, setIsPdfViewerOpen] = useState(false);
     const [loading, setLoading] = useState(true);
+    const [loadingNormas, setLoadingNormas] = useState(true);
 
     useEffect(() => {
         async function fetchBooks() {
             setLoading(true);
             const res = await fetch("/api/books?bucket=temarioponte100");
             const data = await res.json();
-
             const booksWithImages = await Promise.all(
                 data.books.map(async (book: { name: string; url: string }) => {
                     const localImagePath = `/images/covers/${encodeURIComponent(book.name.replace(".pdf", ""))}.jpg`;
@@ -103,6 +104,27 @@ function Zona() {
         fetchBancos();
     }, []);
 
+    useEffect(() => {
+        async function fetchNormas() {
+            setLoadingNormas(true);
+            const res = await fetch("/api/books?bucket=normas");
+            const data = await res.json();
+
+            const booksWithImages = await Promise.all(
+                data.books.map(async (book: { name: string; url: string }) => {
+                    const localImagePath = `/images/covers/pdf.png`;
+
+                    return { ...book, imageUrl: localImagePath };
+
+                })
+            );
+            setLoadingNormas(false);
+            setNormas(booksWithImages);
+        }
+
+        fetchNormas();
+    }, []);
+
     const [tabIndex, setTabIndex] = useState(0);
 
     // Fin del carrusel de Actividades
@@ -124,16 +146,20 @@ function Zona() {
                                     >
                                         Banco de Preguntas
                                     </Tab>
+                                    <Tab className={`p-3 text-sm md:text-xl text-left font-semibold cursor-pointer transition-all duration-200 outline-none focus:outline-none ${tabIndex === 2 ? "text-primary font-bold underline underline-offset-8" : "text-gray3"}`}
+                                    >
+                                        Normas Institucionales
+                                    </Tab>
                                 </TabList>
 
-                                {/* Panel de Detalle */}
+                                {/* Panel de Temario */}
                                 <TabPanel className={` ${tabIndex === 0 ? "block" : "hidden"}`} >
                                     <div className="">
                                         <TabPanelWithSearch books={books} loading={loading} />
                                     </div>
                                 </TabPanel>
 
-                                {/* Panel de Progreso */}
+                                {/* Panel de Banco de Preguntas */}
                                 <TabPanel className={`${tabIndex === 1 ? "block" : "hidden"}`}>
                                     <div>
                                         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6">
@@ -152,14 +178,14 @@ function Zona() {
                                                     </div>
 
                                                     <div className="p-4 items-left text-cenleftter flex flex-col flex-grow">
-                                                        <h3 className="text-base font-bold text-primary">{banco.name}</h3>
+                                                        <h3 className="text-sm font-bold text-primary">{banco.name}</h3>
                                                         <div className="flex-grow"></div>
                                                         <button
                                                             onClick={() => {
                                                                 setSelectedBanco(banco.url);
                                                                 setIsPdfViewerOpen(true);
                                                             }}
-                                                            className="w-3/4 2xl:w-1/2 mt-4 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-500 transition"
+                                                            className="w-3/4 mt-4 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-500 transition"
                                                         >
                                                             <span className="hidden lg:block">Leer ahora</span>
                                                             <span className="lg:hidden block">Leer</span>
@@ -176,6 +202,13 @@ function Zona() {
                                         )}
                                     </div>
                                 </TabPanel>
+
+                                {/* Panel de Normas institucionales */}
+                                <TabPanel className={` ${tabIndex === 2 ? "block" : "hidden"}`} >
+                                    <div className="">
+                                        <TabPanelWithSearch books={normas} loading={loadingNormas} />
+                                    </div>
+                                </TabPanel>
                             </Tabs>
                         </div>
                     </div>
@@ -187,9 +220,9 @@ function Zona() {
     )
 }
 
-function TabPanelWithSearch({ books, loading }: { books: { name: string; url: string; imageUrl: string }[]; loading: boolean }) {
+function TabPanelWithSearch({ books, loading, }: { books: { name: string; url: string; imageUrl: string }[]; loading: boolean }) {
     const [searchTerm, setSearchTerm] = useState('');
-
+    
     // Filtrar libros basado en el término de búsqueda
     const filteredBooks = books.filter(book =>
         book.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -225,7 +258,7 @@ function TabPanelWithSearch({ books, loading }: { books: { name: string; url: st
                     <p className="text-gray3 text-lg text-center">No se encontraron resultados de la búsqueda</p>
                 </div>
             ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6 pb-4 lg:pb-7">
                     {filteredBooks.map((book, i) => (
                         <BookCard key={i} book={book} />
                     ))}
@@ -256,7 +289,7 @@ function BookCard({ book }: { book: { name: string; url: string; imageUrl: strin
     }, [book.imageUrl]);
 
     return (
-        <div className="px-3 bg-white rounded-lg shadow-md flex flex-row h-full">
+        <div className="px-3 bg-white rounded-lg shadow-md flex flex-row h-full my-2">
             <div className="flex items-center justify-center">
                 <a className="" href={`${book.url}`} target="_blank">
                     <canvas
@@ -270,7 +303,7 @@ function BookCard({ book }: { book: { name: string; url: string; imageUrl: strin
             </div>
 
             <div className="p-4 items-left text-left flex flex-col flex-grow">
-                <h3 className="text-base font-bold text-primary">{book.name}</h3>
+                <h3 className="text-sm font-bold text-primary">{book.name}</h3>
                 {/* Espaciador flexible para empujar el botón hacia abajo */}
                 <div className="flex-grow"></div>
                 <button

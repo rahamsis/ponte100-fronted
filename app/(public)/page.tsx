@@ -439,7 +439,7 @@ function Fases() {
                 <div className="flex flex-row">
                     <div className="w-full lg:w-1/2 bg-white">
                         <div className="m-8 lg:m-16">
-                            <h2 className="text-xl lg:text-[40px] md:leading-10 2xl:text-4xl font-bold tracking-tight text-button mb-4 lg:mb-10">Fases del método se estudio</h2>
+                            <h2 className="text-xl lg:text-[40px] md:leading-10 2xl:text-4xl font-bold tracking-tight text-button mb-4 lg:mb-10">Fases del método de estudio</h2>
                             {
                                 fases.map((object, i) => (
                                     <div key={i} className="flex flex-row my-4 text-left items-center">

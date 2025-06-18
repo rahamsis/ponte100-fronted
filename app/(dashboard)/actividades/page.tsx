@@ -281,8 +281,8 @@ function Aprende() {
         {
             imagen: "/assets/frames/frame7.png",
             title: "Examen no repetidos",
-            subtitle: "Diversos Temas",
-            concept: "Exámenes únicos, sin repetición de preguntas ni temas.",
+            subtitle: "Desafía tus límites",
+            concept: "22 asignaturas, 30 exámenes únicos y 3,000 preguntas, 100% aleatorias que pondrán a prueba tu verdadero nivel",
             ruta: "/examenes-no-repetidos",
             modalType: "none"
         },
