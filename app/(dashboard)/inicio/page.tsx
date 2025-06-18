@@ -277,7 +277,7 @@ function Actividades() {
             modalType: "none",
         },
         {
-            imagen: "/images/actividades/actividades4.png",
+            imagen: "/images/actividades/zoom.png",
             title: "Video call",
             subtitle: "Reunión instantánea",
             concept: "Inicia una reunión en zoom para clases personalizadas",
