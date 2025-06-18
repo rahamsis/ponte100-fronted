@@ -134,7 +134,7 @@ const ExportPDFButton: React.FC<ExportPDFButtonProps> = ({ data, children, class
                     const words = line.split(" ");
                     let currentX = x + indent;
 
-                    words.forEach((word: string, index: number) => {
+                    words.forEach((word: string) => {
                         const cleanWord = word.replace(/[.,;]/g, ""); // quitar signos para comparar
                         const isClave = palabrasClaves.includes(cleanWord.toLowerCase());
 

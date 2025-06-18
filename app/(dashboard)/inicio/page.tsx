@@ -43,7 +43,7 @@ function Banner() {
             image: '/images/banners/imgBanner2.png',
             title: '¿Quieres entender cómo funciona el método de estudio PONTE 100™?',
             description: 'Conoce en detalle cómo funciona el método de estudio PONTE 100™ y cómo puede ayudarte a alcanzar tu máximo potencial.',
-            link: '/public/ponte100 ppt.pdf',
+            link: '/document/ponte100ppt.pdf',
             ancho: 150,
             alto: 150,
             bgClass: 'bg-banner2',
@@ -82,7 +82,7 @@ function Banner() {
                                 {current.button}
                             </button>}
 
-                            {current.id === 2 && <a href={'/document/ponte100 ppt.pdf'} target="_blank" className="border-2 my-auto text-white rounded-lg border-white px-4 py-2">
+                            {current.id === 2 && <a href={'/document/ponte100ppt.pdf'} target="_blank" className="border-2 my-auto text-white rounded-lg border-white px-4 py-2">
                                 {current.button}
                             </a>
                             }
