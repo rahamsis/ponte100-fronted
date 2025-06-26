@@ -295,7 +295,7 @@ function Actividades() {
         try {
             const activeMeeting = await getActiveMeeting();
             if (activeMeeting.data.meetings && activeMeeting.data.meetings.length > 0) {
-                
+
                 // consultar a bae de datos si hay una reunión activa
 
                 const lastMeeting = await getLastMeeting();
@@ -357,9 +357,9 @@ function Actividades() {
                                             <p className="text-concepto text-sm text-justify mx-2">{object.concept}</p>
                                         </div>
                                         <div className={`w-full ${object.modalType === "none" && "hidden"}`}>
-                                            <button className="bg-button text-white w-full py-3 rounded-lg mt-6 mb-3" 
-                                            onClick={() => {
-                                                searchActiveMeeting();
+                                            <button className="bg-button text-white w-full py-3 rounded-lg mt-6 mb-3"
+                                                onClick={() => {
+                                                    searchActiveMeeting();
                                                 }}>
                                                 Empezar
                                             </button>
@@ -620,148 +620,212 @@ function Conocimientos({ quantityFallidas }: ConocimientoProps) {
 }
 
 function Videos() {
-    const arrayVideos = [
-        {
-            imagen: "/images/videos/video.png",
-            title: "Taller 1",
-            subtitle: "Clase 1/ Sesión 1",
-            ponente: `Guillermo Arturo Vasquez`,
-            fecha: "hace 1 día",
-            hora: "1H 20min"
-        },
-        {
-            imagen: "/images/videos/video.png",
-            title: "Taller 1",
-            subtitle: "Clase 1/ Sesión 2",
-            ponente: `Kevin Cieza Bautista`,
-            fecha: "hace 1 día",
-            hora: "1H 20min"
-        },
-        {
-            imagen: "/images/videos/video.png",
-            title: "Taller 1",
-            subtitle: "Clase 1/ Sesión 3",
-            ponente: `Evart Zegarra Enciso`,
-            fecha: "hace 1 día",
-            hora: "1H 20min"
-        },
-        {
-            imagen: "/images/videos/video.png",
-            title: "Taller 1",
-            subtitle: "Clase 1/ Sesión 1",
-            ponente: `Guillermo Arturo Vasquez`,
-            fecha: "hace 1 día",
-            hora: "1H 20min"
-        },
-    ]
+    // const arrayVideos = [
+    //     {
+    //         imagen: "/images/videos/video.png",
+    //         title: "Taller 1",
+    //         subtitle: "Clase 1/ Sesión 1",
+    //         ponente: `Guillermo Arturo Vasquez`,
+    //         fecha: "hace 1 día",
+    //         hora: "1H 20min"
+    //     },
+    //     {
+    //         imagen: "/images/videos/video.png",
+    //         title: "Taller 1",
+    //         subtitle: "Clase 1/ Sesión 2",
+    //         ponente: `Kevin Cieza Bautista`,
+    //         fecha: "hace 1 día",
+    //         hora: "1H 20min"
+    //     },
+    //     {
+    //         imagen: "/images/videos/video.png",
+    //         title: "Taller 1",
+    //         subtitle: "Clase 1/ Sesión 3",
+    //         ponente: `Evart Zegarra Enciso`,
+    //         fecha: "hace 1 día",
+    //         hora: "1H 20min"
+    //     },
+    //     {
+    //         imagen: "/images/videos/video.png",
+    //         title: "Taller 1",
+    //         subtitle: "Clase 1/ Sesión 1",
+    //         ponente: `Guillermo Arturo Vasquez`,
+    //         fecha: "hace 1 día",
+    //         hora: "1H 20min"
+    //     },
+    // ]
+
+    const [videos, setVideos] = useState<any[]>([]);
+
+    useEffect(() => {
+        async function fetchVideos() {
+            const res = await fetch("/api/videos");
+            const data = await res.json();
+            console.log("VIDEOS: ", data)
+            setVideos(data);
+            // setLoading(false);
+        }
+
+        fetchVideos();
+    }, []);
 
     // Inicio del carrusel de Videos
     const [videoActive, setVideoActive] = useState(0)
 
     const prevVideo = () => {
         setVideoActive((prevIndex) =>
-            prevIndex === 0 ? arrayVideos.length - 1 : prevIndex - 1
+            prevIndex === 0 ? videos.length - 1 : prevIndex - 1
         )
     }
 
     const nextVideo = () => {
-        setVideoActive((prevIndex) => (prevIndex + 1) % arrayVideos.length);
+        setVideoActive((prevIndex) => (prevIndex + 1) % videos.length);
     }
     // Fin del carrusel de Videos
     return (
         <div className="flex flex-col bg-white">
             {/* Versión escritorio */}
             <section className="bg-postbanner hidden md:block py-10">
-                <div className="lg:mx-20">
-                    <div className="flex flex-wrap items-center mx-8 lg:mx-3">
-                        <div className="mx-auto">
-                            <h2 className="text-xl md:text-3xl font-bold tracking-tighter sm:text-4xl text-left mb-8 text-primary">
-                                Refuerza tus conocimientos
-                            </h2>
-                            <div className="grid grid-cols-2 xl:grid-cols-4 gap-8">
-                                {arrayVideos.map((object, i) => (
-                                    <div key={i} className="flex flex-col justify-between bg-white rounded-xl border-2 items-start p-2 text-left shadow-lg">
-                                        <Image
+                {videos.length > 0 && (
+                    <div className="lg:mx-20">
+                        <div className="flex flex-wrap items-center mx-8 lg:mx-3">
+                            <div className="mx-auto">
+                                <h2 className="text-xl md:text-3xl font-bold tracking-tighter sm:text-4xl text-left mb-8 text-primary">
+                                    Refuerza tus conocimientos
+                                </h2>
+                                <div className="grid grid-cols-2 xl:grid-cols-4 gap-8">
+                                    {videos.map((video, i) => (
+                                        <div key={i} className="flex flex-col justify-between bg-white rounded-xl border-2 items-start p-2 text-left shadow-lg">
+                                            {/* <Image
                                             src={object.imagen}
                                             alt="fundamentos"
                                             width={1000}
                                             height={800}
                                             className="mb-4"
-                                        />
-                                        <div className="mx-3">
-                                            <h3 className="text-base lg:text-lg font-bold mb-2 text-concepto">{object.title}</h3>
-                                            <h3 className="text-base lg:text-lg font-bold mb-2 text-primary">{object.subtitle}</h3>
-                                            <p className="text-concepto text-base lg:text-lg">Ponente: {object.ponente}</p>
+                                        /> */}
+                                            <div style={{ width: "100%", aspectRatio: "16/9", position: "relative" }}>
+                                                <iframe
+                                                    src={`https://customer-ry3vjvzzhq71nunt.cloudflarestream.com/${video.uid}/iframe?poster=https%3A%2F%2Fres.cloudinary.com%2Fdqboodjqt%2Fimage%2Fupload%2Fv1750965563%2Fvideo_p4yf6c.png`}
+                                                    allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture"
+                                                    allowFullScreen
+                                                    style={{
+                                                        borderRadius: "12px",
+                                                        position: "absolute",
+                                                        top: 0,
+                                                        left: 0,
+                                                        width: "100%",
+                                                        height: "100%",
+                                                        border: "none",
+                                                    }}
+                                                />
+                                            </div>
+                                            {/* <div className="mx-3">
+                                            <h3 className="text-base lg:text-lg font-bold mb-2 text-concepto">{video.title}</h3>
+                                            <h3 className="text-base lg:text-lg font-bold mb-2 text-primary">{video.subtitle}</h3>
+                                            <p className="text-concepto text-base lg:text-lg">Ponente: {video.ponente}</p>
                                         </div>
                                         <div className="w-full mt-5 mb-3">
                                             <div className="flex flex-row justify-between mt-6 mb-2 px-3">
                                                 <div className="flex flex-row space-x-2 text-concepto items-center">
-                                                    <Calendar className="text-black" /> <p className="text-sm">{object.fecha}</p>
+                                                    <Calendar className="text-black" /> <p className="text-sm">{video.fecha}</p>
                                                 </div>
                                                 <div className="flex flex-row space-x-2 text-concepto items-center">
-                                                    <Clock className="text-black" /> <p className="text-sm">{object.hora}</p>
+                                                    <Clock className="text-black" /> <p className="text-sm">{video.hora}</p>
+                                                </div>
+                                            </div>
+                                        </div> */}
+                                            <div className="mx-3 mt-1">
+                                                <h3 className="text-base lg:text-lg font-bold mb-2 text-concepto">{video.meta?.name || "Clase"}</h3>
+                                                <p className="text-concepto text-base lg:text-lg">Ponente: {video.creator}</p>
+                                            </div>
+                                            <div className="w-full mt-5 mb-3">
+                                                <div className="flex flex-row justify-between mt-6 mb-2 px-3">
+                                                    <div className="flex flex-row space-x-2 text-concepto items-center">
+                                                        <Calendar className="text-black" /> <p className="text-sm">{new Date(video.created).toLocaleDateString()}</p>
+                                                    </div>
+                                                    <div className="flex flex-row space-x-2 text-concepto items-center">
+                                                        <Clock className="text-black" /> <p className="text-sm">{formatTime(Math.floor(video.duration))}</p>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                ))}
+                                    ))}
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                )}
             </section>
 
             {/* Versión móvil */}
             <section className="bg-postbanner py-8 md:hidden">
-                <div className="max-w-full">
-                    <div className="flex flex-wrap items-center mx-4">
-                        <div className="mx-auto w-full">
-                            <div className="flex justify-between items-center mb-6 space-x-3 mx-2">
-                                <div className="w-8/12">
-                                    <h2 className="text-xl font-bold tracking-tighter text-lef text-primary">
-                                        Refuerza tus conocimientos
-                                    </h2>
-                                </div>
-                                <div className="w-4/12 flex flex-row space-x-3">
-                                    <div className={`p-3 rounded-full ${videoActive == 0 ? "bg-button3 bg-opacity-20 text-button3" : "bg-button bg-opacity-10 text-button"}`}>
-                                        <ArrowLeft onClick={prevVideo} />
+                {videos.length > 0 && videos[videoActive] && (
+                    <div className="max-w-full">
+                        <div className="flex flex-wrap items-center mx-4">
+                            <div className="mx-auto w-full">
+                                <div className="flex justify-between items-center mb-6 space-x-3 mx-2">
+                                    <div className="w-8/12">
+                                        <h2 className="text-xl font-bold tracking-tighter text-lef text-primary">
+                                            Refuerza tus conocimientos
+                                        </h2>
                                     </div>
-                                    <div className={`p-3 rounded-full ${videoActive == 3 ? "bg-button3 bg-opacity-20 text-button3" : "bg-button bg-opacity-10 text-button"}`}>
-                                        <ArrowRight onClick={nextVideo} />
+                                    <div className="w-4/12 flex flex-row space-x-3">
+                                        <div className={`p-3 rounded-full ${videoActive == 0 ? "bg-button3 bg-opacity-20 text-button3" : "bg-button bg-opacity-10 text-button"}`}>
+                                            <ArrowLeft onClick={prevVideo} />
+                                        </div>
+                                        <div className={`p-3 rounded-full ${videoActive == 3 ? "bg-button3 bg-opacity-20 text-button3" : "bg-button bg-opacity-10 text-button"}`}>
+                                            <ArrowRight onClick={nextVideo} />
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div className="relative w-full">
-                                <div className="flex flex-col border-2 bg-white rounded-xl items-start p-2 mx-2 text-left shadow-lg ">
-                                    <Image
-                                        src={arrayVideos[videoActive].imagen}
+                                <div className="relative w-full">
+                                    <div className="flex flex-col border-2 bg-white rounded-xl items-start p-2 mx-2 text-left shadow-lg ">
+                                        {/* <Image
+                                        src={videos[videoActive].imagen}
                                         alt="fundamentos"
                                         width={500}
                                         height={300}
                                         className="mb-4"
-                                    />
-                                    <div>
-                                        <h3 className="text-xl font-bold mb-2 text-concepto">{arrayVideos[videoActive].title}</h3>
-                                        <p className="text-primary text-xl font-bold mb-2">{arrayVideos[videoActive].subtitle}</p>
-                                        <p className="text-concepto text-lg text-justify">Ponente: {arrayVideos[videoActive].ponente}</p>
-                                    </div>
-                                    <div className="w-full mt-5 mb-3">
-                                        <div className="flex flex-row justify-between mt-6 mb-2 px-3">
-                                            <div className="flex flex-row space-x-2 text-concepto items-center">
-                                                <Calendar className="text-black" /> <p className="text-sm">{arrayVideos[videoActive].fecha}</p>
-                                            </div>
-                                            <div className="flex flex-row space-x-2 text-concepto items-center">
-                                                <Clock className="text-black" /> <p className="text-sm">{arrayVideos[videoActive].hora}</p>
-                                            </div>
+                                    /> */}
+                                        <div style={{ width: "100%", aspectRatio: "16/9", position: "relative" }}>
+                                            <iframe
+                                                src={`https://customer-ry3vjvzzhq71nunt.cloudflarestream.com/${videos[videoActive].uid}/iframe?poster=https%3A%2F%2Fres.cloudinary.com%2Fdqboodjqt%2Fimage%2Fupload%2Fv1750965563%2Fvideo_p4yf6c.png`}
+                                                allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture"
+                                                allowFullScreen
+                                                style={{
+                                                    borderRadius: "12px",
+                                                    position: "absolute",
+                                                    top: 0,
+                                                    left: 0,
+                                                    width: "100%",
+                                                    height: "100%",
+                                                    border: "none",
+                                                }}
+                                            />
                                         </div>
+                                        <div>
+                                            <h3 className="text-xl font-bold mb-2 text-concepto">{videos[videoActive].meta?.name}</h3>
+                                            {/* <p className="text-primary text-xl font-bold mb-2">{videos[videoActive].subtitle}</p> */}
+                                            <p className="text-concepto text-lg text-justify">Ponente: {videos[videoActive].creator}</p>
+                                        </div>
+                                        <div className="w-full mt-5 mb-3">
+                                            <div className="flex flex-row justify-between mt-6 mb-2 px-3">
+                                                <div className="flex flex-row space-x-2 text-concepto items-center">
+                                                    <Calendar className="text-black" /> <p className="text-sm">{new Date(videos[videoActive].created).toLocaleDateString()}</p>
+                                                </div>
+                                                <div className="flex flex-row space-x-2 text-concepto items-center">
+                                                    <Clock className="text-black" /> <p className="text-sm">{formatTime(Math.floor(videos[videoActive].duration))}</p>
+                                                </div>
+                                            </div>
 
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                )}
             </section>
         </div>
     )
