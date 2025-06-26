@@ -1,6 +1,5 @@
 'use client'
 
-import Image from "next/image";
 import { useState, useEffect } from "react";
 import { Calendar, Clock, Search } from "lucide-react";
 
@@ -28,7 +27,7 @@ function Inicio() {
 
 function Videos() {
     const [videos, setVideos] = useState<any[]>([]);
-    const [loading, setLoading] = useState(true);
+    // const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         async function fetchVideos() {
@@ -36,7 +35,7 @@ function Videos() {
             const data = await res.json();
             console.log("VIDEOS: ", data)
             setVideos(data);
-            setLoading(false);
+            // setLoading(false);
         }
 
         fetchVideos();
