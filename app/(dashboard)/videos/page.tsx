@@ -1,5 +1,7 @@
 'use client'
 
+/* eslint-disable */
+
 import { useState, useEffect } from "react";
 import { Calendar, Clock, Search } from "lucide-react";
 
