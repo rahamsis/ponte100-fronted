@@ -1,7 +1,7 @@
 'use client'
 
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Calendar, Clock, Search } from "lucide-react";
 
 function Inicio() {
@@ -27,40 +27,20 @@ function Inicio() {
 }
 
 function Videos() {
-    const arrayVideos = [
-        {
-            imagen: "/images/videos/video.png",
-            title: "Taller 1",
-            subtitle: "Clase 1/ Sesión 1",
-            ponente: `Guillermo Arturo Vasquez`,
-            fecha: "01/06/2025",
-            hora: "1H 20min"
-        },
-        {
-            imagen: "/images/videos/video.png",
-            title: "Taller 2",
-            subtitle: "Clase 1/ Sesión 2",
-            ponente: `Evart Zegarra Enciso`,
-            fecha: "02/06/2025",
-            hora: "1H 20min"
-        },
-        {
-            imagen: "/images/videos/video.png",
-            title: "Taller 3",
-            subtitle: "Clase 1/ Sesión 3",
-            ponente: `Kevin Cieza Bautista`,
-            fecha: "03/06/2025",
-            hora: "1H 20min"
-        },
-        {
-            imagen: "/images/videos/video.png",
-            title: "Taller 4",
-            subtitle: "Clase 1/ Sesión 1",
-            ponente: `Guillermo Arturo Vasquez`,
-            fecha: "04/06/2025",
-            hora: "1H 20min"
-        },
-    ]
+    const [videos, setVideos] = useState<any[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        async function fetchVideos() {
+            const res = await fetch("/api/videos");
+            const data = await res.json();
+            console.log("VIDEOS: ", data)
+            setVideos(data);
+            setLoading(false);
+        }
+
+        fetchVideos();
+    }, []);
 
     // Fin del carrusel de Videos
     return (
@@ -70,35 +50,7 @@ function Videos() {
                 <div className="lg:mx-20">
                     <div className="flex flex-wrap items-center mx-8 lg:mx-3">
                         <div className="mx-auto">
-                            {/* <div className="grid grid-cols-2 xl:grid-cols-4 gap-8">
-                                {arrayVideos.map((object, i) => (
-                                    <div key={i} className="flex flex-col justify-between bg-white rounded-xl border-2 items-start p-2 text-left shadow-lg">
-                                        <Image
-                                            src={object.imagen}
-                                            alt="fundamentos"
-                                            width={1000}
-                                            height={800}
-                                            className="mb-4"
-                                        />
-                                        <div className="mx-3">
-                                            <h3 className="text-base lg:text-lg font-bold mb-2 text-concepto">{object.title}</h3>
-                                            <h3 className="text-base lg:text-lg font-bold mb-2 text-primary">{object.subtitle}</h3>
-                                            <p className="text-concepto text-base lg:text-lg">Ponente: {object.ponente}</p>
-                                        </div>
-                                        <div className="w-full mt-5 mb-3">
-                                            <div className="flex flex-row justify-between mt-6 mb-2 px-3">
-                                                <div className="flex flex-row space-x-2 text-concepto items-center">
-                                                    <Calendar className="text-black" /> <p className="text-sm">{object.fecha}</p>
-                                                </div>
-                                                <div className="flex flex-row space-x-2 text-concepto items-center">
-                                                    <Clock className="text-black" /> <p className="text-sm">{object.hora}</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div> */}
-                            <VideosWithSearch videos={arrayVideos} />
+                            <VideosWithSearch videos={videos} />
                         </div>
                     </div>
                 </div>
@@ -107,7 +59,8 @@ function Videos() {
     )
 }
 
-function VideosWithSearch({ videos }: { videos: { imagen: string; title: string; subtitle: string; ponente: string, fecha: string; hora: string; }[] }) {
+// function VideosWithSearch({ videos }: { videos: { imagen: string; title: string; subtitle: string; ponente: string, fecha: string; hora: string; }[] }) {
+function VideosWithSearch({ videos }: { videos: any[] }) {
     const [searchTerm, setSearchTerm] = useState('');
     const [sortOption, setSortOption] = useState('name-asc');
 
@@ -115,21 +68,21 @@ function VideosWithSearch({ videos }: { videos: { imagen: string; title: string;
     const filteredVideos = videos.filter(video => {
         const searchTermLower = searchTerm.toLowerCase();
         return (
-            video.title.toLowerCase().includes(searchTermLower) ||
+            video.meta.name.toLowerCase().includes(searchTermLower) ||
             (video.subtitle && video.subtitle.toLowerCase().includes(searchTermLower)) ||
-            (video.ponente && video.ponente.toLowerCase().includes(searchTermLower))
+            (video.creator && video.creator.toLowerCase().includes(searchTermLower))
         );
     }
     ).sort((a, b) => {
         switch (sortOption) {
             case 'name-asc':
-                return a.title.localeCompare(b.title);
+                return a.meta.name.localeCompare(b.meta.name);
             case 'name-desc':
-                return b.title.localeCompare(a.title);
+                return b.meta.name.localeCompare(a.meta.name);
             case 'date-newest':
-                return new Date(b.fecha).getTime() - new Date(a.fecha).getTime();
+                return new Date(b.created).getTime() - new Date(a.created).getTime();
             case 'date-oldest':
-                return new Date(a.fecha).getTime() - new Date(b.fecha).getTime();
+                return new Date(a.created).getTime() - new Date(b.created).getTime();
             default:
                 return 0;
         }
@@ -183,28 +136,55 @@ function VideosWithSearch({ videos }: { videos: { imagen: string; title: string;
     );
 }
 
-function VideoCard({ video }: { video: { imagen: string; title: string; subtitle: string; ponente: string, fecha: string; hora: string; } }) {
+const formatTime = (seconds: number) => {
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const secs = seconds % 60;
+
+    return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
+};
+
+
+// function VideoCard({ video }: { video: { imagen: string; title: string; subtitle: string; ponente: string, fecha: string; hora: string; } }) {
+function VideoCard({ video }: { video: any }) {
+
     return (
         <div className="flex flex-col justify-between bg-white rounded-xl border-2 items-start p-2 text-left shadow-lg">
-            <Image
-                src={video.imagen}
-                alt="fundamentos"
-                width={1000}
-                height={800}
-                className="mb-4"
-            />
-            <div className="mx-3">
-                <h3 className="text-base lg:text-lg font-bold mb-2 text-concepto">{video.title}</h3>
-                <h3 className="text-base lg:text-lg font-bold mb-2 text-primary">{video.subtitle}</h3>
-                <p className="text-concepto text-base lg:text-lg">Ponente: {video.ponente}</p>
+            {/* <iframe
+                src={`https://customer-ry3vjvzzhq71nunt.cloudflarestream.com/${video.uid}/iframe?poster=https%3A%2F%2Fres.cloudinary.com%2Fdqboodjqt%2Fimage%2Fupload%2Fv1750965563%2Fvideo_p4yf6c.png`}
+                width="100%"
+                height="205"
+                allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture"
+                allowFullScreen
+                style={{ borderRadius: "12px", top: 0, left: 0, border: "none" }}
+            /> */}
+            <div style={{ width: "100%", aspectRatio: "16/9", position: "relative" }}>
+                <iframe
+                    src={`https://customer-ry3vjvzzhq71nunt.cloudflarestream.com/${video.uid}/iframe?poster=https%3A%2F%2Fres.cloudinary.com%2Fdqboodjqt%2Fimage%2Fupload%2Fv1750965563%2Fvideo_p4yf6c.png`}
+                    allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture"
+                    allowFullScreen
+                    style={{
+                        borderRadius: "12px",
+                        position: "absolute",
+                        top: 0,
+                        left: 0,
+                        width: "100%",
+                        height: "100%",
+                        border: "none",
+                    }}
+                />
+            </div>
+            <div className="mx-3 mt-1">
+                <h3 className="text-base lg:text-lg font-bold mb-2 text-concepto">{video.meta?.name || "Clase"}</h3>
+                <p className="text-concepto text-base lg:text-lg">Ponente: {video.creator}</p>
             </div>
             <div className="w-full mt-5 mb-3">
                 <div className="flex flex-row justify-between mt-6 mb-2 px-3">
                     <div className="flex flex-row space-x-2 text-concepto items-center">
-                        <Calendar className="text-black" /> <p className="text-sm">{video.fecha}</p>
+                        <Calendar className="text-black" /> <p className="text-sm">{new Date(video.created).toLocaleDateString()}</p>
                     </div>
                     <div className="flex flex-row space-x-2 text-concepto items-center">
-                        <Clock className="text-black" /> <p className="text-sm">{video.hora}</p>
+                        <Clock className="text-black" /> <p className="text-sm">{formatTime(Math.floor(video.duration))}</p>
                     </div>
                 </div>
             </div>
