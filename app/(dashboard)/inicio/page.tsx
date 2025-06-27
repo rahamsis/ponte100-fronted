@@ -736,7 +736,7 @@ function Videos() {
                                         </div> */}
                                             <div className="mx-3 mt-1">
                                                 <h3 className="text-base lg:text-lg font-bold mb-2 text-concepto">{video.meta?.name || "Clase"}</h3>
-                                                <p className="text-concepto text-base lg:text-lg">Ponente: {video.creator}</p>
+                                                <p className="text-concepto text-base lg:text-lg">Ponente: {video.creator === null ? video.meta?.creator : video.creator}</p>
                                             </div>
                                             <div className="w-full mt-5 mb-3">
                                                 <div className="flex flex-row justify-between mt-6 mb-2 px-3">
@@ -807,7 +807,7 @@ function Videos() {
                                         <div>
                                             <h3 className="text-xl font-bold mb-2 text-concepto">{videos[videoActive].meta?.name}</h3>
                                             {/* <p className="text-primary text-xl font-bold mb-2">{videos[videoActive].subtitle}</p> */}
-                                            <p className="text-concepto text-lg text-justify">Ponente: {videos[videoActive].creator}</p>
+                                            <p className="text-concepto text-lg text-justify">Ponente: {videos[videoActive].creator == null ? videos[videoActive].meta?.creator : videos[videoActive].creator}</p>
                                         </div>
                                         <div className="w-full mt-5 mb-3">
                                             <div className="flex flex-row justify-between mt-6 mb-2 px-3">

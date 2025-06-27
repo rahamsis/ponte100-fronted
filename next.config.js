@@ -1,6 +1,11 @@
 /** @type {import('next').NextConfig} */
 
 const nextConfig = {
+  api: {
+    bodyParser: {
+      sizeLimit: '500mb', // o lo que necesites (10mb, 50mb, etc.)
+    },
+  },
   images: {
     domains: ["res.cloudinary.com"],
   },

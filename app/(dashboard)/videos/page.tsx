@@ -176,7 +176,7 @@ function VideoCard({ video }: { video: any }) {
             </div>
             <div className="mx-3 mt-1">
                 <h3 className="text-base lg:text-lg font-bold mb-2 text-concepto">{video.meta?.name || "Clase"}</h3>
-                <p className="text-concepto text-base lg:text-lg">Ponente: {video.creator}</p>
+                <p className="text-concepto text-base lg:text-lg">Ponente: {video.creator === null ? video.meta?.creator : video.creator}</p>
             </div>
             <div className="w-full mt-5 mb-3">
                 <div className="flex flex-row justify-between mt-6 mb-2 px-3">
