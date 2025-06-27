@@ -67,8 +67,8 @@ export default function Estudio({ params }: { params: Promise<{ idTema: string, 
                 setError(null);
                 const data = await fetchQuestionToTaller(Number(idTema), Number(limit), Number(offset));
                 setQuestions(data);
-                setStartTimer(data.length * 72); //72
-                setTimer(data.length * 72); //72 tiempo oficial
+                setStartTimer(data.length * 10); //72
+                setTimer(data.length * 10); //72 tiempo oficial
             } catch (error) {
                 console.error("Error obteniendo las preguntas:", error);
                 setError("Error al cargar las preguntas. Por favor intenta nuevamente.");
