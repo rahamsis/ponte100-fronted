@@ -355,7 +355,7 @@ function Metas() {
                                         </div>
                                     </div> */}
                                 <Image
-                                    src="/images/zoom.png"
+                                    src="/images/actividades4.png"
                                     alt="actividades"
                                     width={1000}
                                     height={800}
