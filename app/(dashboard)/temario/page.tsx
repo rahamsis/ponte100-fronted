@@ -282,7 +282,7 @@ function Zona() {
                                     <div className="">
                                         <TabPanelWithSearch books={books} 
                                         // loading={loading} 
-                                        loading={true} 
+                                        loading={false} 
                                         />
                                     </div>
                                 </TabPanel>
