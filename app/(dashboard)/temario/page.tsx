@@ -2,7 +2,11 @@
 
 // import Image from "next/image";
 import { Tab, TabPanel, TabList, Tabs } from "react-tabs";
-import { useState, useEffect, useRef } from "react";
+import {
+    useState,
+    useEffect,
+    // useRef 
+} from "react";
 import { Search } from "lucide-react";
 import Image from "next/image";
 import MyPDFViewer from "@/app/components/pdfViewer";
@@ -49,7 +53,7 @@ const books = [
     {
         name: "Decreto Legislativo Nº 1149 - Ley de la Carrera y Situación del Personal de la Policía Nacional del Perú",
         imageUrl: "/images/covers/MCA.png",
-        url:"https://spij.minjus.gob.pe/spij-ext-web/#/detallenorma/H1090246",
+        url: "https://spij.minjus.gob.pe/spij-ext-web/#/detallenorma/H1090246",
     },
     {
         name: "Decreto Legislativo Nº 1318 - Ley que Regula la Formación Profesional de la Policía Nacional del Perú",
@@ -58,7 +62,7 @@ const books = [
     },
     {
         name: "Ley Nº 30714 - Ley de Régimen Disciplinario de la Policía Nacional del Perú",
-        imageUrl: "/images/covers/MCA.png",        
+        imageUrl: "/images/covers/MCA.png",
         url: "https://spij.minjus.gob.pe/spij-ext-web/#/detallenorma/H1197214",
     },
     {
@@ -80,7 +84,7 @@ const books = [
         name: "Ley Nº 27444 - Ley del Procedimiento Administrativo General",
         imageUrl: "/images/covers/MCA.png",
         url: "https://spij.minjus.gob.pe/spij-ext-web/#/detallenorma/H805476",
-        
+
     },
     // MATERIAS DE ESPECIALIDAD
     {
@@ -156,7 +160,7 @@ function Zona() {
     const [normas, setNormas] = useState<{ name: string; url: string; imageUrl: string }[]>([]);
     const [selectedBanco, setSelectedBanco] = useState<string>("");
     const [isPdfViewerOpen, setIsPdfViewerOpen] = useState(false);
-    const [loading, setLoading] = useState(false);
+    // const [loading, setLoading] = useState(false);
     const [loadingNormas, setLoadingNormas] = useState(true);
 
     // useEffect(() => {
@@ -276,7 +280,10 @@ function Zona() {
                                 {/* Panel de Temario */}
                                 <TabPanel className={` ${tabIndex === 0 ? "block" : "hidden"}`} >
                                     <div className="">
-                                        <TabPanelWithSearch books={books} loading={loading} />
+                                        <TabPanelWithSearch books={books} 
+                                        // loading={loading} 
+                                        loading={true} 
+                                        />
                                     </div>
                                 </TabPanel>
 
