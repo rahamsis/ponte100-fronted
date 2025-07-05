@@ -42,114 +42,114 @@ const books = [
     },
     {
         name: "Declaración Universal de los Derechos Humanos",
-        imageUrl: "/images/covers/MCA.png",
+        imageUrl: "/images/covers/MCB.png",
         url: "https://spij.minjus.gob.pe/spij-ext-web/#/detallenorma/H682819",
     },
     {
         name: "Decreto Legislativo Nº 1267 - Ley de la Policía Nacional del Perú",
-        imageUrl: "/images/covers/MCA.png",
+        imageUrl: "/images/covers/MCC.png",
         url: "https://spij.minjus.gob.pe/spij-ext-web/#/detallenorma/H1170025",
     },
     {
         name: "Decreto Legislativo Nº 1149 - Ley de la Carrera y Situación del Personal de la Policía Nacional del Perú",
-        imageUrl: "/images/covers/MCA.png",
+        imageUrl: "/images/covers/MCD.png",
         url: "https://spij.minjus.gob.pe/spij-ext-web/#/detallenorma/H1090246",
     },
     {
         name: "Decreto Legislativo Nº 1318 - Ley que Regula la Formación Profesional de la Policía Nacional del Perú",
-        imageUrl: "/images/covers/MCA.png",
+        imageUrl: "/images/covers/MCE.png",
         url: "https://spij.minjus.gob.pe/spij-ext-web/#/detallenorma/H1226432",
     },
     {
         name: "Ley Nº 30714 - Ley de Régimen Disciplinario de la Policía Nacional del Perú",
-        imageUrl: "/images/covers/MCA.png",
+        imageUrl: "/images/covers/MCF.png",
         url: "https://spij.minjus.gob.pe/spij-ext-web/#/detallenorma/H1197214",
     },
     {
         name: "Ley Nº 31873 - Ley que Regula los Procesos de Ascenso del Personal de la Policía Nacional del Perú",
-        imageUrl: "/images/covers/MCA.png",
+        imageUrl: "/images/covers/MCG.png",
         url: "https://spij.minjus.gob.pe/spij-ext-web/#/detallenorma/H1357992",
     },
     {
         name: "Decreto Legislativo Nº 1291 - Lucha Contra la Corrupción del Sector Interior",
-        imageUrl: "/images/covers/MCA.png",
+        imageUrl: "/images/covers/MCH.png",
         url: "https://spij.minjus.gob.pe/spij-ext-web/#/detallenorma/H1170748",
     },
     {
         name: "TUO de la Ley N° 27806 - Ley de Transparencia y Acceso a la información Pública",
-        imageUrl: "/images/covers/MCA.png",
+        imageUrl: "/images/covers/MCI.png",
         url: "https://spij.minjus.gob.pe/spij-ext-web/#/detallenorma/H1250134",
     },
     {
         name: "Ley Nº 27444 - Ley del Procedimiento Administrativo General",
-        imageUrl: "/images/covers/MCA.png",
+        imageUrl: "/images/covers/MCJ.png",
         url: "https://spij.minjus.gob.pe/spij-ext-web/#/detallenorma/H805476",
 
     },
     // MATERIAS DE ESPECIALIDAD
     {
         name: "Decreto Legislativo Nº 957 - Código Procesal Penal",
-        imageUrl: "/images/covers/MCA.png",
+        imageUrl: "/images/covers/MEA.png",
         url: "https://spij.minjus.gob.pe/spij-ext-web/#/detallenorma/H682695",
     },
     {
         name: "Decreto Legislativo Nº 635 - Código Penal",
-        imageUrl: "/images/covers/MCA.png",
+        imageUrl: "/images/covers/MEB.png",
         url: "https://spij.minjus.gob.pe/spij-ext-web/#/detallenorma/H682692",
     },
     {
         name: "Decreto Legislativo Nº 1186 - Ley que Regula el Uso de la Fuerza por parte de la Policía Nacional del Perú",
-        imageUrl: "/images/covers/MCA.png",
+        imageUrl: "/images/covers/MEC.png",
         url: "https://spij.minjus.gob.pe/spij-ext-web/#/detallenorma/H1134390",
     },
     {
         name: "Ley Nº 32130 Ley que modifica el CPP, para fortalecer la investigación del delito como función de la PNP",
-        imageUrl: "/images/covers/MCA.png",
+        imageUrl: "/images/covers/MED.png",
         url: "https://spij.minjus.gob.pe/spij-ext-web/#/detallenorma/H1386701",
     },
     {
         name: "Decreto Legislativo Nº 1241 - Ley que Fortalece la lucha Contra el TID",
-        imageUrl: "/images/covers/MCA.png",
+        imageUrl: "/images/covers/MEE.png",
         url: "https://spij.minjus.gob.pe/spij-ext-web/#/detallenorma/H1137135",
     },
     {
         name: "Decreto Legislativo Nº 1106 - Ley de Lucha eficaz Contra el Lavado de Activos y otros delitos",
-        imageUrl: "/images/covers/MCA.png",
+        imageUrl: "/images/covers/MEF.png",
         url: "https://spij.minjus.gob.pe/spij-ext-web/#/detallenorma/H1053470",
     },
     {
         name: "Ley N° 30364 - Ley para prevenir, sancionar y erradicar la violencia contra las mujeres y los integrantes del grupo familiar",
-        imageUrl: "/images/covers/MCA.png",
+        imageUrl: "/images/covers/MEG.png",
         url: "https://spij.minjus.gob.pe/spij-ext-web/#/detallenorma/H1141065",
     },
     {
         name: "Ley N° 30077 - Ley Contra el Crimen Organizado",
-        imageUrl: "/images/covers/MCA.png",
+        imageUrl: "/images/covers/MEH.png",
         url: "https://spij.minjus.gob.pe/spij-ext-web/#/detallenorma/H1084545",
     },
     {
         name: "Decreto Legislativo N°1611 - Ley que aprueba medidas especiales para la prevención e Investigación del Delito de Extorsión y Delitos Conexos",
-        imageUrl: "/images/covers/MCA.png",
+        imageUrl: "/images/covers/MEI.png",
         url: "https://spij.minjus.gob.pe/spij-ext-web/#/detallenorma/H1365316",
     },
     {
         name: "Decreto Supremo N°009-2018-JUS - Protocolos para la aplicación del Proceso Inmediato Reformado",
-        imageUrl: "/images/covers/MCA.png",
+        imageUrl: "/images/covers/MEJ.png",
         url: "https://spij.minjus.gob.pe/spij-ext-web/#/detallenorma/H1214668",
     },
     {
         name: "Decreto Supremo N°010-2018-JUS - Protocolos para la aplicación del Código Procesal Penal",
-        imageUrl: "/images/covers/MCA.png",
+        imageUrl: "/images/covers/MEK.png",
         url: "https://spij.minjus.gob.pe/spij-ext-web/#/detallenorma/H1214669",
     },
     {
         name: "Resolución Ministerial 952-2018-IN - Derechos Humanos Aplicado a la Función Policial",
-        imageUrl: "/images/covers/MCA.png",
+        imageUrl: "/images/covers/MEL.png",
         url: "https://spij.minjus.gob.pe/spij-ext-web/#/detallenorma/H1213816",
     },
     {
         name: "Decreto Legislativo Nº 1428 - Que desarrolla medidas para la atención de casos de desaparición de personas en situación de vulnerabilidad",
-        imageUrl: "/images/covers/MCA.png",
+        imageUrl: "/images/covers/MEM.png",
         url: "https://spij.minjus.gob.pe/spij-ext-web/#/detallenorma/H1216396",
     },
 ]
@@ -237,9 +237,20 @@ function Zona() {
 
             const booksWithImages = await Promise.all(
                 data.books.map(async (book: { name: string; url: string }) => {
-                    const localImagePath = `/images/covers/Normas institucionales.png`;
+                    const localImagePath = `/images/covers/${encodeURIComponent(book.name.replace(".pdf", ""))}.png`;
 
-                    return { ...book, imageUrl: localImagePath };
+                    const imageExists = await fetch(localImagePath, { method: "HEAD" })
+                        .then((res) => res.ok)
+                        .catch(() => false);
+
+                    if (imageExists) {
+                        return { ...book, imageUrl: localImagePath || "/images/librodefault.png"};
+                    }
+
+                    // return {
+                    //     ...book,
+                    //     imageUrl: imageData.filePath || "/images/librodefault.png", // Imagen por defecto si falla
+                    // };
 
                 })
             );
@@ -280,9 +291,9 @@ function Zona() {
                                 {/* Panel de Temario */}
                                 <TabPanel className={` ${tabIndex === 0 ? "block" : "hidden"}`} >
                                     <div className="">
-                                        <TabPanelWithSearch books={books} 
-                                        // loading={loading} 
-                                        loading={false} 
+                                        <TabPanelWithSearch books={books}
+                                            // loading={loading} 
+                                            loading={false}
                                         />
                                     </div>
                                 </TabPanel>
