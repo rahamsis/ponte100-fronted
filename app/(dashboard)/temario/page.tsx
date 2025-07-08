@@ -421,7 +421,7 @@ function TabPanelWithSearch({ books, loading, }: { books: { name: string; url: s
 // Componente que usa Canvas para evitar descargas
 function BookCard({ book }: { book: { name: string; url: string; imageUrl: string } }) {
     // const canvasRef = useRef<HTMLCanvasElement>(null);
-
+    console.log("imagen: ",book.imageUrl)
     // useEffect(() => {
     //     const canvas = canvasRef.current;
     //     if (!canvas) return;
