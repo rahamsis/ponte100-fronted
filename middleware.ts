@@ -9,11 +9,13 @@ export async function middleware(req: NextRequest) {
     if (
         pathname.startsWith("/maintenance") ||
         pathname.startsWith("/_next") ||
-        pathname.startsWith("/favicon.ico") ||
-        pathname.startsWith("/mantenimiento.png")
+        pathname.startsWith("/api") || // <-- AÑADIDO: evitar bucle con fetch interno
+        pathname === "/favicon.ico" ||
+        pathname === "/mantenimiento.png"
     ) {
         return NextResponse.next();
     }
+
 
     // Obtener token con req
     const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
