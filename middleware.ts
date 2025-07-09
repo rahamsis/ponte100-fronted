@@ -3,6 +3,18 @@ import type { NextRequest } from "next/server";
 import { getToken } from "next-auth/jwt";
 
 export async function middleware(req: NextRequest) {
+    const pathname = req.nextUrl.pathname;
+
+    // Evita ejecutar middleware en la página de mantenimiento o recursos estáticos
+    if (
+        pathname.startsWith("/maintenance") ||
+        pathname.startsWith("/_next") ||
+        pathname.startsWith("/favicon.ico") ||
+        pathname.startsWith("/mantenimiento.png")
+    ) {
+        return NextResponse.next();
+    }
+
     // Obtener token con req
     const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
     if (!token) return NextResponse.redirect(new URL("/", req.url));
@@ -24,8 +36,8 @@ export async function middleware(req: NextRequest) {
             return NextResponse.redirect(new URL("/bienvenida", req.url));
         }
 
-        if(pathname.startsWith("/bienvenida") && welcomeCookie?.value !== "0"){
-             return NextResponse.redirect(new URL("/inicio", req.url));
+        if (pathname.startsWith("/bienvenida") && welcomeCookie?.value !== "0") {
+            return NextResponse.redirect(new URL("/inicio", req.url));
         }
 
     } catch (error) {
@@ -41,18 +53,18 @@ export const config = {
     matcher: [
         '/actividades',
         '/bienvenida', '/bienvenida/:idGrado*',
-        '/control-de-habilidades','/control-de-habilidades/:idTema*',
-        '/despierta-tu-inteligencia','/despierta-tu-inteligencia/:idTema*',
+        '/control-de-habilidades', '/control-de-habilidades/:idTema*',
+        '/despierta-tu-inteligencia', '/despierta-tu-inteligencia/:idTema*',
         '/estadisticas',
-        '/examenes-no-repetidos','/examenes-no-repetidos/:idExamen*',
-        '/inicio', 
-        '/practica-un-tema', 
-        '/preguntas-fallidas', 
-        '/primer-simulacro', 
+        '/examenes-no-repetidos', '/examenes-no-repetidos/:idExamen*',
+        '/inicio',
+        '/practica-un-tema',
+        '/preguntas-fallidas',
+        '/primer-simulacro',
         '/primera-practica',
-        '/progreso', 
-        '/registro', 
-        '/result', 
+        '/progreso',
+        '/registro',
+        '/result',
         '/talleres-de-estudio', '/talleres-de-estudio/:idTema*',
         '/temario',
         '/videos',
