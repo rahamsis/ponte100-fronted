@@ -105,13 +105,17 @@ const ExportPDFButton: React.FC<ExportPDFButtonProps> = ({ data, children, class
             // Dibuja la línea desde el margen izquierdo al derecho
             doc.line(margin.left, 36, doc.internal.pageSize.width - margin.right, 36);
 
-            // Función para agregar texto con control de páginas
-            const addTextWithPageBreak = (text: string | string[], claves?: string | string[], tipo?: string, options?: {
-                x?: number;
-                style?: "bold" | "normal";
-                fontSize?: number;
-                indent?: number;
-            }) => {
+            const addTextWithPageBreak = (
+                text: string | string[],
+                claves?: string | string[],
+                tipo?: string,
+                options?: {
+                    x?: number;
+                    style?: "bold" | "normal";
+                    fontSize?: number;
+                    indent?: number;
+                }
+            ) => {
                 const x = options?.x || margin.left;
                 const style = options?.style || "normal";
                 const fontSize = options?.fontSize || 10;
@@ -120,11 +124,30 @@ const ExportPDFButton: React.FC<ExportPDFButtonProps> = ({ data, children, class
                 doc.setFont("helvetica", style);
                 doc.setFontSize(fontSize);
 
-                const clavesArray = Array.isArray(claves) ? claves : (claves ? [claves] : []);
-                const palabrasClaves = clavesArray.map(c => c.toLowerCase());
+                // Función para limpiar texto
+                const limpiar = (str: string) =>
+                    str
+                        .normalize("NFD")
+                        .replace(/[\u0300-\u036f]/g, "")
+                        .replace(/[.,!?;:()\[\]{}"“”¡¿]/g, "")
+                        .toLowerCase();
 
+                // Aceptar claves como string o array
+                const clavesArray = Array.isArray(claves)
+                    ? claves
+                    : claves
+                        ? claves.split("||")
+                        : [];
 
-                const lines = Array.isArray(text) ? text : doc.splitTextToSize(text, doc.internal.pageSize.width - margin.left - margin.right - indent);
+                const palabrasClaves = clavesArray.map(c => limpiar(c));
+
+                const lines = Array.isArray(text)
+                    ? text
+                    : doc.splitTextToSize(
+                        text,
+                        doc.internal.pageSize.width - margin.left - margin.right - indent
+                    );
+
                 const neededHeight = lines.length * lineHeight;
 
                 if (currentY + neededHeight > doc.internal.pageSize.height - 5) {
@@ -132,46 +155,81 @@ const ExportPDFButton: React.FC<ExportPDFButtonProps> = ({ data, children, class
                     currentY = 10;
                 }
 
-                // doc.text(lines, x + indent, currentY);
-                // currentY += neededHeight;
-
                 lines.forEach((line: string) => {
-                    const words = line.split(" ");
+                    const partes: { texto: string; esClave: boolean }[] = [];
+                    let restante = line;
+
+                    while (restante.length > 0) {
+                        let encontrado = false;
+
+                        for (let i = 0; i < palabrasClaves.length; i++) {
+                            const claveOriginal = clavesArray[i];
+                            const claveLimpia = palabrasClaves[i];
+                            const restanteLimpio = limpiar(restante);
+
+                            const indexLimpio = restanteLimpio.indexOf(claveLimpia);
+
+                            if (indexLimpio !== -1) {
+                                // Convertir índice limpio a índice real en texto original
+                                let indexReal = 0;
+                                let contadorLimpio = 0;
+
+                                while (
+                                    indexReal < restante.length &&
+                                    contadorLimpio < indexLimpio
+                                ) {
+                                    const char = restante[indexReal];
+                                    if (limpiar(char) !== "") contadorLimpio++;
+                                    indexReal++;
+                                }
+
+                                const before = restante.slice(0, indexReal);
+                                const match = restante.slice(
+                                    indexReal,
+                                    indexReal + claveOriginal.length
+                                );
+                                const after = restante.slice(
+                                    indexReal + claveOriginal.length
+                                );
+
+                                if (before) partes.push({ texto: before, esClave: false });
+                                partes.push({ texto: match, esClave: true });
+                                restante = after;
+                                encontrado = true;
+                                break;
+                            }
+                        }
+
+                        if (!encontrado) {
+                            partes.push({ texto: restante, esClave: false });
+                            break;
+                        }
+                    }
+
+                    // Dibujar texto
                     let currentX = x + indent;
 
-                    words.forEach((word: string) => {
-                        const cleanWord = word.replace(/[.,;]/g, ""); // quitar signos para comparar
-                        const isClave = palabrasClaves.includes(cleanWord.toLowerCase());
+                    partes.forEach(({ texto, esClave }) => {
+                        const words = texto.split(/(\s+)/); // mantener espacios
+                        words.forEach(word => {
+                            if (!word) return;
 
-                        // Medir ancho de la palabra + espacio
-                        const wordWidth = doc.getTextWidth(word + " ");
+                            const wordWidth = doc.getTextWidth(word);
 
-                        // Cambiar color si es clave
-                        if (isClave) {
-                            // doc.setFont("helvetica", style);
-                            doc.setFont("helvetica", "bold");
-                            doc.setTextColor(255, 0, 0); // rojo    
-                        } else {
-                            doc.setFont("helvetica", "normal");
-                            doc.setTextColor(0, 0, 0); // negro normal
-                        }
+                            doc.setFont("helvetica", esClave || tipo === "pregunta" ? "bold" : "normal");
+                            doc.setTextColor(esClave ? 255 : 0, 0, 0);
 
-                        if (tipo === "pregunta") {
-                            doc.setFont("helvetica", "bold");
-                        }
+                            doc.text(word, currentX, currentY);
 
-                        // Dibujar texto
-                        doc.text(word, currentX, currentY);
+                            if (esClave && word.trim()) {
+                                const underlineY = currentY + 1;
+                                doc.setDrawColor(255, 0, 0);
+                                doc.setLineWidth(0.5);
+                                doc.line(currentX, underlineY, currentX + wordWidth, underlineY);
+                            }
 
-                        // Subrayado si es clave
-                        if (isClave) {
-                            const underlineY = currentY + 1;
-                            doc.setDrawColor(255, 0, 0); // rojo
-                            doc.setLineWidth(0.5);
-                            doc.line(currentX, underlineY, currentX + doc.getTextWidth(word), underlineY);
-                        }
-
-                        currentX += wordWidth;
+                            currentX += wordWidth;
+                        });
                     });
 
                     currentY += lineHeight;
@@ -185,7 +243,7 @@ const ExportPDFButton: React.FC<ExportPDFButtonProps> = ({ data, children, class
                 const claves = pregunta.clave ? pregunta.clave.split("||") : undefined;
 
                 // 1. Pregunta (en negrita)
-                addTextWithPageBreak(`${index + 1}. ${pregunta.question}`, claves, "pregunta", {
+                addTextWithPageBreak(`${index + 1}. ${pregunta.question}`, claves?.[0], "pregunta", {
                     style: "bold",
                     fontSize: 10
                 });
@@ -205,7 +263,7 @@ const ExportPDFButton: React.FC<ExportPDFButtonProps> = ({ data, children, class
                     .find(opt => opt.startsWith(pregunta.correctAnswer + "@"))
                     ?.split("@")[1] || "";
 
-                addTextWithPageBreak(`RESPUESTA: ${correctAnswer}`, claves, "respuesta", {
+                addTextWithPageBreak(`RESPUESTA: ${correctAnswer}`, claves?.[1], "respuesta", {
                     style: "normal"
                 });
 
