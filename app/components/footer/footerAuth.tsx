@@ -3,7 +3,7 @@ import { Heart } from "lucide-react"
 export default function FooterAuth() {
     return (
 
-        <footer className="bg-black py-4 px-4 md:px-6 w-full border-t">
+        <footer className="fixed bottom-0 left-0 w-full bg-black py-4 px-4 md:px-6 border-t z-50">
             <div className="max-w-7xl mx-auto w-full">
                 <div className="flex flex-col items-center justify-between gap-2 lg:flex-row">
 

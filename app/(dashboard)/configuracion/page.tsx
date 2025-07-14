@@ -9,23 +9,21 @@ import { ModalUpdateSuccessfull } from "@/app/components/modales/modalUpdateSucc
 import { Loader2 } from "lucide-react";
 
 function Inicio() {
-    // Inicio del carrusel de Actividades
-
-    // Fin del carrusel de Actividades
     return (
-        <div className="flex flex-col pt-20">
-            {/* Versión escritorio */}
-            <section className="bg-postbanner pt-5">
-                <div className="lg:mx-20">
-                    <div className="flex flex-wrap items-start mx-8 lg:mx-3">
-                        <div className="">
-                            <h2 className="text-xl md:text-3xl font-bold tracking-tighter sm:text-4xl text-left mb-4 lg:mb-8 text-primary">
-                                Configuraciones
-                            </h2>
+        <div className="w-full">
+            <div className="flex flex-col pt-20">
+                <section className="bg-postbanner pt-5">
+                    <div className="lg:mx-20">
+                        <div className="flex flex-wrap items-start mx-8 lg:mx-3">
+                            <div className="">
+                                <h2 className="text-xl md:text-3xl font-bold tracking-tighter sm:text-4xl text-left mb-4 lg:mb-8 text-primary">
+                                    Configuraciones
+                                </h2>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </section>
+                </section>
+            </div>
         </div>
     )
 }
@@ -244,14 +242,62 @@ function UploadVideos() {
     );
 }
 
+function Users() {
+    return (
+        <div className="w-full">
+            <div className="lg:mx-20">
+                <div className="mx-8 lg:mx-3">
+                    <div className="py-4 space-y-4">
+                        <h1 className="text-button text-base lg:text-lg font-semibold mb-4">Usuarios</h1>
+
+                        {/* Contenedor principal con scroll horizontal aislado */}
+                        <div className="relative w-full border border-red-500 rounded-lg">
+                            {/* Contenedor de scroll con ancho restringido */}
+                            <div className="overflow-x-auto w-[calc(100vw-4rem)] md:w-[calc(100vw-6rem)] lg:w-[calc(100vw-18rem)] x:w-[calc(100vw-20rem)]">
+                                {/* Tabla con ancho mínimo garantizado */}
+                                <table className="min-w-[800px] w-full table-auto border-collapse">
+                                    <thead className="bg-gray-200">
+                                        <tr>
+                                            <th className="border border-gray-300 px-4 py-2 text-left whitespace-nowrap">Nombre</th>
+                                            <th className="border border-gray-300 px-4 py-2 text-left whitespace-nowrap">Edad</th>
+                                            <th className="border border-gray-300 px-4 py-2 text-left whitespace-nowrap">Correo</th>
+                                            <th className="border border-gray-300 px-4 py-2 text-left whitespace-nowrap">Teléfono</th>
+                                            <th className="border border-gray-300 px-4 py-2 text-left whitespace-nowrap">Dirección</th>
+                                            <th className="border border-gray-300 px-4 py-2 text-left whitespace-nowrap">Empresa</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {Array.from({ length: 10 }).map((_, i) => (
+                                            <tr key={i} className="odd:bg-white even:bg-gray-50">
+                                                <td className="border px-4 py-2 whitespace-nowrap">Juan Pérez {i + 1}</td>
+                                                <td className="border px-4 py-2 whitespace-nowrap">{20 + i}</td>
+                                                <td className="border px-4 py-2 whitespace-nowrap">juan{i}@correo.com</td>
+                                                <td className="border px-4 py-2 whitespace-nowrap">999-000-{100 + i} </td>
+                                                <td className="border px-4 py-2 whitespace-nowrap">Calle Falsa 123</td>
+                                                <td className="border px-4 py-2 whitespace-nowrap">Empresa {i + 1}</td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}
+
 export default function Configuracion() {
     return (
-        <>
+        <div className="flex flex-col min-h-screen w-full">
             <Inicio />
 
-            <UpdateTalleres />
+            {/* <UpdateTalleres /> */}
 
-            <UploadVideos />
-        </>
+            {/* <UploadVideos /> */}
+
+            <Users />
+        </div>
     )
 }
