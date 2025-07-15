@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { Search, Trash2, KeyRound, BookOpenCheck } from "lucide-react";
+import { Search, KeyRound, BookOpenCheck } from "lucide-react";
 import SelectorUsers from "@/app/components/selectors/selectorUsers";
 import SelectorTalleres from "@/app/components/selectors/selectorTalleres";
 import { useSession } from "next-auth/react";
