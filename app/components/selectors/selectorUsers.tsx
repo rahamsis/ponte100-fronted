@@ -15,8 +15,16 @@ type User = {
     userId: string,
     nombre: string,
     apellidos: string,
+    genero: string,
+    idGrado: string,
+    nombreGrado: string,
     email: string,
     telefono: string,
+    cip: string,
+    dni: string,
+    username: string,
+    idPerfil: string, 
+    nombrePerfil: string,
 }
 
 interface SelectorUsersProps {
@@ -74,7 +82,7 @@ export default function SelectorUsers({ onUserSelect, selectedUserId }: Selector
     )
 
     return (
-        <div className="relative w-72" ref={selectorRef}>
+        <div className="relative w-full" ref={selectorRef}>
             <button
                 type="button"
                 onClick={() => setIsOpen(!isOpen)}
