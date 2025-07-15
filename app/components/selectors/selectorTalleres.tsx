@@ -66,7 +66,7 @@ export default function SelectorTalleres({ onTallerSelect, selectedTallerId }: S
     )
 
     return (
-        <div className="relative w-72" ref={selectorRef}>
+        <div className="relative w-full" ref={selectorRef}>
             <button
                 type="button"
                 onClick={() => setIsOpen(!isOpen)}

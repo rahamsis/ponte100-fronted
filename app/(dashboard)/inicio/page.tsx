@@ -661,7 +661,7 @@ function Videos() {
         async function fetchVideos() {
             const res = await fetch("/api/videos");
             const data = await res.json();
-            console.log("VIDEOS: ", data)
+            // console.log("VIDEOS: ", data)
             setVideos(data);
             // setLoading(false);
         }

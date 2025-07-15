@@ -90,7 +90,7 @@ const config: Config = {
     },
   },
   plugins: [
-    require('tailwind-scrollbar-hide') // npm install tailwind-scrollbar-hide
+    // require('tailwind-scrollbar-hide') // npm install tailwind-scrollbar-hide
   ],
 }
 export default config

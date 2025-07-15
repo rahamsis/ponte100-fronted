@@ -616,7 +616,6 @@ export async function fetchAllUsers() {
                 'Content-Type': 'application/json',
                 'accept': '*/*'
             },
-            // next: { revalidate: 0 }
         });
 
         const data = await response.json();
@@ -686,6 +685,73 @@ export async function InsertOrUpdateTallerToOneUser(idUsuario: string, idTaller:
 
     } catch (error) {
         console.error('Error al actualizar los datos del usuario and taller (InsertOrUpdateTallerToOneUser):', error);
+    }
+}
+
+interface FormData {
+    nombre: string;
+    apellidos: string;
+    email: string;
+    telefono: string;
+    cip: string;
+    dni: string;
+    grado: string;
+    genero: string;
+    username: string;
+    password: string;
+}
+
+export async function AddingUser(data: FormData) {
+    try {
+        const response = await fetch(`${process.env.APP_BACK_END}/backendApi/adding-user`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'accept': '/'
+            },
+            body: JSON.stringify({
+                nombre: data.nombre,
+                apellidos: data.apellidos,
+                email: data.email,
+                genero: data.genero,
+                cip: data.cip,
+                dni: data.dni,
+                telefono: data.telefono,
+                idGrado: data.grado,
+                username: data.username,
+                password: data.password
+            }),
+            next: { revalidate: 0 }
+        });
+
+        const responseData = await response.json();
+        return responseData;
+
+    } catch (error) {
+        console.error('Error al registrar un usuario (AddingUser):', error);
+    }
+}
+
+export async function ResetPassword(data: {password: string, userId: string}) {
+    try {
+        const response = await fetch(`${process.env.APP_BACK_END}/backendApi/reset-password`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'accept': '/'
+            },
+            body: JSON.stringify({
+                password: data.password,
+                userId: data.userId
+            }),
+            next: { revalidate: 0 }
+        });
+
+        const responseData = await response.json();
+        return responseData;
+
+    } catch (error) {
+        console.error('Error al resetear la contraseña (ResetPassword()):', error);
     }
 }
 

@@ -11,8 +11,8 @@ const Estadistica = dynamic(() => import('../../components/estadisticas/grafico'
 function Estadisticas() {
     const router = useRouter();
     return (
-        <>
-            <section className=" md:pb-6  flex-col  mx-4 lg:mx-20 bg-web mt-20 md:mt-28 lg:mt-20">
+        <div className="">
+            <section className=" md:pb-6  flex-col  mx-4 lg:ml-20 bg-web mt-20 md:mt-28 lg:mt-20">
                 <div className="flex flex-wrap items-start mx-8 lg:mx-3">
                     <button className="flex flex-row" onClick={() => router.back()}>
                         <ArrowLeft />
@@ -22,7 +22,7 @@ function Estadisticas() {
                     </button>
                 </div>
             </section>
-            <section className=" md:pb-6  flex-col mx-2 lgmx-4 lg:mx-20 bg-web">
+            <section className=" md:pb-6  flex-col mx-4 lg:ml-20 bg-web">
                 <div className="bg-white text-gray-800 p-6">
                     <div className="mx-auto">
                         <header className="bg-black text-white py-3 px-6 rounded">
@@ -81,14 +81,14 @@ function Estadisticas() {
                     </div>
                 </div>
             </section>
-        </>
+        </div>
     )
 }
 
 function EstadisticaFinal() {
     return (
-        <>
-            <section className=" md:pb-6  flex-col  mx-4 lg:mx-20 bg-web ">
+        <div className="pb-28 md:pb-10">
+            <section className=" md:pb-6  flex-col  mx-4 lg:ml-20 bg-web ">
                 <div className=" bg-white text-gray-800 p-6">
                     <div className="mx-auto">
                         <header className="bg-black text-white py-3 px-6 rounded">
@@ -140,7 +140,7 @@ function EstadisticaFinal() {
                     </div>
 
                     <div className="mx-auto">
-                        <div className="overflow-x-auto mt-5">
+                        <div className="overflow-auto mt-5 w-[calc(100vw-4rem)] md:w-[calc(100vw-6rem)] lg:w-[calc(100vw-18rem)] x:w-[calc(100vw-20rem)]">
                             <table className="min-w-full text-center bg-white  border-gray-200">
                                 <thead className="bg-primary text-white">
                                     <tr>
@@ -261,7 +261,7 @@ function EstadisticaFinal() {
                     </p>
 
                     <div className="mx-auto mt-16">
-                        <div className="overflow-x-auto mt-10">
+                        <div className="overflow-x-auto mt-10 w-[calc(100vw-4rem)] md:w-[calc(100vw-6rem)] lg:w-[calc(100vw-18rem)] x:w-[calc(100vw-20rem)]">
                             <table className="min-w-full text-center bg-white  border-gray-200">
                                 <thead className="bg-primary text-white">
                                     <tr>
@@ -348,18 +348,9 @@ function EstadisticaFinal() {
                     </p>
 
                     <div className="mx-auto mt-16">
-                        <div className="overflow-x-auto mt-10">
+                        <div className="overflow-x-auto mt-10 w-[calc(100vw-4rem)] md:w-[calc(100vw-6rem)] lg:w-[calc(100vw-18rem)] x:w-[calc(100vw-20rem)]">
                             <table className="min-w-full text-center bg-white  border-gray-200">
                                 <thead className="bg-primary text-white">
-                                    {/* <tr>
-                                        <th className="px-4 py-2 border" colSpan={2} rowSpan={2}>POSTULANTES APTOS PARA EL EXAMEN DE
-                                            CONOCIMIENTOS
-                                        </th>
-                                        <th>Desaprobados</th>
-                                        <th>NSP</th>
-                                        <th>Otros Motivos</th>
-                                        <th></th>
-                                    </tr> */}
                                 </thead>
                                 <tbody>
                                     <tr className=''>
@@ -406,7 +397,7 @@ function EstadisticaFinal() {
                     </p>
 
                     <div className="mx-auto mt-16">
-                        <div className="overflow-x-auto mt-5">
+                        <div className="overflow-x-auto mt-5 w-[calc(100vw-4rem)] md:w-[calc(100vw-6rem)] lg:w-[calc(100vw-18rem)] x:w-[calc(100vw-20rem)]">
                             <table className="min-w-full text-center bg-white  border-gray-200">
                                 <thead className="bg-primary text-white">
                                     <tr>
@@ -536,7 +527,7 @@ function EstadisticaFinal() {
                     </ul>
                 </div>
             </section>
-        </>
+        </div>
     )
 }
 

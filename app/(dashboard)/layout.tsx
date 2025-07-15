@@ -53,13 +53,13 @@ export default async function RootLayout({ children, }: Readonly<{ children: Rea
         <meta property="og:image" content={getImageUrl().toString()} />
         <meta property="og:image:alt" content={getImageAlt()} />
       </head>
-      <body className={`flex min-h-screen overflow-x-hidden ${inter.className}`}>
+      <body className={`flex min-h-screen flex-col ${inter.className}`}>
         <Providers>
           <div className="flex flex-row w-full">
             <Sidebar session={session} />
             <div className="flex flex-col flex-1">
               <HeaderAuth />
-              <main className="lg:pl-32 flex-1 overflow-auto">
+              <main className="lg:pl-32 flex-1 overflow-auto pb-8 lg:pb-16">
                 {children}
               </main>
               <FooterAuth />
