@@ -265,13 +265,23 @@ function Users() {
     const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser);
 
     const [resetUserId, setResetUserId] = useState<string | null>(null);
+    const [isLoading, setIsLoading] = useState(true);
 
     const cargarUsuarios = async () => {
+        setIsLoading(true);
         try {
             const data = await fetchAllUsers();
-            setUsers(data);
+            if (Array.isArray(data)) {
+                setUsers(data);
+            } else {
+                console.error("La respuesta no es un arreglo:", data);
+                setUsers([]);
+            }
         } catch (error) {
             console.error('Error al cargar usuarios:', error);
+            setUsers([]);
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -332,33 +342,68 @@ function Users() {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {currentUsers.map((user, i) => (
-                                            <tr key={i} className="odd:bg-white even:bg-gray-200">
-                                                <td className="border border-gray-300 px-3 py-2 whitespace-nowrap relative">{indexOfFirstUser + i + 1}</td>
-                                                <td className="border border-gray-300 px-4 py-2 whitespace-nowrap">{user.nombre}{user.apellidos ? ' ' + user.apellidos : ''}</td>
-                                                <td className="border border-gray-300 px-4 py-2 whitespace-nowrap">{user.genero}</td>
-                                                <td className="border border-gray-300 px-4 py-2 whitespace-nowrap">{user.nombreGrado}</td>
-                                                <td className="border border-gray-300 px-4 py-2 whitespace-nowrap">{user.email}</td>
-                                                <td className="border border-gray-300 px-4 py-2 whitespace-nowrap">{user.telefono}</td>
-                                                <td className="border border-gray-300 px-4 py-2 whitespace-nowrap">{<span>{user.cip}</span>}{" /"}{<br></br>}{<span>{user.dni}</span>}</td>
-                                                <td className="border border-gray-300 px-4 py-2 whitespace-nowrap">{user.nombrePerfil}</td>
-                                                <td className="border text-center">
-                                                    <button
-                                                        className="border border-button2 p-2 rounded-md"
-                                                        title="talleres"
+                                        {isLoading ? (
+                                            <tr>
+                                                <td colSpan={10} className="text-center py-4 text-gray-500">
+                                                    <div className="flex justify-center items-center space-x-2">
+                                                        <svg
+                                                            className="animate-spin h-5 w-5 text-gray-500"
+                                                            xmlns="http://www.w3.org/2000/svg"
+                                                            fill="none"
+                                                            viewBox="0 0 24 24"
+                                                        >
+                                                            <circle
+                                                                className="opacity-25"
+                                                                cx="12"
+                                                                cy="12"
+                                                                r="10"
+                                                                stroke="currentColor"
+                                                                strokeWidth="4"
+                                                            ></circle>
+                                                            <path
+                                                                className="opacity-75"
+                                                                fill="currentColor"
+                                                                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                                                            ></path>
+                                                        </svg>
+                                                        <span>Cargando usuarios...</span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        ) : currentUsers.length === 0 ? (
+                                            <tr>
+                                                <td colSpan={10} className="text-center py-4 text-gray-400">
+                                                    No se encontraron usuarios.
+                                                </td>
+                                            </tr>
+                                        ) : (
+                                            currentUsers.map((user, i) => (
+                                                <tr key={i} className="odd:bg-white even:bg-gray-200">
+                                                    <td className="border border-gray-300 px-3 py-2 whitespace-nowrap relative">{indexOfFirstUser + i + 1}</td>
+                                                    <td className="border border-gray-300 px-4 py-2 whitespace-nowrap">{user.nombre}{user.apellidos ? ' ' + user.apellidos : ''}</td>
+                                                    <td className="border border-gray-300 px-4 py-2 whitespace-nowrap">{user.genero}</td>
+                                                    <td className="border border-gray-300 px-4 py-2 whitespace-nowrap">{user.nombreGrado}</td>
+                                                    <td className="border border-gray-300 px-4 py-2 whitespace-nowrap">{user.email}</td>
+                                                    <td className="border border-gray-300 px-4 py-2 whitespace-nowrap">{user.telefono}</td>
+                                                    <td className="border border-gray-300 px-4 py-2 whitespace-nowrap">{<span>{user.cip}</span>}{" /"}{<br></br>}{<span>{user.dni}</span>}</td>
+                                                    <td className="border border-gray-300 px-4 py-2 whitespace-nowrap">{user.nombrePerfil}</td>
+                                                    <td className="border text-center">
+                                                        <button
+                                                            className="border border-button2 p-2 rounded-md"
+                                                            title="talleres"
 
-                                                    // disabled={!this.state.reset}
-                                                    ><BookOpenCheck className='text-button2 w-4 h-4' /></button>
-                                                </td>
-                                                <td className="border text-center">
-                                                    <button
-                                                        className="border border-blue-400 p-2 rounded-md"
-                                                        title="Resetear"
-                                                        onClick={() => setResetUserId(user.userId)}
-                                                    // disabled={!this.state.reset}
-                                                    ><KeyRound className='text-blue-400 w-4 h-4' /></button>
-                                                </td>
-                                                {/* <td className="border border-gray-300 text-center">
+                                                        // disabled={!this.state.reset}
+                                                        ><BookOpenCheck className='text-button2 w-4 h-4' /></button>
+                                                    </td>
+                                                    <td className="border text-center">
+                                                        <button
+                                                            className="border border-blue-400 p-2 rounded-md"
+                                                            title="Resetear"
+                                                            onClick={() => setResetUserId(user.userId)}
+                                                        // disabled={!this.state.reset}
+                                                        ><KeyRound className='text-blue-400 w-4 h-4' /></button>
+                                                    </td>
+                                                    {/* <td className="border border-gray-300 text-center">
                                                     <button
                                                         className="border border-red-500 p-2 rounded-md"
                                                         title="Editar"
@@ -367,8 +412,8 @@ function Users() {
                                                     >
                                                         <Trash2 className='text-red-500 w-4 h-4' /></button>
                                                 </td> */}
-                                            </tr>
-                                        ))}
+                                                </tr>
+                                            )))}
                                     </tbody>
                                 </table>
                             </div>
