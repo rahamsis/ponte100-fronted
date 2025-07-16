@@ -2,11 +2,13 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { Search, KeyRound, BookOpenCheck } from "lucide-react";
-import SelectorUsers from "@/app/components/selectors/selectorUsers";
-import SelectorTalleres from "@/app/components/selectors/selectorTalleres";
-import { useSession } from "next-auth/react";
-import { fetchAllUsers, InsertOrUpdateTallerToOneUser } from "@/app/lib/actions";
-import { ModalUpdateSuccessfull } from "@/app/components/modales/modalUpdateSuccessfull";
+// import SelectorUsers from "@/app/components/selectors/selectorUsers";
+// import SelectorTalleres from "@/app/components/selectors/selectorTalleres";
+// import { useSession } from "next-auth/react";
+import { fetchAllUsers, 
+    // InsertOrUpdateTallerToOneUser 
+} from "@/app/lib/actions";
+// import { ModalUpdateSuccessfull } from "@/app/components/modales/modalUpdateSuccessfull";
 import { Loader2 } from "lucide-react";
 import { ModalAddUser } from '@/app/components/modales/modalAddUser';
 import { ModalResetPassword } from '@/app/components/modales/modalResetPassword';
