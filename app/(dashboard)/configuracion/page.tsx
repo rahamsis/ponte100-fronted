@@ -11,7 +11,6 @@ import { Loader2 } from "lucide-react";
 import { ModalAddUser } from '@/app/components/modales/modalAddUser';
 import { ModalResetPassword } from '@/app/components/modales/modalResetPassword';
 import { ModalAddTalleres } from '@/app/components/modales/modalAddTalleres';
-import { string } from 'zod';
 
 function Inicio() {
     return (
@@ -49,94 +48,94 @@ type User = {
     nombrePerfil: string,
 }
 
-function UpdateTalleres() {
-    const { data: session } = useSession();
-    const [selectedUser, setSelectedUser] = useState<User | null>(null);
-    const [selectedTaller, setSelectedTaller] = useState<{ idTaller: string }>({ idTaller: '' });
-    const [activo, setActivo] = useState<boolean>(true);
-    const [showModal, setShowModal] = useState(false)
+// function UpdateTalleres() {
+//     const { data: session } = useSession();
+//     const [selectedUser, setSelectedUser] = useState<User | null>(null);
+//     const [selectedTaller, setSelectedTaller] = useState<{ idTaller: string }>({ idTaller: '' });
+//     const [activo, setActivo] = useState<boolean>(true);
+//     const [showModal, setShowModal] = useState(false)
 
-    const hadleActualizarTalleres = async () => {
-        if (!selectedUser || !selectedUser.userId || !selectedTaller.idTaller) return;
+//     const hadleActualizarTalleres = async () => {
+//         if (!selectedUser || !selectedUser.userId || !selectedTaller.idTaller) return;
 
-        if (!session?.user?.userId) {
-            console.error("User ID is not available");
-            return;
-        }
+//         if (!session?.user?.userId) {
+//             console.error("User ID is not available");
+//             return;
+//         }
 
-        try {
-            await InsertOrUpdateTallerToOneUser(selectedUser.userId, selectedTaller.idTaller, activo, session.user.userId);
-            setShowModal(true)
-        } catch (error) {
-            console.error("Error al actualizar talleres (configuracion - UpdateTalleres):", error);
-        }
-    }
+//         try {
+//             await InsertOrUpdateTallerToOneUser(selectedUser.userId, selectedTaller.idTaller, activo, session.user.userId);
+//             setShowModal(true)
+//         } catch (error) {
+//             console.error("Error al actualizar talleres (configuracion - UpdateTalleres):", error);
+//         }
+//     }
 
-    const resetForm = () => {
-        setSelectedUser({
-            userId: '', nombre: 'selecciona un usuario', apellidos: '', genero: '', idGrado: '', nombreGrado: '',
-            email: '', telefono: '', cip: '', dni: '', username: '', idPerfil: '', nombrePerfil: ''
-        });
-        setSelectedTaller({ idTaller: '' });
-        setActivo(true);
-        setShowModal(false);
-    };
+//     const resetForm = () => {
+//         setSelectedUser({
+//             userId: '', nombre: 'selecciona un usuario', apellidos: '', genero: '', idGrado: '', nombreGrado: '',
+//             email: '', telefono: '', cip: '', dni: '', username: '', idPerfil: '', nombrePerfil: ''
+//         });
+//         setSelectedTaller({ idTaller: '' });
+//         setActivo(true);
+//         setShowModal(false);
+//     };
 
-    // Fin del carrusel de Videos
-    return (
-        <div>
-            <div className="flex flex-col">
-                {/* Versión escritorio */}
-                <section className="bg-postbanner py-10">
-                    <div className="lg:mx-20">
-                        <div className="flex flex-wrap items-center mx-8 lg:mx-3">
-                            <div className="text-button text-base lg:text-lg font-semibold">Actualizar talleres</div>
+//     // Fin del carrusel de Videos
+//     return (
+//         <div>
+//             <div className="flex flex-col">
+//                 {/* Versión escritorio */}
+//                 <section className="bg-postbanner py-10">
+//                     <div className="lg:mx-20">
+//                         <div className="flex flex-wrap items-center mx-8 lg:mx-3">
+//                             <div className="text-button text-base lg:text-lg font-semibold">Actualizar talleres</div>
 
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 pt-4 w-full">
-                                <div className="w-full flex flex-col">
-                                    <label>Usuario: </label>
-                                    <SelectorUsers onUserSelect={(user) => setSelectedUser(user)} selectedUserId={selectedUser?.userId} />
-                                </div>
-                                <div className="flex flex-col">
-                                    <label>Taller: </label>
-                                    <SelectorTalleres onTallerSelect={(idTaller) => setSelectedTaller({ idTaller })} selectedTallerId={selectedTaller.idTaller} />
-                                </div>
-                                <div className="flex flex-col">
-                                    <label className="mb-1 font-medium">Activo:</label>
-                                    <label className="flex items-center cursor-pointer gap-2 select-none h-full">
-                                        <input
-                                            type="checkbox"
-                                            className="peer hidden"
-                                            checked={activo}
-                                            onChange={(e) => setActivo(e.target.checked)}
-                                        />
-                                        <div className="w-5 h-5 rounded-full border border-gray-400 peer-checked:bg-blue-500 peer-checked:border-blue-500 transition-colors"></div>
-                                        <span>{activo ? "Si" : "No"}</span>
-                                    </label>
-                                </div>
-                                <div className="flex flex-col">
-                                    <label className="mb-1 font-medium">Opcion:</label>
-                                    <button
-                                        onClick={() => hadleActualizarTalleres()}
-                                        className={`${selectedUser?.userId === '' || selectedTaller.idTaller == '' ? "bg-opacity-15" : ""} w-full bg-button2 text-white rounded-lg px-4 py-2 transition-colors`}>
-                                        Actualizar Talleres
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-            </div>
+//                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 pt-4 w-full">
+//                                 <div className="w-full flex flex-col">
+//                                     <label>Usuario: </label>
+//                                     <SelectorUsers onUserSelect={(user) => setSelectedUser(user)} selectedUserId={selectedUser?.userId} />
+//                                 </div>
+//                                 <div className="flex flex-col">
+//                                     <label>Taller: </label>
+//                                     <SelectorTalleres onTallerSelect={(idTaller) => setSelectedTaller({ idTaller })} selectedTallerId={selectedTaller.idTaller} />
+//                                 </div>
+//                                 <div className="flex flex-col">
+//                                     <label className="mb-1 font-medium">Activo:</label>
+//                                     <label className="flex items-center cursor-pointer gap-2 select-none h-full">
+//                                         <input
+//                                             type="checkbox"
+//                                             className="peer hidden"
+//                                             checked={activo}
+//                                             onChange={(e) => setActivo(e.target.checked)}
+//                                         />
+//                                         <div className="w-5 h-5 rounded-full border border-gray-400 peer-checked:bg-blue-500 peer-checked:border-blue-500 transition-colors"></div>
+//                                         <span>{activo ? "Si" : "No"}</span>
+//                                     </label>
+//                                 </div>
+//                                 <div className="flex flex-col">
+//                                     <label className="mb-1 font-medium">Opcion:</label>
+//                                     <button
+//                                         onClick={() => hadleActualizarTalleres()}
+//                                         className={`${selectedUser?.userId === '' || selectedTaller.idTaller == '' ? "bg-opacity-15" : ""} w-full bg-button2 text-white rounded-lg px-4 py-2 transition-colors`}>
+//                                         Actualizar Talleres
+//                                     </button>
+//                                 </div>
+//                             </div>
+//                         </div>
+//                     </div>
+//                 </section>
+//             </div>
 
-            {showModal && (
-                <ModalUpdateSuccessfull
-                    onClose={() => setShowModal(false)}
-                    handleFinish={resetForm}
-                />
-            )}
-        </div>
-    )
-}
+//             {showModal && (
+//                 <ModalUpdateSuccessfull
+//                     onClose={() => setShowModal(false)}
+//                     handleFinish={resetForm}
+//                 />
+//             )}
+//         </div>
+//     )
+// }
 
 function UploadVideos() {
 
