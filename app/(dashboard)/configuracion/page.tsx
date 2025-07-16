@@ -477,7 +477,7 @@ export default function Configuracion() {
 
             <Users />
 
-            <UpdateTalleres />
+            {/* <UpdateTalleres /> */}
 
             <UploadVideos />
 
