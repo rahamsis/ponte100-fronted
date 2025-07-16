@@ -647,6 +647,48 @@ export async function fetchAllTalleres() {
     }
 }
 
+export async function fetchAllTalleresByUserId(userId: string) {
+    try {
+        const response = await fetch(`${process.env.APP_BACK_END}/backendApi/all-talleres-by-userId?userId=${userId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'accept': '*/*'
+            },
+            // next: { revalidate: 0 }
+        });
+
+        const data = await response.json();
+        return data;
+
+    } catch (error) {
+        console.error('Error al obtener los talleres por el userId (fetchAllTalleresByUserId):', error);
+        throw new Error("Error al obtener los talleres por el userId (fetchAllTalleresByUserId");
+    }
+}
+
+export async function updateTalleresByUserId(userId: string, datos: {idTaller: string; estado: number }[], idUsuarioregistro: string) {
+    try {
+        const bodyData = { userId, datos, idUsuarioregistro }
+        ;
+        const response = await fetch(`${process.env.APP_BACK_END}/backendApi/usuarioTaller-update`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'accept': '/'
+            },
+            body: JSON.stringify(bodyData),
+            next: { revalidate: 0 }
+        });
+
+        const responseData = await response.json();
+        return responseData;
+
+    } catch (error) {
+        console.error('Error al actualizar los talleres del usuario (updateTalleresByUserId):', error);
+    }
+}
+
 export async function downloadQuestionsToClase(idClase: number) {
     console.log("idTaller:", idClase)
     try {

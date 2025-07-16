@@ -10,6 +10,8 @@ import { ModalUpdateSuccessfull } from "@/app/components/modales/modalUpdateSucc
 import { Loader2 } from "lucide-react";
 import { ModalAddUser } from '@/app/components/modales/modalAddUser';
 import { ModalResetPassword } from '@/app/components/modales/modalResetPassword';
+import { ModalAddTalleres } from '@/app/components/modales/modalAddTalleres';
+import { string } from 'zod';
 
 function Inicio() {
     return (
@@ -267,6 +269,8 @@ function Users() {
     const [resetUserId, setResetUserId] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(true);
 
+    const [addTalleres, setAddTalleres] = useState<{userId: string, nombre: string} | null>(null);
+
     const cargarUsuarios = async () => {
         setIsLoading(true);
         try {
@@ -302,14 +306,14 @@ function Users() {
                             <h1 className="text-button text-base lg:text-lg font-semibold mb-4">Usuarios</h1>
                         </div>
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 w-full x:w-1/2 space-x-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2 w-full x:w-1/2 gap-4">
                             {/* Barra de búsqueda */}
                             <div className="">
                                 <Search className="absolute w-5 h-5 mt-[10px] ml-2 text-secondary" />
                                 <input
                                     type="text"
                                     placeholder="Buscar usuario..."
-                                    className="pl-16 w-full  p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary"
+                                    className="pl-16 w-10/12 lg:w-full  p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary"
                                     value={searchTerm}
                                     onChange={(e) => setSearchTerm(e.target.value)}
                                 />
@@ -391,7 +395,7 @@ function Users() {
                                                         <button
                                                             className="border border-button2 p-2 rounded-md"
                                                             title="talleres"
-
+                                                            onClick={() => setAddTalleres({ userId: user.userId, nombre: user.nombre + ' ' + (user.apellidos ? user.apellidos : '') })}
                                                         // disabled={!this.state.reset}
                                                         ><BookOpenCheck className='text-button2 w-4 h-4' /></button>
                                                     </td>
@@ -455,6 +459,12 @@ function Users() {
                     userId={resetUserId}
                     onClose={() => setResetUserId(null)}
                 />
+            )}
+            {addTalleres && (
+                <ModalAddTalleres
+                    userId={addTalleres.userId}
+                    nombre={addTalleres.nombre}
+                    onClose={() => setAddTalleres(null)} />
             )}
         </div>
     );
