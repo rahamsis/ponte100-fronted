@@ -10,7 +10,7 @@ function Practica() {
     const [selectedTheme, setSelectedTheme] = useState<string>('');
 
     return (
-        <div className="flex flex-col pt-14 pb-10">
+        <div className="flex flex-col pt-14 pb-10 min-h-screen">
             {/* Versión escritorio */}
             <section className="bg-postbanner pt-5">
                 <div className="lg:mx-20">
