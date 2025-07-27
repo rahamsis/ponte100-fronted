@@ -477,10 +477,10 @@ function BookCard({ book }: { book: { name: string; url: string; imageUrl: strin
 
 export default function Temario() {
     return (
-        <>
+        <div className="flex flex-col min-h-screen pb-20 lg:pb-5">
             <Inicio />
 
             <Zona />
-        </>
+        </div>
     )
 }
