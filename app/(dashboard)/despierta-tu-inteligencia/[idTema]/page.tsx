@@ -185,7 +185,7 @@ export default function Inteligencia({ params }: { params: Promise<{ idTema: str
                                         <h2 className="text-[10px] leading-[12px] md:text-base font-semibold mb-2 text-justify">
                                             {index + 1}.- {resaltarPalabrasClave(q.question, clavesArray)}
                                         </h2>
-                                        <h3 className="text-[9px] leading-[12px] md:text-[15px] font-semibold mb-2 text-justify">
+                                        <h3 className="text-[9px] leading-[12px] md:text-[15px] md:leading-[1.5rem] font-semibold mb-2 text-justify">
                                             Respuesta: {resaltarPalabrasClave(q.correctAnswer, clavesArray)}
                                         </h3>
                                         <div>
