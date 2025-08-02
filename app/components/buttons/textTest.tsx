@@ -353,7 +353,7 @@ const ExportPDF: React.FC<ExportPDFProps> = ({ data, children, className = "" })
 
                     chars.forEach((char, index) => {
                         const isSpace = char === ' '; // evalua si es un espacio o no
-                        const charWidth = isSpace ? 1.23333 : doc.getTextWidth(char);
+                        const charWidth = isSpace ? 1.5 : doc.getTextWidth(char);
 
                         // Caso 1: Es un espacio (convertir a punto gris)
                         if (isSpace) {
@@ -364,7 +364,7 @@ const ExportPDF: React.FC<ExportPDFProps> = ({ data, children, className = "" })
                                 moveToNextLine();
                             }
 
-                            // // Dibujar punto gris
+                            // Dibujar punto gris
                             // doc.setTextColor(200, 200, 200);
                             // doc.text('•', currentX + currentLineWidth, currentY);
                             currentLineWidth += charWidth;
