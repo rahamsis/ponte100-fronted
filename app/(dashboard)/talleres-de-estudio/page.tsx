@@ -10,7 +10,7 @@ import Image from "next/image";
 import { useSession } from "next-auth/react";
 import { useTalleres } from "@/app/hooks/useTalleres";
 // import ExportPDFButton from "@/app/components/buttons/exportPdfButton";
-import ExportPDFButton from "@/app/components/buttons/exportPdf";
+import ExportPDFButton from "@/app/components/buttons/textTest";
 
 type Taller = {
     idTaller: string;
