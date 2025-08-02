@@ -105,142 +105,142 @@ const ExportPDF: React.FC<ExportPDFProps> = ({ data, children, className = "" })
             // Dibuja la línea desde el margen izquierdo al derecho
             doc.line(margin.left, 36, doc.internal.pageSize.width - margin.right, 36);
 
-            const addTextWithPageBreak = (
-                text: string,
-                claves?: string | string[],
-                tipo?: string,
-                options?: {
-                    x?: number;
-                    style?: "bold" | "normal";
-                    fontSize?: number;
-                    indent?: number;
-                    maxWidth?: number;
-                }
-            ) => {
-                const x = options?.x || margin.left;
-                const style = options?.style || "normal";
-                const fontSize = options?.fontSize || 10;
-                const indent = options?.indent || 0;
-                const maxWidth = options?.maxWidth || doc.internal.pageSize.width - x - margin.right;
-                const pageHeight = doc.internal.pageSize.height;
-                const marginBottom = 10; // Márgen inferior para evitar sobreescribir
+            // const addTextWithPageBreak = (
+            //     text: string,
+            //     claves?: string | string[],
+            //     tipo?: string,
+            //     options?: {
+            //         x?: number;
+            //         style?: "bold" | "normal";
+            //         fontSize?: number;
+            //         indent?: number;
+            //         maxWidth?: number;
+            //     }
+            // ) => {
+            //     const x = options?.x || margin.left;
+            //     const style = options?.style || "normal";
+            //     const fontSize = options?.fontSize || 10;
+            //     const indent = options?.indent || 0;
+            //     const maxWidth = options?.maxWidth || doc.internal.pageSize.width - x - margin.right;
+            //     const pageHeight = doc.internal.pageSize.height;
+            //     const marginBottom = 10; // Márgen inferior para evitar sobreescribir
 
-                doc.setFont("helvetica", style);
-                doc.setFontSize(fontSize);
+            //     doc.setFont("helvetica", style);
+            //     doc.setFontSize(fontSize);
 
-                // Función para limpiar texto (igual que antes)
-                const limpiar = (str: string) =>
-                    str
-                        .normalize("NFD")
-                        .replace(/[\u0300-\u036f]/g, "")
-                        .replace(/[.,!?;:()\[\]{}"“”¡¿]/g, "")
-                        .toLowerCase();
+            //     // Función para limpiar texto (igual que antes)
+            //     const limpiar = (str: string) =>
+            //         str
+            //             .normalize("NFD")
+            //             .replace(/[\u0300-\u036f]/g, "")
+            //             .replace(/[.,!?;:()\[\]{}"“”¡¿]/g, "")
+            //             .toLowerCase();
 
-                // Procesar claves (igual que antes)
-                const clavesArray = Array.isArray(claves) ? claves : claves ? claves.split("||") : [];
-                const palabrasClaves = clavesArray.map(c => limpiar(c));
-                const partes: { texto: string; esClave: boolean }[] = [];
-                let restante = text;
+            //     // Procesar claves (igual que antes)
+            //     const clavesArray = Array.isArray(claves) ? claves : claves ? claves.split("||") : [];
+            //     const palabrasClaves = clavesArray.map(c => limpiar(c));
+            //     const partes: { texto: string; esClave: boolean }[] = [];
+            //     let restante = text;
 
-                // Dividir texto en partes normales/clave (igual que antes)
-                while (restante.length > 0) {
-                    let encontrado = false;
-                    for (let i = 0; i < palabrasClaves.length; i++) {
-                        const claveOriginal = clavesArray[i];
-                        const claveLimpia = palabrasClaves[i];
-                        const restanteLimpio = limpiar(restante);
-                        const indexLimpio = restanteLimpio.indexOf(claveLimpia);
+            //     // Dividir texto en partes normales/clave (igual que antes)
+            //     while (restante.length > 0) {
+            //         let encontrado = false;
+            //         for (let i = 0; i < palabrasClaves.length; i++) {
+            //             const claveOriginal = clavesArray[i];
+            //             const claveLimpia = palabrasClaves[i];
+            //             const restanteLimpio = limpiar(restante);
+            //             const indexLimpio = restanteLimpio.indexOf(claveLimpia);
 
-                        if (indexLimpio !== -1) {
-                            let indexReal = 0;
-                            let contadorLimpio = 0;
-                            while (indexReal < restante.length && contadorLimpio < indexLimpio) {
-                                const char = restante[indexReal];
-                                if (limpiar(char) !== "") contadorLimpio++;
-                                indexReal++;
-                            }
-                            const before = restante.slice(0, indexReal);
-                            const match = restante.slice(indexReal, indexReal + claveOriginal.length);
-                            const after = restante.slice(indexReal + claveOriginal.length);
-                            const match2 = match.split(/(\s+)/);
-                            if (before) partes.push({ texto: before, esClave: false });
-                            match2.forEach((word: string) => {
-                                partes.push({ texto: word, esClave: true });
-                            });
-                            restante = after;
-                            encontrado = true;
-                            break;
-                        }
-                    }
-                    if (!encontrado) {
-                        partes.push({ texto: restante, esClave: false });
-                        break;
-                    }
-                }
+            //             if (indexLimpio !== -1) {
+            //                 let indexReal = 0;
+            //                 let contadorLimpio = 0;
+            //                 while (indexReal < restante.length && contadorLimpio < indexLimpio) {
+            //                     const char = restante[indexReal];
+            //                     if (limpiar(char) !== "") contadorLimpio++;
+            //                     indexReal++;
+            //                 }
+            //                 const before = restante.slice(0, indexReal);
+            //                 const match = restante.slice(indexReal, indexReal + claveOriginal.length);
+            //                 const after = restante.slice(indexReal + claveOriginal.length);
+            //                 const match2 = match.split(/(\s+)/);
+            //                 if (before) partes.push({ texto: before, esClave: false });
+            //                 match2.forEach((word: string) => {
+            //                     partes.push({ texto: word, esClave: true });
+            //                 });
+            //                 restante = after;
+            //                 encontrado = true;
+            //                 break;
+            //             }
+            //         }
+            //         if (!encontrado) {
+            //             partes.push({ texto: restante, esClave: false });
+            //             break;
+            //         }
+            //     }
 
-                // Dibujar texto con saltos de línea y páginas
-                let currentX = x + indent;
-                let currentLineWidth = 0;
+            //     // Dibujar texto con saltos de línea y páginas
+            //     let currentX = x + indent;
+            //     let currentLineWidth = 0;
 
-                const checkPageBreak = (neededHeight: number) => {
-                    if (currentY + neededHeight > pageHeight - marginBottom) {
-                        doc.addPage();
-                        currentY = margin.top - 35; // Reinicia Y al margen superior
-                        return true;
-                    }
-                    return false;
-                };
+            //     const checkPageBreak = (neededHeight: number) => {
+            //         if (currentY + neededHeight > pageHeight - marginBottom) {
+            //             doc.addPage();
+            //             currentY = margin.top - 35; // Reinicia Y al margen superior
+            //             return true;
+            //         }
+            //         return false;
+            //     };
 
-                partes.forEach(({ texto, esClave }) => {
-                    const words = texto.split(/(\s+)/);
+            //     partes.forEach(({ texto, esClave }) => {
+            //         const words = texto.split(/(\s+)/);
 
-                    words.forEach(word => {
-                        if (!word.trim()) {
-                            const spaceWidth = doc.getTextWidth(word);
-                            currentLineWidth += spaceWidth;
-                            return;
-                        }
+            //         words.forEach(word => {
+            //             if (!word.trim()) {
+            //                 const spaceWidth = doc.getTextWidth(word);
+            //                 currentLineWidth += spaceWidth;
+            //                 return;
+            //             }
 
-                        const wordWidth = doc.getTextWidth(word);
-                        const wordHeight = fontSize * 0.5; // Aproximación de altura de línea
+            //             const wordWidth = doc.getTextWidth(word);
+            //             const wordHeight = fontSize * 0.5; // Aproximación de altura de línea
 
-                        // Verificar si necesitamos un salto de línea o de página
-                        if (currentLineWidth + wordWidth > maxWidth) {
-                            currentY += lineHeight;
-                            currentX = x + indent;
-                            currentLineWidth = 0;
-                            checkPageBreak(lineHeight); // Verificar si necesitamos nueva página
-                        }
+            //             // Verificar si necesitamos un salto de línea o de página
+            //             if (currentLineWidth + wordWidth > maxWidth) {
+            //                 currentY += lineHeight;
+            //                 currentX = x + indent;
+            //                 currentLineWidth = 0;
+            //                 checkPageBreak(lineHeight); // Verificar si necesitamos nueva página
+            //             }
 
-                        // Verificar si la palabra cabe en la página actual
-                        if (checkPageBreak(wordHeight)) {
-                            currentX = x + indent; // Reiniciar X si hay nueva página
-                            currentLineWidth = 0;
-                        }
+            //             // Verificar si la palabra cabe en la página actual
+            //             if (checkPageBreak(wordHeight)) {
+            //                 currentX = x + indent; // Reiniciar X si hay nueva página
+            //                 currentLineWidth = 0;
+            //             }
 
-                        doc.setFont("helvetica", esClave || tipo === "pregunta" ? "bold" : "normal");
-                        doc.setTextColor(esClave ? 255 : 0, 0, 0);
-                        doc.text(word, currentX + currentLineWidth, currentY);
+            //             doc.setFont("helvetica", esClave || tipo === "pregunta" ? "bold" : "normal");
+            //             doc.setTextColor(esClave ? 255 : 0, 0, 0);
+            //             doc.text(word, currentX + currentLineWidth, currentY);
 
-                        if (esClave && word.trim()) {
-                            const underlineY = currentY + 1;
-                            doc.setDrawColor(255, 0, 0);
-                            doc.setLineWidth(0.5);
-                            doc.line(
-                                currentX + currentLineWidth,
-                                underlineY,
-                                currentX + currentLineWidth + wordWidth,
-                                underlineY
-                            );
-                        }
+            //             if (esClave && word.trim()) {
+            //                 const underlineY = currentY + 1;
+            //                 doc.setDrawColor(255, 0, 0);
+            //                 doc.setLineWidth(0.5);
+            //                 doc.line(
+            //                     currentX + currentLineWidth,
+            //                     underlineY,
+            //                     currentX + currentLineWidth + wordWidth,
+            //                     underlineY
+            //                 );
+            //             }
 
-                        currentLineWidth += wordWidth;
-                    });
-                });
+            //             currentLineWidth += wordWidth;
+            //         });
+            //     });
 
-                currentY += lineHeight;
-                checkPageBreak(lineHeight); // Verificar después de agregar el texto
-            };
+            //     currentY += lineHeight;
+            //     checkPageBreak(lineHeight); // Verificar después de agregar el texto
+            // };
 
             const addTextWithPageBreak2 = (
                 text: string,
