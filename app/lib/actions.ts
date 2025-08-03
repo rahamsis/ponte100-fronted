@@ -667,10 +667,10 @@ export async function fetchAllTalleresByUserId(userId: string) {
     }
 }
 
-export async function updateTalleresByUserId(userId: string, datos: {idTaller: string; estado: number }[], idUsuarioregistro: string) {
+export async function updateTalleresByUserId(userId: string, datos: { idTaller: string; estado: number }[], idUsuarioregistro: string) {
     try {
         const bodyData = { userId, datos, idUsuarioregistro }
-        ;
+            ;
         const response = await fetch(`${process.env.APP_BACK_END}/backendApi/usuarioTaller-update`, {
             method: 'POST',
             headers: {
@@ -774,7 +774,7 @@ export async function AddingUser(data: FormData) {
     }
 }
 
-export async function ResetPassword(data: {password: string, userId: string}) {
+export async function ResetPassword(data: { password: string, userId: string }) {
     try {
         const response = await fetch(`${process.env.APP_BACK_END}/backendApi/reset-password`, {
             method: 'POST',
@@ -794,6 +794,95 @@ export async function ResetPassword(data: {password: string, userId: string}) {
 
     } catch (error) {
         console.error('Error al resetear la contraseña (ResetPassword()):', error);
+    }
+}
+
+export async function getCompleteQuestionById(idPregunta: string) {
+    try {
+        const response = await fetch(`${process.env.APP_BACK_END}/backendApi/complete-Question-By-Idpregunta?idPregunta=${idPregunta}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'accept': '*/*'
+            },
+        });
+
+        const data = await response.json();
+        return data[0]?.data;
+
+    } catch (error) {
+        console.error('Error al obtener la pregunta, alternativa y claves (getCompleteQuestionById):', error);
+        throw new Error("Error al obtener la pregunta, alternativa y claves (getCompleteQuestionById)");
+    }
+}
+
+export async function updatePregunta(idPregunta: string, pregunta: string) {
+    try {
+        const response = await fetch(`${process.env.APP_BACK_END}/backendApi/update-pregunta`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'accept': '/'
+            },
+            body: JSON.stringify({
+                idPregunta: idPregunta,
+                pregunta: pregunta
+            }),
+            next: { revalidate: 0 }
+        });
+        
+        const responseData = await response.json();
+        return responseData;
+
+    } catch (error) {
+        console.error('Error al actualizar la pregunta (updatePregunta()):', error);
+        return { ok: false }
+    }
+}
+
+export async function updateAlternativas(idAlternativa: string, alternativa: string) {
+    try {
+        const response = await fetch(`${process.env.APP_BACK_END}/backendApi/update-alternativa`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'accept': '/'
+            },
+            body: JSON.stringify({
+                idAlternativa: idAlternativa,
+                alternativa: alternativa
+            }),
+            next: { revalidate: 0 }
+        });
+
+        const responseData = await response.json();
+        return responseData;
+
+    } catch (error) {
+        console.error('Error al actualizar la alternativa (updateAlternativas()):', error);
+    }
+}
+
+export async function updateClaves(idPalabra: string, palabra: string) {
+    try {
+        const response = await fetch(`${process.env.APP_BACK_END}/backendApi/update-clave`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'accept': '/'
+            },
+            body: JSON.stringify({
+                idPalabra: idPalabra,
+                palabra: palabra
+            }),
+            next: { revalidate: 0 }
+        });
+
+        const responseData = await response.json();
+        return responseData;
+
+    } catch (error) {
+        console.error('Error al actualizar la clave (updateClaves()):', error);
     }
 }
 

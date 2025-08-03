@@ -500,7 +500,7 @@ function Personal() {
                                                         <input
                                                             {...field}
                                                             placeholder="Tu nombre"
-                                                            className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2"
+                                                            className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:outline-none focus:border-blue-500 focus:ring-blue-500 p-2"
                                                         />
                                                         {fieldState.error && (
                                                             <p className="text-red-500 text-sm mt-1">{fieldState.error.message}</p>
@@ -519,7 +519,7 @@ function Personal() {
                                                         <input
                                                             {...field}
                                                             placeholder="Tus apellidos"
-                                                            className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2"
+                                                            className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:outline-none focus:border-blue-500 focus:ring-blue-500 p-2"
                                                         />
                                                         {fieldState.error && (
                                                             <p className="text-red-500 text-sm mt-1">{fieldState.error.message}</p>
@@ -588,7 +588,7 @@ function Personal() {
                                                             inputMode="numeric"
                                                             maxLength={8}
                                                             placeholder="Tu DNI"
-                                                            className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2"
+                                                            className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:outline-none focus:border-blue-500 focus:ring-blue-500 p-2"
                                                             onChange={(e) => {
                                                                 const value = e.target.value.replace(/\D/g, ""); // ❌ Elimina letras
                                                                 field.onChange(value.slice(0, 8)); // 🔢 Máximo 8 números
@@ -615,7 +615,7 @@ function Personal() {
                                                             inputMode="numeric"
                                                             placeholder="Tu CIP"
                                                             maxLength={8}
-                                                            className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2"
+                                                            className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:outline-none focus:border-blue-500 focus:ring-blue-500 p-2"
                                                             onChange={(e) => {
                                                                 const value = e.target.value.replace(/\D/g, ""); // ❌ Elimina letras
                                                                 field.onChange(value.slice(0, 8)); // 🔢 Máximo 8 números
@@ -641,7 +641,7 @@ function Personal() {
                                                         <input
                                                             {...field}
                                                             placeholder="Tu email"
-                                                            className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2"
+                                                            className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:outline-none focus:border-blue-500 focus:ring-blue-500 p-2"
                                                         />
                                                         {fieldState.error && (
                                                             <p className="text-red-500 text-sm mt-1">{fieldState.error.message}</p>
@@ -661,7 +661,7 @@ function Personal() {
                                                             {...field}
                                                             type="date"
                                                             placeholder="Tu fecha de nacimiento"
-                                                            className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2"
+                                                            className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:outline-none focus:border-blue-500 focus:ring-blue-500 p-2"
                                                             value={field.value ? new Date(field.value).toISOString().split("T")[0] : ""}
                                                             onChange={(e) => field.onChange(e.target.value ? e.target.value : null)}
                                                         />
@@ -721,7 +721,7 @@ function Personal() {
                                                 <div className="mb-4">
                                                     <label>Usuario</label>
                                                     <input placeholder="Nombre de usuario" {...field}
-                                                        className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2" />
+                                                        className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:outline-none focus:border-blue-500 focus:ring-blue-500 p-2" />
                                                     {fieldState.error && (
                                                         <p className="text-red-500 text-sm mt-1">{fieldState.error.message}</p>
                                                     )}
@@ -741,7 +741,7 @@ function Personal() {
                                                         <input
                                                             {...field}
                                                             placeholder="Contraseña" type={showPassword ? "text" : "password"}
-                                                            className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2" />
+                                                            className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:outline-none focus:border-blue-500 focus:ring-blue-500 p-2" />
                                                         <button
                                                             type="button"
                                                             // variant="ghost"
@@ -798,7 +798,7 @@ function Personal() {
                                                             {...field}
                                                             placeholder="Confirmar contraseña"
                                                             type={showConfirmPassword ? "text" : "password"}
-                                                            className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2"
+                                                            className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:outline-none focus:border-blue-500 focus:ring-blue-500 p-2"
                                                         />
                                                         <button
                                                             type="button"
@@ -834,7 +834,7 @@ function Personal() {
                                                 <div className="mb-4">
                                                     <label>Teléfono</label>
                                                     <input placeholder="Número de teléfono" {...field}
-                                                        className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2" />
+                                                        className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:outline-none focus:border-blue-500 focus:ring-blue-500 p-2" />
                                                     {fieldState.error && (
                                                         <p className="text-red-500 text-sm mt-1">{fieldState.error.message}</p>
                                                     )}
@@ -868,7 +868,7 @@ function Personal() {
                                                     <input
                                                         {...field}
                                                         placeholder="Calle, número, piso..."
-                                                        className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2" />
+                                                        className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:outline-none focus:border-blue-500 focus:ring-blue-500 p-2" />
                                                     {fieldState.error && (
                                                         <p className="text-red-500 text-sm mt-1">{fieldState.error.message}</p>
                                                     )}
@@ -887,7 +887,7 @@ function Personal() {
                                                         <input
                                                             {...field}
                                                             placeholder="Ciudad"
-                                                            className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2" />
+                                                            className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:outline-none focus:border-blue-500 focus:ring-blue-500 p-2" />
                                                         {fieldState.error && (
                                                             <p className="text-red-500 text-sm mt-1">{fieldState.error.message}</p>
                                                         )}
@@ -904,7 +904,7 @@ function Personal() {
                                                         <input
                                                             {...field}
                                                             placeholder="Código postal"
-                                                            className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2" />
+                                                            className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:outline-none focus:border-blue-500 focus:ring-blue-500 p-2" />
                                                         {fieldState.error && (
                                                             <p className="text-red-500 text-sm mt-1">{fieldState.error.message}</p>
                                                         )}
@@ -922,7 +922,7 @@ function Personal() {
                                                     <input
                                                         {...field}
                                                         placeholder="Provincia"
-                                                        className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2" />
+                                                        className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:outline-none focus:border-blue-500 focus:ring-blue-500 p-2" />
                                                     {fieldState.error && (
                                                         <p className="text-red-500 text-sm mt-1">{fieldState.error.message}</p>
                                                     )}
