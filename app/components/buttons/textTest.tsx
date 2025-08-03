@@ -396,17 +396,17 @@ const ExportPDF: React.FC<ExportPDFProps> = ({ data, children, className = "" })
                         doc.text(currentWord, currentX + currentLineWidth, currentY);
 
                         // Subrayado si es clave
-                        if (isKey) {
-                            const underlineY = currentY + 1;
-                            doc.setDrawColor(255, 0, 0);
-                            doc.setLineWidth(0.5);
-                            doc.line(
-                                currentX + currentLineWidth,
-                                underlineY,
-                                currentX + currentLineWidth + currentWordWidth,
-                                underlineY
-                            );
-                        }
+                        // if (isKey) {
+                        //     const underlineY = currentY + 1;
+                        //     doc.setDrawColor(255, 0, 0);
+                        //     doc.setLineWidth(0.5);
+                        //     doc.line(
+                        //         currentX + currentLineWidth,
+                        //         underlineY,
+                        //         currentX + currentLineWidth + currentWordWidth,
+                        //         underlineY
+                        //     );
+                        // }
 
                         currentLineWidth += currentWordWidth;
                         currentWord = '';
