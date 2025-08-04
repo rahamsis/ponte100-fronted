@@ -57,5 +57,6 @@ export const config = {
         '/temario',
         '/videos',
         '/configuracion',
+        '/datacerebro'
     ],
 };
