@@ -411,18 +411,8 @@ function Users() {
                                                             className="border border-blue-400 p-2 rounded-md"
                                                             title="Resetear"
                                                             onClick={() => setResetUserId(user.userId)}
-                                                        // disabled={!this.state.reset}
                                                         ><KeyRound className='text-blue-400 w-4 h-4' /></button>
                                                     </td>
-                                                    {/* <td className="border border-gray-300 text-center">
-                                                    <button
-                                                        className="border border-red-500 p-2 rounded-md"
-                                                        title="Editar"
-                                                    // onClick={() => this.onEventDelete(item.idUsuario)}
-                                                    // disabled={!this.state.remove}
-                                                    >
-                                                        <Trash2 className='text-red-500 w-4 h-4' /></button>
-                                                </td> */}
                                                 </tr>
                                             )))}
                                     </tbody>
@@ -640,7 +630,7 @@ function UpdateTotalQuestion() {
                                     <p className='text-sm text-red-500'> Tienes algunos cambios sin guardar; guarda tus cambios antes de continuar</p>
                                 )}
                             </div>
-                            {/* Botón de agregar usuario */}
+                            {/* Botón de*/}
                             <div className=''>
                                 <button onClick={() => cargarData(searchTerm)} className='bg-button2 text-white px-4 py-2 rounded'> Buscar</button>
                             </div>

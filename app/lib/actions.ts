@@ -886,6 +886,25 @@ export async function updateClaves(idPalabra: string, palabra: string) {
     }
 }
 
+export async function getAllDataQuestions(filtro: string) {
+    try {
+        const response = await fetch(`${process.env.APP_BACK_END}/backendApi/all-data-questions?filtro=${filtro}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'accept': '*/*'
+            },
+        });
+
+        const data = await response.json();
+        return data;
+
+    } catch (error) {
+        console.error('Error al obtener pregunta o preguntas (getAllDataQuestions):', error);
+        throw new Error("Error al obtener pregunta o preguntas (getAllDataQuestions)");
+    }
+}
+
 // *********************************** Cloudinary*********************************************************
 export async function getSignature(userId: string) {
     const response = await fetch(`${process.env.APP_BACK_END}/cloudinary/signature?public_id=${userId}`);
