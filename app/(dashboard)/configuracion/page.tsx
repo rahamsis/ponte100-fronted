@@ -526,7 +526,7 @@ function UpdateTotalQuestion() {
 
     const handleUpdatePregunta = async (idPregunta: string, pregunta: string) => {
         try {
-            const response = await updatePregunta(idPregunta, pregunta);
+            const response = await updatePregunta(idPregunta, pregunta.toUpperCase());
 
             if (response.ok) {
                 setEditPregunta(false);
@@ -548,7 +548,7 @@ function UpdateTotalQuestion() {
 
     const handleUpdateAlternativa = async (idAlternativa: string, alternativa: string) => {
         try {
-            const response = await updateAlternativas(idAlternativa, alternativa);
+            const response = await updateAlternativas(idAlternativa, alternativa.toUpperCase());
 
             if (response.ok) {
                 setEditAlternativas(prev => ({
@@ -573,7 +573,7 @@ function UpdateTotalQuestion() {
 
     const handleUpdateClave = async (idPalabra: string, palabra: string) => {
         try {
-            const response = await updateClaves(idPalabra, palabra);
+            const response = await updateClaves(idPalabra, palabra.toUpperCase());
 
             if (response.ok) {
                 setEditClaves(prev => ({
