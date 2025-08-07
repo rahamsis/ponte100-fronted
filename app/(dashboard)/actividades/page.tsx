@@ -87,8 +87,8 @@ function Zona() {
             imagen: "/images/actividades/datacerebro.png",
             title: "Data Cerebro ©",
             subtitle: "Activa y consolida el conocimiento",
-            concept: "Facilita el repaso visual y fotalece la conexión neuronal para el aprendizaje acelerado",
-            ruta: "/datacerebro",
+            concept: "Facilita el repaso visual y fortalece la conexión neuronal para el aprendizaje acelerado",
+            ruta: "/data-cerebro",
             modalType: "none",
         },
     ]
