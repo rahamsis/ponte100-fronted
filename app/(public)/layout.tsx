@@ -3,6 +3,7 @@
 import { Inter } from 'next/font/google';
 import { metadata } from './metadata';
 
+import CountDown from '../components/countdown/countdown';
 import HeaderLanding from "../components/header/headerLanding";
 import Footer from "../components/footer/footerLanding";
 import "../../app/globals.css";
@@ -59,6 +60,7 @@ export default function RootLayout({
         {/* <Providers> */}
           <div className="flex flex-row w-full">
             <div className="flex flex-col flex-1">
+              <CountDown/>
               <HeaderLanding />
               <main className="flex-1">
                 {children}

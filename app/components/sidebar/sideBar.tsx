@@ -12,6 +12,8 @@ import { cn } from "@/app/lib/utils/cn"
 import Image from "next/image"
 import { useSidebar } from "@/app/providers"
 import getSvgIcon from "@/app/lib/utils/icon.helper"
+import CountDown2 from "../countdown/countdown2"
+import CountDown3 from "../countdown/countdown3"
 
 type SubmenuItem = {
   nombreSubMenu: string
@@ -136,7 +138,7 @@ export default function Sidebar({ session }: Props) {
       <div key={`${item.idMenu}-${index}`} className="mb-1">
         {item.ruta && !hasSubmenu ? (
           <Link
-            href={"/"+item.ruta}
+            href={"/" + item.ruta}
             onClick={() => {
               closeAllMenus()
               if (isMobile) closeSidebar()
@@ -149,7 +151,7 @@ export default function Sidebar({ session }: Props) {
             aria-current={isActive ? "page" : undefined}
           >
             <div className={`shrink-0 p-1 ${isOpen ? "" : "rounded-md bg-white bg-opacity-30"}`}>
-              <div className="shrink-0" dangerouslySetInnerHTML={{ __html: getSvgIcon(item.icon || "default") }}/>
+              <div className="shrink-0" dangerouslySetInnerHTML={{ __html: getSvgIcon(item.icon || "default") }} />
             </div>
             <span className={cn("transition-opacity", !isSidebarOpen && "opacity-0 hidden md:block md:opacity-0")}>
               {item.nombre}
@@ -245,6 +247,9 @@ export default function Sidebar({ session }: Props) {
           <nav className="flex-1 px-2 pt-8 overflow-y-auto">
             {mainMenu.map(renderMenuItem)}
           </nav>
+          <div className="flex px-2 text-white">
+            <CountDown2/>
+          </div>
         </div>
       </div>
 
@@ -294,6 +299,10 @@ export default function Sidebar({ session }: Props) {
           <nav className="flex-1 mx-8 pt-8 mt-8 border-t border-gray-500 overflow-y-auto">
             {mainMenu.map(renderMenuItem)}
           </nav>
+
+          <div className="flex pt-20 px-2 text-white">
+            <CountDown3/>
+          </div>          
         </aside>
       </div>
     </>
