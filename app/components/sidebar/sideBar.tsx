@@ -300,7 +300,7 @@ export default function Sidebar({ session }: Props) {
             {mainMenu.map(renderMenuItem)}
           </nav>
 
-          <div className="flex pt-20 px-2 text-white">
+          <div className="hidden md:flex pt-20 px-2 text-white">
             <CountDown3/>
           </div>          
         </aside>
