@@ -5,6 +5,7 @@
 import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
+import CountDown from '../components/countdown/countdown';
 
 function Banner() {
     const [showVideo, setShowVideo] = useState(false);
@@ -782,6 +783,8 @@ export default function Main() {
     return (
         <>
             <Banner />
+
+            <CountDown />
 
             <Fundamentos />
 

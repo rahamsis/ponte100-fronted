@@ -7,7 +7,6 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
 import AuthModal from "../authModal";
-import { useCallback } from "react";
 
 import { usePathname } from "next/navigation";
 

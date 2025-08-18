@@ -19,6 +19,7 @@ import { ModalPrimerSimulacro } from "@/app/components/modales/modalPrimerSimula
 import { ModalPreguntasFalladas } from "@/app/components/modales/modalPreguntasFallidas";
 import { ModalZoom } from "@/app/components/modales/modalZoom";
 import { ModalZoomActive } from "@/app/components/modales/modalZoomActive";
+import CountDown from "@/app/components/countdown/countdown";
 
 import { fetchResultProgress, getQuantityFallidas, getActiveMeeting, getLastMeeting } from "@/app/lib/actions";
 
@@ -146,75 +147,6 @@ function Banner() {
     )
 }
 
-function CountDown() {
-    // 📅 Fecha objetivo
-    const targetDate = new Date("2025-11-03T06:00:00").getTime();
-
-    const [timeLeft, setTimeLeft] = useState({
-        days: 0,
-        hours: 0,
-        minutes: 0,
-        seconds: 0,
-    });
-
-    useEffect(() => {
-        const interval = setInterval(() => {
-            const now = new Date().getTime();
-            const difference = targetDate - now;
-
-            // 🛑 Si ya llegamos o pasamos la fecha, detener contador
-            if (difference <= 0) {
-                clearInterval(interval);
-                setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
-                return;
-            }
-
-            // 📊 Cálculo de días, horas, minutos y segundos restantes
-            const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60))
-            const seconds = Math.floor((difference % (1000 * 60)) / 1000);
-
-            setTimeLeft({ days, hours, minutes, seconds });
-        }, 1000);
-
-        return () => clearInterval(interval);
-    }, [targetDate]);
-
-    return (
-        <div className="md:hidden top-0 left-0 mx-4">
-            <div className="flex items-center gap-5 text-white bg-primary justify-between px-2 p-1 w-full">
-                <div className="flex flex-col items-center text-center">
-                    <p className="text-[8px] lg:text-sm">FALTAN</p>
-                    <p className="text-[8px] lg:text-sm">TAN SOLO</p>
-                </div>
-                <div className="flex flex-row gap-4 text-center">
-                    <div className="relative border border-gray-300 w-9">
-                        <p className="text-xs">DÍAS</p>
-                        <p className="px-2 text-base font-bold bg-white text-primary">{String(timeLeft.days).padStart(2, '0')}</p>
-                    </div>
-                    <div className="relative border border-gray-300 w-9">
-                        <p className="text-xs">HOR</p>
-                        <p className="px-2 text-base font-bold bg-white text-primary">{String(timeLeft.hours).padStart(2, '0')}</p>
-                    </div>
-                    <div className="relative border border-gray-300 w-9">
-                        <p className="text-xs">MIN</p>
-                        <p className="px-2 text-base font-bold bg-white text-primary">{String(timeLeft.minutes).padStart(2, '0')}</p>
-                    </div>
-                    <div className="relative border border-gray-300 w-9">
-                        <div className="text-xs">SEG</div>
-                        <div className="px-2 text-base font-bold bg-white text-primary ">{String(timeLeft.seconds).padStart(2, '0')}</div>
-                    </div>
-                </div>
-                <div className="flex flex-col items-center text-center">                    
-                    <p className="text-[8px] lg:text-sm">03 NOV 2025</p>
-                    <p className="text-[8px] lg:text-sm font-semibold">Examen de <br/> conocimientos</p>
-                </div>
-            </div>
-        </div>
-    );
-}
-
 type ProgresoProps = {
     quantityFallidas: number | 0;
     loading: boolean;
@@ -235,7 +167,7 @@ const formatTime = (seconds: number) => {
 function Progreso({ loading, quantityFallidas, tiempoDeUso, practicas, simulacros, totalPreguntas }: ProgresoProps) {
     return (
         <>
-            <section className=" md:pb-6  flex-col  mx-4 lg:mx-20 bg-web">
+            <section className="py-3 md:py-6  flex-col  mx-4 lg:mx-20 bg-web">
                 <div className="px-3 flex pb-4 flex-col flex-grow">
                     <a className="text-xl md:text-3xl font-bold tracking-tighter sm:text-4xl text-left mb-2 lg:mb-4 text-primary">Mi Progreso</a>
                 </div>

@@ -12,8 +12,6 @@ import { cn } from "@/app/lib/utils/cn"
 import Image from "next/image"
 import { useSidebar } from "@/app/providers"
 import getSvgIcon from "@/app/lib/utils/icon.helper"
-import CountDown2 from "../countdown/countdown2"
-import CountDown3 from "../countdown/countdown3"
 
 type SubmenuItem = {
   nombreSubMenu: string
@@ -247,9 +245,6 @@ export default function Sidebar({ session }: Props) {
           <nav className="flex-1 px-2 pt-8 overflow-y-auto">
             {mainMenu.map(renderMenuItem)}
           </nav>
-          <div className="flex px-2 text-white">
-            <CountDown2/>
-          </div>
         </div>
       </div>
 
@@ -299,10 +294,6 @@ export default function Sidebar({ session }: Props) {
           <nav className="flex-1 mx-8 pt-8 mt-8 border-t border-gray-500 overflow-y-auto">
             {mainMenu.map(renderMenuItem)}
           </nav>
-
-          <div className="hidden md:flex pt-20 px-2 text-white">
-            <CountDown3/>
-          </div>          
         </aside>
       </div>
     </>
