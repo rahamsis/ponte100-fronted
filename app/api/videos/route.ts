@@ -73,7 +73,7 @@ export async function GET() {
 
   } catch (error) {
     return NextResponse.json(
-      { error: 'No se pudieron cargar los videos' },
+      { error: 'No se pudieron cargar los videos: ' + error },
       { status: 500 }
     );
   }
