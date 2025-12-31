@@ -3,7 +3,7 @@
 /* eslint-disable */
 
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
     ArrowLeft,
     ArrowRight,
@@ -628,43 +628,18 @@ function Conocimientos({ quantityFallidas }: ConocimientoProps) {
     )
 }
 
-function Videos() {
-    // const arrayVideos = [
-    //     {
-    //         imagen: "/images/videos/video.png",
-    //         title: "Taller 1",
-    //         subtitle: "Clase 1/ Sesión 1",
-    //         ponente: `Guillermo Arturo Vasquez`,
-    //         fecha: "hace 1 día",
-    //         hora: "1H 20min"
-    //     },
-    //     {
-    //         imagen: "/images/videos/video.png",
-    //         title: "Taller 1",
-    //         subtitle: "Clase 1/ Sesión 2",
-    //         ponente: `Kevin Cieza Bautista`,
-    //         fecha: "hace 1 día",
-    //         hora: "1H 20min"
-    //     },
-    //     {
-    //         imagen: "/images/videos/video.png",
-    //         title: "Taller 1",
-    //         subtitle: "Clase 1/ Sesión 3",
-    //         ponente: `Evart Zegarra Enciso`,
-    //         fecha: "hace 1 día",
-    //         hora: "1H 20min"
-    //     },
-    //     {
-    //         imagen: "/images/videos/video.png",
-    //         title: "Taller 1",
-    //         subtitle: "Clase 1/ Sesión 1",
-    //         ponente: `Guillermo Arturo Vasquez`,
-    //         fecha: "hace 1 día",
-    //         hora: "1H 20min"
-    //     },
-    // ]
+type Video = {
+    name: string;
+    url: string;
+    author: string;
+    createdAt: string;
+    poster: string;
+};
 
-    const [videos, setVideos] = useState<any[]>([]);
+function Videos() {
+    const [videos, setVideos] = useState<Video[]>([]);
+    const videoRef = useRef<HTMLVideoElement>(null);
+    const [duration, setDuration] = useState<number>(0);
 
     useEffect(() => {
         async function fetchVideos() {
@@ -704,60 +679,75 @@ function Videos() {
                                 </h2>
                                 <div className="grid grid-cols-2 xl:grid-cols-4 gap-8">
                                     {videos.map((video, i) => (
-                                        <div key={i} className="flex flex-col justify-between bg-white rounded-xl border-2 items-start p-2 text-left shadow-lg">
-                                            {/* <Image
-                                            src={object.imagen}
-                                            alt="fundamentos"
-                                            width={1000}
-                                            height={800}
-                                            className="mb-4"
-                                        /> */}
-                                            <div style={{ width: "100%", aspectRatio: "16/9", position: "relative" }}>
-                                                <iframe
-                                                    src={`https://customer-ry3vjvzzhq71nunt.cloudflarestream.com/${video.uid}/iframe?poster=https%3A%2F%2Fres.cloudinary.com%2Fdqboodjqt%2Fimage%2Fupload%2Fv1750965563%2Fvideo_p4yf6c.png`}
-                                                    allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture"
-                                                    allowFullScreen
-                                                    style={{
-                                                        borderRadius: "12px",
-                                                        position: "absolute",
-                                                        top: 0,
-                                                        left: 0,
-                                                        width: "100%",
-                                                        height: "100%",
-                                                        border: "none",
-                                                    }}
-                                                />
-                                            </div>
-                                            {/* <div className="mx-3">
-                                            <h3 className="text-base lg:text-lg font-bold mb-2 text-concepto">{video.title}</h3>
-                                            <h3 className="text-base lg:text-lg font-bold mb-2 text-primary">{video.subtitle}</h3>
-                                            <p className="text-concepto text-base lg:text-lg">Ponente: {video.ponente}</p>
-                                        </div>
-                                        <div className="w-full mt-5 mb-3">
-                                            <div className="flex flex-row justify-between mt-6 mb-2 px-3">
-                                                <div className="flex flex-row space-x-2 text-concepto items-center">
-                                                    <Calendar className="text-black" /> <p className="text-sm">{video.fecha}</p>
-                                                </div>
-                                                <div className="flex flex-row space-x-2 text-concepto items-center">
-                                                    <Clock className="text-black" /> <p className="text-sm">{video.hora}</p>
-                                                </div>
-                                            </div>
-                                        </div> */}
-                                            <div className="mx-3 mt-1">
-                                                <h3 className="text-base lg:text-lg font-bold mb-2 text-concepto">{video.meta?.name || "Clase"}</h3>
-                                                <p className="text-concepto text-base lg:text-lg">Ponente: {video.creator === null ? video.meta?.creator : video.creator}</p>
-                                            </div>
-                                            <div className="w-full mt-5 mb-3">
-                                                <div className="flex flex-row justify-between mt-6 mb-2 px-3">
-                                                    <div className="flex flex-row space-x-2 text-concepto items-center">
-                                                        <Calendar className="text-black" /> <p className="text-sm">{new Date(video.created).toLocaleDateString()}</p>
-                                                    </div>
-                                                    <div className="flex flex-row space-x-2 text-concepto items-center">
-                                                        <Clock className="text-black" /> <p className="text-sm">{formatTime(Math.floor(video.duration))}</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        // <div key={i} className="flex flex-col justify-between bg-white rounded-xl border-2 items-start p-2 text-left shadow-lg">
+                                        //     {/* <Image
+                                        //     src={object.imagen}
+                                        //     alt="fundamentos"
+                                        //     width={1000}
+                                        //     height={800}
+                                        //     className="mb-4"
+                                        // /> */}
+                                        //     {/* <div style={{ width: "100%", aspectRatio: "16/9", position: "relative" }}>
+                                        //         <iframe
+                                        //             src={`https://customer-ry3vjvzzhq71nunt.cloudflarestream.com/${video.uid}/iframe?poster=https%3A%2F%2Fres.cloudinary.com%2Fdqboodjqt%2Fimage%2Fupload%2Fv1750965563%2Fvideo_p4yf6c.png`}
+                                        //             allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture"
+                                        //             allowFullScreen
+                                        //             style={{
+                                        //                 borderRadius: "12px",
+                                        //                 position: "absolute",
+                                        //                 top: 0,
+                                        //                 left: 0,
+                                        //                 width: "100%",
+                                        //                 height: "100%",
+                                        //                 border: "none",
+                                        //             }}
+                                        //         />
+                                        //     </div> */}
+                                        //     <div className="relative w-full aspect-video">
+                                        //         <video
+                                        //             ref={videoRef}
+                                        //             src={video.url}
+                                        //             controls
+                                        //             preload="metadata"
+                                        //             poster={video.poster}
+                                        //             controlsList="nodownload"
+                                        //             className="w-full h-full rounded-lg object-cover"
+                                        //             onLoadedMetadata={(e) =>
+                                        //                 console.log("Duración:", e.currentTarget.duration)
+                                        //             }
+                                        //         />
+                                        //     </div>
+                                        //     {/* <div className="mx-3">
+                                        //     <h3 className="text-base lg:text-lg font-bold mb-2 text-concepto">{video.title}</h3>
+                                        //     <h3 className="text-base lg:text-lg font-bold mb-2 text-primary">{video.subtitle}</h3>
+                                        //     <p className="text-concepto text-base lg:text-lg">Ponente: {video.ponente}</p>
+                                        // </div>
+                                        // <div className="w-full mt-5 mb-3">
+                                        //     <div className="flex flex-row justify-between mt-6 mb-2 px-3">
+                                        //         <div className="flex flex-row space-x-2 text-concepto items-center">
+                                        //             <Calendar className="text-black" /> <p className="text-sm">{video.fecha}</p>
+                                        //         </div>
+                                        //         <div className="flex flex-row space-x-2 text-concepto items-center">
+                                        //             <Clock className="text-black" /> <p className="text-sm">{video.hora}</p>
+                                        //         </div>
+                                        //     </div>
+                                        // </div> */}
+                                        //     <div className="mx-3 mt-1">
+                                        //         <h3 className="text-base lg:text-lg font-bold mb-2 text-concepto">{video.name}</h3>
+                                        //         <p className="text-concepto text-base lg:text-lg">Ponente: {video.author}</p>
+                                        //     </div>
+                                        //     <div className="w-full mt-5 mb-3">
+                                        //         <div className="flex flex-row justify-between mt-6 mb-2 px-3">
+                                        //             <div className="flex flex-row space-x-2 text-concepto items-center">
+                                        //                 <Calendar className="text-black" /> <p className="text-sm">{new Date(video.createdAt).toLocaleDateString()}</p>
+                                        //             </div>
+                                        //             <div className="flex flex-row space-x-2 text-concepto items-center">
+                                        //                 <Clock className="text-black" /> <p className="text-sm">{formatTime(Math.floor(video.duration))}</p>
+                                        //             </div>
+                                        //         </div>
+                                        //     </div>
+                                        // </div>
+                                        <VideoCard key={i} video={video} />
                                     ))}
                                 </div>
                             </div>
@@ -789,14 +779,7 @@ function Videos() {
                                 </div>
 
                                 <div className="relative w-full">
-                                    <div className="flex flex-col border-2 bg-white rounded-xl items-start p-2 mx-2 text-left shadow-lg ">
-                                        {/* <Image
-                                        src={videos[videoActive].imagen}
-                                        alt="fundamentos"
-                                        width={500}
-                                        height={300}
-                                        className="mb-4"
-                                    /> */}
+                                    {/* <div className="flex flex-col border-2 bg-white rounded-xl items-start p-2 mx-2 text-left shadow-lg ">                                        
                                         <div style={{ width: "100%", aspectRatio: "16/9", position: "relative" }}>
                                             <iframe
                                                 src={`https://customer-ry3vjvzzhq71nunt.cloudflarestream.com/${videos[videoActive].uid}/iframe?poster=https%3A%2F%2Fres.cloudinary.com%2Fdqboodjqt%2Fimage%2Fupload%2Fv1750965563%2Fvideo_p4yf6c.png`}
@@ -815,7 +798,7 @@ function Videos() {
                                         </div>
                                         <div>
                                             <h3 className="text-xl font-bold mb-2 text-concepto">{videos[videoActive].meta?.name}</h3>
-                                            {/* <p className="text-primary text-xl font-bold mb-2">{videos[videoActive].subtitle}</p> */}
+                                            <p className="text-primary text-xl font-bold mb-2">{videos[videoActive].subtitle}</p>
                                             <p className="text-concepto text-lg text-justify">Ponente: {videos[videoActive].creator == null ? videos[videoActive].meta?.creator : videos[videoActive].creator}</p>
                                         </div>
                                         <div className="w-full mt-5 mb-3">
@@ -829,7 +812,8 @@ function Videos() {
                                             </div>
 
                                         </div>
-                                    </div>
+                                    </div> */}
+                                    <VideoCard video={videos[videoActive]} />
                                 </div>
                             </div>
                         </div>
@@ -839,6 +823,59 @@ function Videos() {
         </div>
     )
 }
+
+function VideoCard({ video }: { video: Video }) {
+    const videoRef = useRef<HTMLVideoElement>(null);
+    const [duration, setDuration] = useState<number>(0);
+
+    useEffect(() => {
+        const v = videoRef.current;
+        if (!v) return;
+
+        const onLoadedMetadata = () => {
+            setDuration(v.duration);
+        };
+        v.addEventListener("loadedmetadata", onLoadedMetadata);
+        return () => v.removeEventListener("loadedmetadata", onLoadedMetadata);
+    }, [video.url]);
+
+    return (
+        <div className="flex flex-col justify-between bg-white rounded-xl border-2 items-start p-2 text-left shadow-lg">
+
+            {/* VIDEO */}
+            <div className="relative w-full aspect-video">
+                <video
+                    ref={videoRef}
+                    src={video.url}
+                    controls
+                    preload="metadata"
+                    poster={video.poster}
+                    controlsList="nodownload"
+                    className="w-full h-full rounded-lg object-cover"
+                    onLoadedMetadata={(e) =>
+                        console.log("Duración:", e.currentTarget.duration)
+                    }
+                />
+            </div>
+
+            <div className="mx-3 mt-1">
+                <h3 className="text-base lg:text-lg font-bold mb-2 text-concepto">{video?.name || "Clase"}</h3>
+                <p className="text-concepto text-base lg:text-lg">Ponente: {video.author ?? "Desconocido"}</p>
+            </div>
+            <div className="w-full mt-5 mb-3">
+                <div className="flex flex-row justify-between mt-6 mb-2 px-3">
+                    <div className="flex flex-row space-x-2 text-concepto items-center">
+                        <Calendar className="text-black" /> <p className="text-sm">{new Date(video.createdAt).toLocaleDateString()}</p>
+                    </div>
+                    <div className="flex flex-row space-x-2 text-concepto items-center">
+                        <Clock className="text-black" /> <p className="text-sm">{formatTime(Math.floor(duration))}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}
+
 
 export default function Main() {
     const { data: session, status } = useSession()
@@ -909,7 +946,7 @@ export default function Main() {
         <>
             <Banner />
 
-            <CountDown/>
+            {/* <CountDown /> */}
 
             <Progreso
                 quantityFallidas={quantityFallidas}

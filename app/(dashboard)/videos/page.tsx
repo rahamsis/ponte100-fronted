@@ -2,7 +2,7 @@
 
 /* eslint-disable */
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Calendar, Clock, Search } from "lucide-react";
 
 function Inicio() {
@@ -27,8 +27,16 @@ function Inicio() {
     )
 }
 
+type Video = {
+    name: string;
+    url: string;
+    author: string;
+    createdAt: string;
+    poster: string;
+};
+
 function Videos() {
-    const [videos, setVideos] = useState<any[]>([]);
+    const [videos, setVideos] = useState<Video[]>([]);
     // const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -60,7 +68,7 @@ function Videos() {
 }
 
 // function VideosWithSearch({ videos }: { videos: { imagen: string; title: string; subtitle: string; ponente: string, fecha: string; hora: string; }[] }) {
-function VideosWithSearch({ videos }: { videos: any[] }) {
+function VideosWithSearch({ videos }: { videos: Video[] }) {
     const [searchTerm, setSearchTerm] = useState('');
     const [sortOption, setSortOption] = useState('name-asc');
 
@@ -68,21 +76,21 @@ function VideosWithSearch({ videos }: { videos: any[] }) {
     const filteredVideos = videos.filter(video => {
         const searchTermLower = searchTerm.toLowerCase();
         return (
-            video.meta.name.toLowerCase().includes(searchTermLower) ||
-            (video.subtitle && video.subtitle.toLowerCase().includes(searchTermLower)) ||
-            (video.creator && video.creator.toLowerCase().includes(searchTermLower))
+            video.name.toLowerCase().includes(searchTermLower)
+            // || (video.subtitle && video.subtitle.toLowerCase().includes(searchTermLower)) 
+            || (video.author && video.author.toLowerCase().includes(searchTermLower))
         );
     }
     ).sort((a, b) => {
         switch (sortOption) {
             case 'name-asc':
-                return a.meta.name.localeCompare(b.meta.name);
+                return a.name.localeCompare(b.name);
             case 'name-desc':
-                return b.meta.name.localeCompare(a.meta.name);
+                return b.name.localeCompare(a.name);
             case 'date-newest':
-                return new Date(b.created).getTime() - new Date(a.created).getTime();
+                return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
             case 'date-oldest':
-                return new Date(a.created).getTime() - new Date(b.created).getTime();
+                return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
             default:
                 return 0;
         }
@@ -144,47 +152,52 @@ const formatTime = (seconds: number) => {
     return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
 };
 
-
 // function VideoCard({ video }: { video: { imagen: string; title: string; subtitle: string; ponente: string, fecha: string; hora: string; } }) {
-function VideoCard({ video }: { video: any }) {
+function VideoCard({ video }: { video: Video }) {
+    const videoRef = useRef<HTMLVideoElement>(null);
+    const [duration, setDuration] = useState<number>(0);
+
+    useEffect(() => {
+        const v = videoRef.current;
+        if (!v) return;
+
+        const onLoadedMetadata = () => {
+            setDuration(v.duration);
+        };
+        v.addEventListener("loadedmetadata", onLoadedMetadata);
+        return () => v.removeEventListener("loadedmetadata", onLoadedMetadata);
+    }, [video.url]);
 
     return (
         <div className="flex flex-col justify-between bg-white rounded-xl border-2 items-start p-2 text-left shadow-lg">
-            {/* <iframe
-                src={`https://customer-ry3vjvzzhq71nunt.cloudflarestream.com/${video.uid}/iframe?poster=https%3A%2F%2Fres.cloudinary.com%2Fdqboodjqt%2Fimage%2Fupload%2Fv1750965563%2Fvideo_p4yf6c.png`}
-                width="100%"
-                height="205"
-                allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture"
-                allowFullScreen
-                style={{ borderRadius: "12px", top: 0, left: 0, border: "none" }}
-            /> */}
-            <div style={{ width: "100%", aspectRatio: "16/9", position: "relative" }}>
-                <iframe
-                    src={`https://customer-ry3vjvzzhq71nunt.cloudflarestream.com/${video.uid}/iframe?poster=https%3A%2F%2Fres.cloudinary.com%2Fdqboodjqt%2Fimage%2Fupload%2Fv1750965563%2Fvideo_p4yf6c.png`}
-                    allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture"
-                    allowFullScreen
-                    style={{
-                        borderRadius: "12px",
-                        position: "absolute",
-                        top: 0,
-                        left: 0,
-                        width: "100%",
-                        height: "100%",
-                        border: "none",
-                    }}
+
+            {/* VIDEO */}
+            <div className="relative w-full aspect-video">
+                <video
+                    ref={videoRef}
+                    src={video.url}
+                    controls
+                    preload="metadata"
+                    poster={video.poster}
+                    controlsList="nodownload"
+                    className="w-full h-full rounded-lg object-cover"
+                    onLoadedMetadata={(e) =>
+                        console.log("Duración:", e.currentTarget.duration)
+                    }
                 />
             </div>
+
             <div className="mx-3 mt-1">
-                <h3 className="text-base lg:text-lg font-bold mb-2 text-concepto">{video.meta?.name || "Clase"}</h3>
-                <p className="text-concepto text-base lg:text-lg">Ponente: {video.creator === null ? video.meta?.creator : video.creator}</p>
+                <h3 className="text-base lg:text-lg font-bold mb-2 text-concepto">{video?.name || "Clase"}</h3>
+                <p className="text-concepto text-base lg:text-lg">Ponente: {video.author ?? "Desconocido"}</p>
             </div>
             <div className="w-full mt-5 mb-3">
                 <div className="flex flex-row justify-between mt-6 mb-2 px-3">
                     <div className="flex flex-row space-x-2 text-concepto items-center">
-                        <Calendar className="text-black" /> <p className="text-sm">{new Date(video.created).toLocaleDateString()}</p>
+                        <Calendar className="text-black" /> <p className="text-sm">{new Date(video.createdAt).toLocaleDateString()}</p>
                     </div>
                     <div className="flex flex-row space-x-2 text-concepto items-center">
-                        <Clock className="text-black" /> <p className="text-sm">{formatTime(Math.floor(video.duration))}</p>
+                        <Clock className="text-black" /> <p className="text-sm">{formatTime(Math.floor(duration))}</p>
                     </div>
                 </div>
             </div>
@@ -194,10 +207,10 @@ function VideoCard({ video }: { video: any }) {
 
 export default function Progreso() {
     return (
-        <>
+        <div className="flex flex-col min-h-screen pb-20 lg:pb-5">
             <Inicio />
 
             <Videos />
-        </>
+        </div>
     )
 }

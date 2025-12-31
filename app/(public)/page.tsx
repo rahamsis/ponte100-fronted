@@ -784,7 +784,7 @@ export default function Main() {
         <>
             <Banner />
 
-            <CountDown />
+            {/* <CountDown /> */}
 
             <Fundamentos />
 
