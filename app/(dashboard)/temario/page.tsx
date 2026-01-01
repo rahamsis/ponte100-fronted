@@ -275,6 +275,7 @@ function Zona() {
                                                             width={90}
                                                             height={120}
                                                             className="object-cover rounded-lg"
+                                                            unoptimized 
                                                         />
                                                     </div>
 
@@ -409,6 +410,7 @@ function BookCard({ book }: { book: { name: string; url: string; imageUrl: strin
                         width={90}
                         height={120}
                         className="object-cover rounded-lg"
+                        unoptimized 
                     />
                 </a>
             </div>
