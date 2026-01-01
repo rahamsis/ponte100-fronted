@@ -74,7 +74,6 @@ export const ModalAddUser = ({ onClose, onUserAdded, extra }: ModalAddUser) => {
     }, []);
 
     const handleSubmitForm = async (data: FormData) => {
-        console.log("Datos del formulario:", data);
         try {
             const response = await AddingUser(data);
 

@@ -45,7 +45,7 @@ const authOptions: NextAuthOptions = {
 
                 try {
                     const user = await fetchUserLogin(email as string, password as string);
-                    console.log("Usuario obtenido en authorize:", user);
+
                     if (!user || user?.message) {
                         // return null;
                         throw new Error(user?.message || "Credenciales Invalidas")

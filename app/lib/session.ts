@@ -43,7 +43,6 @@ export const fetchCreateSession = async (userId: string, userDevice: string, use
         });
         
         const data = await response.json();
-        console.log("Respuesta de crear sesión:", data);
         return data;
     } catch (error) {
         console.error('Error al crear sesión:', error);

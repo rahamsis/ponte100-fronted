@@ -71,7 +71,7 @@ export default function AuthModal({ onClose, onLogin }: AuthModalProps) {
                 setMessage(response?.error!);
                 return;
             }
-            console.log("Login successful:", response);
+
             cleanForm();
             onLogin();
             // Esperar a que la sesión se actualice

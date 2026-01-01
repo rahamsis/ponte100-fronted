@@ -155,76 +155,44 @@ const books = [
 ]
 
 function Zona() {
-    // const [books, setBooks] = useState<{ name: string; url: string; imageUrl: string }[]>([]);
-    const [banco, setBanco] = useState<{ name: string; url: string; imageUrl: string }[]>([]);
+    const [banco, setBanco] = useState<{ name: string; url: string; poster: string }[]>([]);
     const [normas, setNormas] = useState<{ name: string; url: string; imageUrl: string }[]>([]);
     const [selectedBanco, setSelectedBanco] = useState<string>("");
     const [isPdfViewerOpen, setIsPdfViewerOpen] = useState(false);
-    // const [loading, setLoading] = useState(false);
+    const [loadingBanco, setLoadingBanco] = useState(true);
     const [loadingNormas, setLoadingNormas] = useState(true);
-
-    // useEffect(() => {
-    //     async function fetchBooks() {
-    //         setLoading(true);
-    //         const res = await fetch("/api/books?bucket=temarioponte100");
-    //         const data = await res.json();
-    //         const booksWithImages = await Promise.all(
-    //             data.books.map(async (book: { name: string; url: string }) => {
-    //                 const localImagePath = `/images/covers/${encodeURIComponent(book.name.replace(".pdf", ""))}.jpg`;
-
-    //                 // Verifica si la imagen existe localmente
-    //                 const imageExists = await fetch(localImagePath, { method: "HEAD" })
-    //                     .then((res) => res.ok)
-    //                     .catch(() => false);
-
-    //                 if (imageExists) {
-    //                     return { ...book, imageUrl: localImagePath };
-    //                 }
-
-    //                 const imageRes = await fetch(`/api/covers?bucket=coversponte100&file=${book.name}.jpg`);
-    //                 const imageData = await imageRes.json();
-    //                 return {
-    //                     ...book,
-    //                     imageUrl: imageData.filePath || "/images/librodefault.jpg", // Imagen por defecto si falla
-    //                 };
-    //             })
-    //         );
-    //         setLoading(false);
-    //         setBooks(booksWithImages);
-    //     }
-
-    //     fetchBooks();
-    // }, []);
 
     useEffect(() => {
         async function fetchBancos() {
-            const res = await fetch("/api/books?bucket=archivosponte100");
+            setLoadingBanco(true);
+            const res = await fetch("/api/books");
             const data = await res.json();
 
-            const booksWithImages = await Promise.all(
-                data.books.map(async (book: { name: string; url: string }) => {
+            // const booksWithImages = await Promise.all(
+            //     data.books.map(async (book: { name: string; url: string }) => {
 
-                    const localImagePath = `/images/covers/${book.name.replace(".pdf", "")}.png`;
-                    //   console.log("imagen existe", book.name)
-                    // Verifica si la imagen existe localmente
-                    const imageExists = await fetch(localImagePath, { method: "HEAD" })
-                        .then((res) => res.ok)
-                        .catch(() => false);
+            //         const localImagePath = `/images/covers/${book.name.replace(".pdf", "")}.png`;
+            //         //   console.log("imagen existe", book.name)
+            //         // Verifica si la imagen existe localmente
+            //         const imageExists = await fetch(localImagePath, { method: "HEAD" })
+            //             .then((res) => res.ok)
+            //             .catch(() => false);
 
-                    if (imageExists) {
-                        return { ...book, imageUrl: localImagePath };
-                    }
+            //         if (imageExists) {
+            //             return { ...book, imageUrl: localImagePath };
+            //         }
 
-                    const imageRes = await fetch(`/api/covers?bucket=coversponte100&file=${book.name}.png`);
-                    const imageData = await imageRes.json();
-                    return {
-                        ...book,
-                        imageUrl: imageData.filePath || "/images/librodefault.png", // Usa una imagen por defecto si falla
-                    };
-                })
-            );
-
-            setBanco(booksWithImages);
+            //         const imageRes = await fetch(`/api/covers?bucket=coversponte100&file=${book.name}.png`);
+            //         const imageData = await imageRes.json();
+            //         return {
+            //             ...book,
+            //             imageUrl: imageData.filePath || "/images/librodefault.png", // Usa una imagen por defecto si falla
+            //         };
+            //     })
+            // );
+            console.log("Banco de preguntas cargado:", data);
+            setLoadingBanco(false);
+            setBanco(data);
         }
         fetchBancos();
     }, []);
@@ -232,30 +200,11 @@ function Zona() {
     useEffect(() => {
         async function fetchNormas() {
             setLoadingNormas(true);
-            const res = await fetch("/api/books?bucket=normas");
+            const res = await fetch("/api/books-normas");
             const data = await res.json();
-
-            const booksWithImages = await Promise.all(
-                data.books.map(async (book: { name: string; url: string }) => {
-                    const localImagePath = `/images/covers/${encodeURIComponent(book.name.replace(".pdf", ""))}.png`;
-
-                    const imageExists = await fetch(localImagePath, { method: "HEAD" })
-                        .then((res) => res.ok)
-                        .catch(() => false);
-
-                    if (imageExists) {
-                        return { ...book, imageUrl: localImagePath || "/images/librodefault.png"};
-                    }
-
-                    // return {
-                    //     ...book,
-                    //     imageUrl: imageData.filePath || "/images/librodefault.png", // Imagen por defecto si falla
-                    // };
-
-                })
-            );
+            console.log("Normas institucionales cargadas:", data);
             setLoadingNormas(false);
-            setNormas(booksWithImages);
+            setNormas(data);
         }
 
         fetchNormas();
@@ -301,6 +250,17 @@ function Zona() {
                                 {/* Panel de Banco de Preguntas */}
                                 <TabPanel className={`${tabIndex === 1 ? "block" : "hidden"}`}>
                                     <div>
+                                        {
+                                            loadingBanco && <div className="flex items-center justify-center mt-8">
+                                                <div className="text-center">
+                                                    <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-green-600 border-r-transparent">
+                                                        <span className="sr-only">Cargando...</span>
+                                                    </div>
+                                                    <p className="mt-4 text-button">Cargando Banco de Preguntas...</p>
+                                                </div>
+                                            </div>
+                                        }
+
                                         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6">
                                             {banco.map((banco, i) => (
                                                 <div
@@ -310,7 +270,7 @@ function Zona() {
                                                     {/* Imagen */}
                                                     <div className="flex items-center justify-center h-[120px] w-[90px]">
                                                         <Image
-                                                            src={banco.imageUrl}
+                                                            src={banco.poster}
                                                             alt={banco.name}
                                                             width={90}
                                                             height={120}
@@ -392,7 +352,7 @@ function TabPanelWithSearch({ books, loading, }: { books: { name: string; url: s
                 />
             </div>
 
-            {loading && <div className="flex min-h-[80vh] items-center justify-center">
+            {loading && <div className="flex items-center justify-center mt-8">
                 <div className="text-center">
                     <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-green-600 border-r-transparent">
                         <span className="sr-only">Cargando...</span>
@@ -402,7 +362,7 @@ function TabPanelWithSearch({ books, loading, }: { books: { name: string; url: s
             </div>}
 
             {/* Resultados */}
-            {filteredBooks.length === 0 ? (
+            {filteredBooks.length === 0 && !loading ? (
                 <div className="flex flex-col items-center justify-centertext-center py-8">
                     <Search className="w-8 h-8 lg:w-16 lg:h-16 text-[#CAD3F5] " />
                     <p className="text-gray3 text-lg text-center">No se encontraron resultados de la búsqueda</p>
@@ -421,7 +381,7 @@ function TabPanelWithSearch({ books, loading, }: { books: { name: string; url: s
 // Componente que usa Canvas para evitar descargas
 function BookCard({ book }: { book: { name: string; url: string; imageUrl: string } }) {
     // const canvasRef = useRef<HTMLCanvasElement>(null);
-    
+
     // useEffect(() => {
     //     const canvas = canvasRef.current;
     //     if (!canvas) return;
@@ -445,7 +405,7 @@ function BookCard({ book }: { book: { name: string; url: string; imageUrl: strin
                 <a href={book.url} target="_blank">
                     <Image
                         alt=""
-                        src={book.imageUrl}
+                        src={book.imageUrl ?? "/images/librodefault.png"}
                         width={90}
                         height={120}
                         className="object-cover rounded-lg"

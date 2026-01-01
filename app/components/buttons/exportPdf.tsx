@@ -41,8 +41,7 @@ const ExportPDF: React.FC<ExportPDFProps> = ({ data, children, className = "" })
             //     correctAnswer: "ALT186284003",
             //     clave: "OBLIGADAS A INFORMAR||RÉGIMEN PRIVADO"
             // }]
-            console.log("******************************************");
-            console.log(questions)
+            
             if (!questions?.length) {
                 alert("No hay preguntas para exportar.");
                 return;

@@ -690,7 +690,6 @@ export async function updateTalleresByUserId(userId: string, datos: { idTaller: 
 }
 
 export async function downloadQuestionsToClase(idClase: number) {
-    console.log("idTaller:", idClase)
     try {
         const response = await fetch(`${process.env.APP_BACK_END}/backendApi/download-questions-clase?idClase=${idClase}`, {
             method: 'GET',

@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 
 export async function GET() {
   try {
-    const res = await fetch(`${process.env.APP_BACK_END}/videos`, {
+    const res = await fetch(`${process.env.APP_BACK_END}/normas`, {
       headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json'
@@ -13,7 +13,7 @@ export async function GET() {
     });
 
     if (!res.ok) {
-      throw new Error('Error obteniendo videos');
+      throw new Error('Error obteniendo normas');
     }
 
     const data = await res.json();
@@ -21,7 +21,7 @@ export async function GET() {
 
   } catch (error) {
     return NextResponse.json(
-      { error: 'No se pudieron cargar los videos: ' + error },
+      { error: 'No se pudo cargar las normas: ' + error },
       { status: 500 }
     );
   }

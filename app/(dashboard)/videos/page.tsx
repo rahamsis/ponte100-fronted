@@ -40,7 +40,13 @@ function Videos() {
     useEffect(() => {
         async function fetchVideos() {
             const res = await fetch("/api/videos");
+            // const data = await res.json();
             const data = await res.json();
+
+            if (data.error) {
+                console.log("Error fetching videos:", data.error);
+                return;
+            }
             setVideos(data);
             // setLoading(false);
         }
@@ -55,7 +61,7 @@ function Videos() {
             <section className="bg-postbanner py-10">
                 <div className="lg:mx-20">
                     <div className="flex flex-wrap items-center mx-8 lg:mx-3">
-                        <div className="mx-auto">
+                        <div className="lg:w-full mx-auto">
                             <VideosWithSearch videos={videos} />
                         </div>
                     </div>
@@ -78,8 +84,7 @@ function VideosWithSearch({ videos }: { videos: Video[] }) {
             // || (video.subtitle && video.subtitle.toLowerCase().includes(searchTermLower)) 
             || (video.author && video.author.toLowerCase().includes(searchTermLower))
         );
-    }
-    ).sort((a, b) => {
+    }).sort((a, b) => {
         switch (sortOption) {
             case 'name-asc':
                 return a.name.localeCompare(b.name);
@@ -108,7 +113,7 @@ function VideosWithSearch({ videos }: { videos: Video[] }) {
                         onChange={(e) => setSearchTerm(e.target.value)}
                     />
                 </div>
-                <div>
+                <div className="mx-auto lg:mx-0">
                     <div className="flex items-center gap-3">
                         <h1 className="text-primary font-bold whitespace-nowrap">Ordenar por</h1>
                         <select

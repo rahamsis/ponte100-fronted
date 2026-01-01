@@ -6,8 +6,28 @@ const nextConfig = {
       sizeLimit: '500mb', // o lo que necesites (10mb, 50mb, etc.)
     },
   },
+  // images: {
+  //   domains: ["res.cloudinary.com"],
+  // },
   images: {
-    domains: ["res.cloudinary.com"],
+    remotePatterns: [
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '3000',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'res.cloudinary.com',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'f003.backblazeb2.com',
+        pathname: '/file/**',
+      },
+    ],
   },
   webpack: (config, { isServer }) => {
     // Configura Webpack para manejar archivos .mjs

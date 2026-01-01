@@ -44,7 +44,6 @@ function Main() {
         setIsLoading(true);
         try {
             const data = await getAllDataQuestions(filtro);
-            console.log(data)
             setData(data);
         } catch (error) {
             console.error('Error al obtener los datos de la pregunta:', error);
