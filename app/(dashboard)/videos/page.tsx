@@ -184,9 +184,9 @@ function VideoCard({ video }: { video: Video }) {
                     poster={video.poster}
                     controlsList="nodownload"
                     className="w-full h-full rounded-lg object-cover"
-                    onLoadedMetadata={(e) =>
-                        console.log("Duración:", e.currentTarget.duration)
-                    }
+                    // onLoadedMetadata={(e) =>
+                    //     console.log("Duración:", e.currentTarget.duration)
+                    // }
                 />
             </div>
 

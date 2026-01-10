@@ -3,22 +3,19 @@
 import { useEffect, useRef, useState } from 'react'
 import { Search, KeyRound, BookOpenCheck, Pencil, Save } from "lucide-react";
 import TextareaAutosize from 'react-textarea-autosize';
-// import SelectorUsers from "@/app/components/selectors/selectorUsers";
-// import SelectorTalleres from "@/app/components/selectors/selectorTalleres";
-// import { useSession } from "next-auth/react";
 import {
-    fetchAllUsers,
+    // fetchAllStudents,
     getCompleteQuestionById,
     updatePregunta,
     updateAlternativas,
     updateClaves
-    // InsertOrUpdateTallerToOneUser 
 } from "@/app/lib/actions";
 import { ModalUpdateSuccessfull } from "@/app/components/modales/modalUpdateSuccessfull";
 import { Loader2 } from "lucide-react";
-import { ModalAddUser } from '@/app/components/modales/modalAddUser';
-import { ModalResetPassword } from '@/app/components/modales/modalResetPassword';
+import { ModalAddUser } from '@/app/components/modales/modalUser/modalAddUser';
+import { ModalResetPassword } from '@/app/components/modales/modalUser/modalResetPassword';
 import { ModalAddTalleres } from '@/app/components/modales/modalAddTalleres';
+import { User } from '@/types/users';
 
 function Inicio() {
     return (
@@ -38,22 +35,6 @@ function Inicio() {
             </div>
         </div>
     )
-}
-
-type User = {
-    userId: string,
-    nombre: string,
-    apellidos: string,
-    genero: string,
-    idGrado: string,
-    nombreGrado: string,
-    email: string,
-    telefono: string,
-    cip: string,
-    dni: string,
-    username: string,
-    idPerfil: string,
-    nombrePerfil: string,
 }
 
 // function UpdateTalleres() {
@@ -256,216 +237,224 @@ function UploadVideos() {
     );
 }
 
-function Users() {
-    const [searchTerm, setSearchTerm] = useState('');
-    const [activeModal, setActiveModal] = useState(false);
+// function Users() {
+//     const [searchTerm, setSearchTerm] = useState('');
+//     const [activeModal, setActiveModal] = useState(false);
+//     const [modalMode, setModalMode] = useState<"create" | "edit">("create")
+//     const [selectedUsuario, setSelectedUsuario] = useState<User | null>(null)
 
-    const [users, setUsers] = useState<User[]>([]);
-    const [currentPage, setCurrentPage] = useState(1);
-    const usersPerPage = 10;
+//     const [users, setUsers] = useState<User[]>([]);
+//     const [currentPage, setCurrentPage] = useState(1);
+//     const usersPerPage = 10;
 
-    const filteredUsers = users.filter((user) =>
-        user.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        user.apellidos?.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+//     const filteredUsers = users.filter((user) =>
+//         user.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
+//         user.apellidos?.toLowerCase().includes(searchTerm.toLowerCase())
+//     );
 
-    const indexOfLastUser = currentPage * usersPerPage;
-    const indexOfFirstUser = indexOfLastUser - usersPerPage;
-    const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser);
+//     const indexOfLastUser = currentPage * usersPerPage;
+//     const indexOfFirstUser = indexOfLastUser - usersPerPage;
+//     const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser);
 
-    const [resetUserId, setResetUserId] = useState<string | null>(null);
-    const [isLoading, setIsLoading] = useState(true);
+//     const [resetUserId, setResetUserId] = useState<string | null>(null);
+//     const [isLoading, setIsLoading] = useState(true);
 
-    const [addTalleres, setAddTalleres] = useState<{ userId: string, nombre: string } | null>(null);
+//     const [addTalleres, setAddTalleres] = useState<{ userId: string, nombre: string } | null>(null);
 
-    const cargarUsuarios = async () => {
-        setIsLoading(true);
-        try {
-            const data = await fetchAllUsers();
-            if (Array.isArray(data)) {
-                setUsers(data);
-            } else {
-                console.error("La respuesta no es un arreglo:", data);
-                setUsers([]);
-            }
-        } catch (error) {
-            console.error('Error al cargar usuarios:', error);
-            setUsers([]);
-        } finally {
-            setIsLoading(false);
-        }
-    };
+//     const cargarUsuarios = async () => {
+//         setIsLoading(true);
+//         try {
+//             const data = await fetchAllStudents();
+//             if (Array.isArray(data)) {
+//                 setUsers(data);
+//             } else {
+//                 console.error("La respuesta no es un arreglo:", data);
+//                 setUsers([]);
+//             }
+//         } catch (error) {
+//             console.error('Error al cargar usuarios:', error);
+//             setUsers([]);
+//         } finally {
+//             setIsLoading(false);
+//         }
+//     };
 
-    useEffect(() => {
-        cargarUsuarios();
-    }, [])
+//     useEffect(() => {
+//         cargarUsuarios();
+//     }, [])
 
-    useEffect(() => {
-        setCurrentPage(1);
-    }, [searchTerm]);
+//     useEffect(() => {
+//         setCurrentPage(1);
+//     }, [searchTerm]);
 
-    return (
-        <div className="w-full">
-            <div className="lg:ml-20">
-                <div className="mx-8 lg:mx-3">
-                    <div className="py-4 space-y-4">
-                        <div className="w-full">
-                            <h1 className="text-button text-base lg:text-lg font-semibold mb-4">Usuarios</h1>
-                        </div>
+//     return (
+//         <div className="w-full">
+//             <div className="lg:ml-20">
+//                 <div className="mx-8 lg:mx-3">
+//                     <div className="py-4 space-y-4">
+//                         <div className="w-full">
+//                             <h1 className="text-button text-base lg:text-lg font-semibold mb-4">Usuarios</h1>
+//                         </div>
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 w-full x:w-1/2 gap-4">
-                            {/* Barra de búsqueda */}
-                            <div className="">
-                                <Search className="absolute w-5 h-5 mt-[10px] ml-2 text-secondary" />
-                                <input
-                                    type="text"
-                                    placeholder="Buscar usuario..."
-                                    className="pl-16 w-10/12 lg:w-full  p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-button"
-                                    value={searchTerm}
-                                    onChange={(e) => setSearchTerm(e.target.value)}
-                                />
-                            </div>
-                            {/* Botón de agregar usuario */}
-                            <div className=''>
-                                <button onClick={(() => setActiveModal(true))} className='bg-button2 text-white px-4 py-2 rounded'> Agregar usuario</button>
-                            </div>
-                        </div>
+//                         <div className="grid grid-cols-1 md:grid-cols-2 w-full x:w-1/2 gap-4">
+//                             {/* Barra de búsqueda */}
+//                             <div className="">
+//                                 <Search className="absolute w-5 h-5 mt-[10px] ml-2 text-secondary" />
+//                                 <input
+//                                     type="text"
+//                                     placeholder="Buscar usuario..."
+//                                     className="pl-16 w-10/12 lg:w-full  p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-button"
+//                                     value={searchTerm}
+//                                     onChange={(e) => setSearchTerm(e.target.value)}
+//                                 />
+//                             </div>
+//                             {/* Botón de agregar usuario */}
+//                             <div className=''>
+//                                 <button onClick={(() => setActiveModal(true))} className='bg-button2 text-white px-4 py-2 rounded'> Agregar usuario</button>
+//                             </div>
+//                         </div>
 
-                        {/* Contenedor principal con scroll horizontal aislado */}
-                        <div className="relative w-[calc(100vw-4rem)] md:w-[calc(100vw-6rem)] lg:w-[calc(100vw-18rem)] x:w-[calc(100vw-20rem)] rounded-lg">
-                            {/* Contenedor de scroll con ancho restringido */}
-                            <div className="overflow-x-auto ">
-                                {/* Tabla con ancho mínimo garantizado */}
-                                <table className="min-w-[800px] w-full table-auto border-collapse text-sm">
-                                    <thead className="bg-button text-white">
-                                        <tr>
-                                            <th className="border border-gray-300 px-3 py-2 text-left whitespace-nowrap">#</th>
-                                            <th className="border border-gray-300 px-4 py-2 text-left whitespace-nowrap">Nombre</th>
-                                            <th className="border border-gray-300 px-4 py-2 text-left whitespace-nowrap">Genero</th>
-                                            <th className="border border-gray-300 px-4 py-2 text-left whitespace-nowrap">Grado</th>
-                                            <th className="border border-gray-300 px-4 py-2 text-left whitespace-nowrap">Correo</th>
-                                            <th className="border border-gray-300 px-4 py-2 text-left whitespace-nowrap">Telefono</th>
-                                            <th className="border border-gray-300 px-4 py-2 text-left whitespace-nowrap">CIP/DNI</th>
-                                            <th className="border border-gray-300 px-4 py-2 text-left whitespace-nowrap">Perfil</th>
-                                            <th className="border border-gray-300 px-4 py-2 text-left whitespace-nowrap">Talleres</th>
-                                            <th className="border border-gray-300 px-4 py-2 text-left whitespace-nowrap">Resetear</th>
-                                            {/* <th className="border border-gray-300 px-4 py-2 text-left whitespace-nowrap">Eliminar</th> */}
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {isLoading ? (
-                                            <tr>
-                                                <td colSpan={10} className="text-center py-4 text-gray-500">
-                                                    <div className="flex justify-center items-center space-x-2">
-                                                        <svg
-                                                            className="animate-spin h-5 w-5 text-gray-500"
-                                                            xmlns="http://www.w3.org/2000/svg"
-                                                            fill="none"
-                                                            viewBox="0 0 24 24"
-                                                        >
-                                                            <circle
-                                                                className="opacity-25"
-                                                                cx="12"
-                                                                cy="12"
-                                                                r="10"
-                                                                stroke="currentColor"
-                                                                strokeWidth="4"
-                                                            ></circle>
-                                                            <path
-                                                                className="opacity-75"
-                                                                fill="currentColor"
-                                                                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
-                                                            ></path>
-                                                        </svg>
-                                                        <span>Cargando usuarios...</span>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        ) : currentUsers.length === 0 ? (
-                                            <tr>
-                                                <td colSpan={10} className="text-center py-4 text-gray-400">
-                                                    No se encontraron usuarios.
-                                                </td>
-                                            </tr>
-                                        ) : (
-                                            currentUsers.map((user, i) => (
-                                                <tr key={i} className="odd:bg-white even:bg-gray-200">
-                                                    <td className="border border-gray-300 px-3 py-2 whitespace-nowrap relative">{indexOfFirstUser + i + 1}</td>
-                                                    <td className="border border-gray-300 px-4 py-2 whitespace-nowrap">{user.nombre}{user.apellidos ? ' ' + user.apellidos : ''}</td>
-                                                    <td className="border border-gray-300 px-4 py-2 whitespace-nowrap">{user.genero}</td>
-                                                    <td className="border border-gray-300 px-4 py-2 whitespace-nowrap">{user.nombreGrado}</td>
-                                                    <td className="border border-gray-300 px-4 py-2 whitespace-nowrap">{user.email}</td>
-                                                    <td className="border border-gray-300 px-4 py-2 whitespace-nowrap">{user.telefono}</td>
-                                                    <td className="border border-gray-300 px-4 py-2 whitespace-nowrap">{<span>{user.cip}</span>}{" /"}{<br></br>}{<span>{user.dni}</span>}</td>
-                                                    <td className="border border-gray-300 px-4 py-2 whitespace-nowrap">{user.nombrePerfil}</td>
-                                                    <td className="border text-center">
-                                                        <button
-                                                            className="border border-button2 p-2 rounded-md"
-                                                            title="talleres"
-                                                            onClick={() => setAddTalleres({ userId: user.userId, nombre: user.nombre + ' ' + (user.apellidos ? user.apellidos : '') })}
-                                                        // disabled={!this.state.reset}
-                                                        ><BookOpenCheck className='text-button2 w-4 h-4' /></button>
-                                                    </td>
-                                                    <td className="border text-center">
-                                                        <button
-                                                            className="border border-blue-400 p-2 rounded-md"
-                                                            title="Resetear"
-                                                            onClick={() => setResetUserId(user.userId)}
-                                                        ><KeyRound className='text-blue-400 w-4 h-4' /></button>
-                                                    </td>
-                                                </tr>
-                                            )))}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+//                         {/* Contenedor principal con scroll horizontal aislado */}
+//                         <div className="relative w-[calc(100vw-4rem)] md:w-[calc(100vw-6rem)] lg:w-[calc(100vw-18rem)] x:w-[calc(100vw-20rem)] rounded-lg">
+//                             {/* Contenedor de scroll con ancho restringido */}
+//                             <div className="overflow-x-auto ">
+//                                 {/* Tabla con ancho mínimo garantizado */}
+//                                 <table className="min-w-[800px] w-full table-auto border-collapse text-sm">
+//                                     <thead className="bg-button text-white">
+//                                         <tr>
+//                                             <th className="border border-gray-300 px-3 py-2 text-left whitespace-nowrap">#</th>
+//                                             <th className="border border-gray-300 px-4 py-2 text-left whitespace-nowrap">Nombre</th>
+//                                             <th className="border border-gray-300 px-4 py-2 text-left whitespace-nowrap">Genero</th>
+//                                             <th className="border border-gray-300 px-4 py-2 text-left whitespace-nowrap">Grado</th>
+//                                             <th className="border border-gray-300 px-4 py-2 text-left whitespace-nowrap">Correo</th>
+//                                             <th className="border border-gray-300 px-4 py-2 text-left whitespace-nowrap">Telefono</th>
+//                                             <th className="border border-gray-300 px-4 py-2 text-left whitespace-nowrap">CIP/DNI</th>
+//                                             <th className="border border-gray-300 px-4 py-2 text-left whitespace-nowrap">Talleres</th>
+//                                             <th className="border border-gray-300 px-4 py-2 text-left whitespace-nowrap">Resetear</th>
+//                                             {/* <th className="border border-gray-300 px-4 py-2 text-left whitespace-nowrap">Eliminar</th> */}
+//                                         </tr>
+//                                     </thead>
+//                                     <tbody>
+//                                         {isLoading ? (
+//                                             <tr>
+//                                                 <td colSpan={10} className="text-center py-4 text-gray-500">
+//                                                     <div className="flex justify-center items-center space-x-2">
+//                                                         <svg
+//                                                             className="animate-spin h-5 w-5 text-gray-500"
+//                                                             xmlns="http://www.w3.org/2000/svg"
+//                                                             fill="none"
+//                                                             viewBox="0 0 24 24"
+//                                                         >
+//                                                             <circle
+//                                                                 className="opacity-25"
+//                                                                 cx="12"
+//                                                                 cy="12"
+//                                                                 r="10"
+//                                                                 stroke="currentColor"
+//                                                                 strokeWidth="4"
+//                                                             ></circle>
+//                                                             <path
+//                                                                 className="opacity-75"
+//                                                                 fill="currentColor"
+//                                                                 d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+//                                                             ></path>
+//                                                         </svg>
+//                                                         <span>Cargando usuarios...</span>
+//                                                     </div>
+//                                                 </td>
+//                                             </tr>
+//                                         ) : currentUsers.length === 0 ? (
+//                                             <tr>
+//                                                 <td colSpan={10} className="text-center py-4 text-gray-400">
+//                                                     No se encontraron usuarios.
+//                                                 </td>
+//                                             </tr>
+//                                         ) : (
+//                                             currentUsers.map((user, i) => (
+//                                                 <tr key={i} className="odd:bg-white even:bg-gray-200">
+//                                                     <td className="border border-gray-300 px-3 py-2 whitespace-nowrap relative">{indexOfFirstUser + i + 1}</td>
+//                                                     <td className="border border-gray-300 px-4 py-2 whitespace-nowrap">{user.nombre}{user.apellidos ? ' ' + user.apellidos : ''}</td>
+//                                                     <td className="border border-gray-300 px-4 py-2 whitespace-nowrap">{user.genero}</td>
+//                                                     <td className="border border-gray-300 px-4 py-2 whitespace-nowrap">{user.nombreGrado}</td>
+//                                                     <td className="border border-gray-300 px-4 py-2 whitespace-nowrap">{user.email}</td>
+//                                                     <td className="border border-gray-300 px-4 py-2 whitespace-nowrap">{user.telefono}</td>
+//                                                     <td className="border border-gray-300 px-4 py-2 whitespace-nowrap">{<span>{user.cip}</span>}{" /"}{<br></br>}{<span>{user.dni}</span>}</td>
+//                                                     <td className="border text-center">
+//                                                         <button
+//                                                             className="border border-button2 p-2 rounded-md"
+//                                                             title="talleres"
+//                                                             onClick={() => setAddTalleres({ userId: user.userId, nombre: user.nombre + ' ' + (user.apellidos ? user.apellidos : '') })}
+//                                                         // disabled={!this.state.reset}
+//                                                         ><BookOpenCheck className='text-button2 w-4 h-4' /></button>
+//                                                     </td>
+//                                                     <td className="border text-center">
+//                                                         <button
+//                                                             className="border border-blue-400 p-2 rounded-md"
+//                                                             title="Resetear"
+//                                                             onClick={() => setResetUserId(user.userId)}
+//                                                         ><KeyRound className='text-blue-400 w-4 h-4' /></button>
+//                                                     </td>
+//                                                 </tr>
+//                                             )))}
+//                                     </tbody>
+//                                 </table>
+//                             </div>
+//                         </div>
 
-                        <div className="flex justify-end mt-4 gap-2 mr-20">
-                            <button
-                                className="px-3 py-1 border border-button text-button rounded disabled:opacity-50"
-                                onClick={() => setCurrentPage(currentPage - 1)}
-                                disabled={currentPage === 1}
-                            >
-                                Anterior
-                            </button>
+//                         <div className="flex justify-end mt-4 gap-2 mr-20">
+//                             <button
+//                                 className="px-3 py-1 border border-button text-button rounded disabled:opacity-50"
+//                                 onClick={() => setCurrentPage(currentPage - 1)}
+//                                 disabled={currentPage === 1}
+//                             >
+//                                 Anterior
+//                             </button>
 
-                            <span className="px-3 py-1">
-                                Página {currentPage} de {Math.ceil(filteredUsers.length / usersPerPage)}
-                            </span>
+//                             <span className="px-3 py-1">
+//                                 Página {currentPage} de {Math.ceil(filteredUsers.length / usersPerPage)}
+//                             </span>
 
-                            <button
-                                className="px-3 py-1 border border-button text-button rounded disabled:opacity-50"
-                                onClick={() => setCurrentPage(currentPage + 1)}
-                                disabled={indexOfLastUser >= filteredUsers.length}
-                            >
-                                Siguiente
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {activeModal && (
-                <ModalAddUser
-                    onClose={() => setActiveModal(false)}
-                    onUserAdded={cargarUsuarios} // 👈 Nuevo prop
-                    extra=""
-                />
-            )}
-            {resetUserId && (
-                <ModalResetPassword
-                    userId={resetUserId}
-                    onClose={() => setResetUserId(null)}
-                />
-            )}
-            {addTalleres && (
-                <ModalAddTalleres
-                    userId={addTalleres.userId}
-                    nombre={addTalleres.nombre}
-                    onClose={() => setAddTalleres(null)} />
-            )}
-        </div>
-    );
-}
+//                             <button
+//                                 className="px-3 py-1 border border-button text-button rounded disabled:opacity-50"
+//                                 onClick={() => setCurrentPage(currentPage + 1)}
+//                                 disabled={indexOfLastUser >= filteredUsers.length}
+//                             >
+//                                 Siguiente
+//                             </button>
+//                         </div>
+//                     </div>
+//                 </div>
+//             </div>
+//             {activeModal && (
+//                 <ModalAddUser
+//                     mode={modalMode}
+//                     usuario={selectedUsuario}
+//                     onClose={() => {
+//                         setActiveModal(false)
+//                         setSelectedUsuario(null)
+//                     }}
+//                     onSuccess={() => {
+//                         setActiveModal(false)
+//                         setSelectedUsuario(null)
+//                         cargarUsuarios()
+//                     }}
+//                 />
+//             )}
+//             {resetUserId && (
+//                 <ModalResetPassword
+//                     userId={resetUserId}
+//                     onClose={() => setResetUserId(null)}
+//                 />
+//             )}
+//             {addTalleres && (
+//                 <ModalAddTalleres
+//                     userId={addTalleres.userId}
+//                     nombre={addTalleres.nombre}
+//                     onClose={() => setAddTalleres(null)} />
+//             )}
+//         </div>
+//     );
+// }
 
 interface Alternativas {
     idAlternativa: string,
@@ -785,7 +774,7 @@ export default function Configuracion() {
         <div className="flex flex-col min-h-screen pb-20 lg:pb-5">
             <Inicio />
 
-            <Users />
+            {/* <Users /> */}
 
             {/* <UpdateTalleres /> */}
 

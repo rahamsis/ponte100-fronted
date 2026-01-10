@@ -9,7 +9,6 @@ interface ModalAddTalleres {
     userId: string;
     nombre: string;
     onClose: () => void;
-    // onUserTallerAdded: () => Promise<void>;
 }
 
 interface Taller {

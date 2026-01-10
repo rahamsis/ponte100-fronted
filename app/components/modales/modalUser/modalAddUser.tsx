@@ -1,105 +1,121 @@
 'use client'
 
 /* eslint-disable */
-import { useForm } from 'react-hook-form';
-import { useState, useEffect } from "react";
-import { EyeClosed, Eye } from "lucide-react";
-import { AddingUser, getGrados } from '@/app/lib/actions';
+import { useForm } from 'react-hook-form'
+import { useState, useEffect } from "react"
+import { AddingUser, getAllPerfiles, getGrados, updatetUserdata } from '@/app/lib/actions'
+import { AddUser } from '@/types/modalUsuario'
+import { FormData, Grado, Perfil, } from '@/types/users'
+import { useSession } from 'next-auth/react'
 
-interface ModalAddUser {
-    onClose: () => void;
-    extra: string;
-    onUserAdded: () => Promise<void>;
-    // router?: any;
-}
+export const ModalAddUser = ({
+    mode,
+    usuario,
+    onSuccess,
+    onClose,
+}: AddUser) => {
+    const { data: session, status } = useSession()
 
-interface Grado {
-    idGrado: string;
-    nombreGrado: string;
-}
+    const isEdit = mode === "edit"
+    const isDisabled = usuario?.email === "rahamsiscg.95@gmail.com" && session?.user?.email !== "rahamsiscg.95@gmail.com";
 
-interface FormData {
-    nombre: string;
-    apellidos: string;
-    email: string;
-    telefono: string;
-    cip: string;
-    dni: string;
-    grado: string;
-    genero: string;
-    username: string;
-    password: string;
-}
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+        // reset, //es util para resetear el formulario si es necesario
+        setValue
+    } = useForm<FormData>({
+        defaultValues: isEdit && usuario ? {
+            nombre: usuario.nombre,
+            apellidos: usuario.apellidos,
+            email: usuario.email,
+            telefono: usuario.telefono,
+            cip: usuario.cip,
+            dni: usuario.dni,
+            genero: usuario.genero,
+            username: usuario.username,
+            password: "",
+        } : {}
+    })
 
-export const ModalAddUser = ({ onClose, onUserAdded, extra }: ModalAddUser) => {
-    const { register, handleSubmit, formState: { errors }, watch, clearErrors } = useForm<FormData>();
-    const emailValue = watch('email');
-    const gradoSeleccionado = watch("grado");
-    const [grados, setGrados] = useState<Grado[]>([]);
-    const [showPassword, setShowPassword] = useState(false)
-    const [errorRegister, setErrorRegister] = useState<string | null>(null);
-
-    useEffect(() => {
-        document.body.style.overflow = "hidden"; // Bloquea scroll
-        return () => {
-            document.body.style.overflow = ""; // Lo restaura cuando se cierra
-        };
-    }, []);
+    const [grados, setGrados] = useState<Grado[]>([])
+    const [perfiles, setPerfiles] = useState<Perfil[]>([])
+    const [errorRegister, setErrorRegister] = useState<string | null>(null)
+    const [loading, setLoading] = useState(false)
 
     useEffect(() => {
-        if (emailValue) {
-            clearErrors('email'); // ❌ Borra el error al escribir algo
+        document.body.style.overflow = "hidden"
+        return () => { document.body.style.overflow = "" }
+    }, [])
+
+
+    useEffect(() => {
+        if (isEdit && usuario && grados.length > 0) {
+            setValue("idGrado", usuario.idGrado)
         }
-    }, [emailValue]);
-
-    useEffect(() => {
-        if (gradoSeleccionado) {
-            clearErrors("grado");
+        if (isEdit && usuario && perfiles.length > 0) {
+            setValue("idPerfil", usuario.idPerfil)
         }
-    }, [gradoSeleccionado]);
+    }, [isEdit, usuario, grados, perfiles, setValue])
 
-    // llenar los grados
     useEffect(() => {
         async function fetchData() {
             try {
-                // const data = await getTemas();
-                const data = await getGrados();
-
-                setGrados(data);
+                const data = await getGrados()
+                setGrados(data)
             } catch (error) {
-                console.error("Error obteniendo las preguntas:", error);
+                console.error("Error obteniendo grados:", error)
             }
         }
-        fetchData();
-    }, []);
+        fetchData()
+    }, [])
 
-    const handleSubmitForm = async (data: FormData) => {
-        try {
-            const response = await AddingUser(data);
-
-            if (!response?.ok) {
-                // console.error("Error en la respuesta del backend:", response.error);
-                // alert("Error al agregar el usuario: " + response.error);
-                setErrorRegister(response.message)
-            } else {
-                onUserAdded();
-                onClose();
+    useEffect(() => {
+        async function fetchData() {
+            try {
+                const data = await getAllPerfiles()
+                setPerfiles(data)
+            } catch (error) {
+                console.error("Error obteniendo perfiles:", error)
             }
+        }
+        fetchData()
+    }, [])
+
+    const onSubmit = async (data: FormData) => {
+        try {
+            setLoading(true)
+            setErrorRegister(null)
+
+            const result = isEdit && usuario
+                ? await updatetUserdata(usuario.userId, data)
+                : await AddingUser(data)
+
+            if (!result.ok) {
+                setErrorRegister(result.message)
+                return
+            }
+
+            onSuccess()
+            onClose()
 
         } catch (error) {
-            console.error("Error al enviar el formulario:", error);
+            setErrorRegister("Ocurrió un error al guardar el usuario")
+        } finally {
+            setLoading(false)
         }
-
-    };
+    }
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white p-6 rounded-lg max-w-lg w-full mx-3 lg:mx-0 ">
-                <div>
-                    <h2 className="text-xl font-bold mb-4 text-secondary">Agregar Usuario</h2>
-                </div>
+            <div className="bg-white p-6 rounded-lg max-w-lg w-full mx-3 lg:mx-0">
 
-                <form onSubmit={handleSubmit(handleSubmitForm)} >
+                <h2 className="text-xl font-bold mb-4 text-secondary">
+                    {isEdit ? "Editar Usuario" : "Agregar Usuario"}
+                </h2>
+
+                <form onSubmit={handleSubmit(onSubmit)}>
                     <div className='overflow-y-auto max-h-[70vh]'>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div className="mb-4">
@@ -110,9 +126,11 @@ export const ModalAddUser = ({ onClose, onUserAdded, extra }: ModalAddUser) => {
                                     <input
                                         {...register('nombre', { required: 'Este campo es obligatorio' })}
                                         placeholder="Nombre"
+                                        disabled={isDisabled}
                                         className={`mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:outline-none focus:border-button p-2
-                                    ${errors.nombre ? 'border-red-500' : 'border-gray-300'}
-                                    `}
+                                            ${errors.nombre ? 'border-red-500' : 'border-gray-300'}
+                                            ${isDisabled && 'text-gray-400'}
+                                        `}
                                     />
                                     {errors.nombre && <p className="text-red-500 text-sm mt-1">{String(errors.nombre.message)}</p>}
                                 </div>
@@ -125,9 +143,11 @@ export const ModalAddUser = ({ onClose, onUserAdded, extra }: ModalAddUser) => {
                                     <input
                                         {...register('apellidos', { required: 'Este campo es obligatorio' })}
                                         placeholder="Apellidos"
+                                        disabled={isDisabled}
                                         className={`mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:outline-none focus:border-button p-2
-                                        ${errors.apellidos ? 'border-red-500' : 'border-gray-300'}
-                                    `}
+                                            ${errors.apellidos ? 'border-red-500' : 'border-gray-300'}
+                                            ${isDisabled && 'text-gray-400'}
+                                        `}
                                     />
                                     {errors.apellidos && <p className="text-red-500 text-sm mt-1">{String(errors.apellidos.message)}</p>}
                                 </div>
@@ -150,12 +170,13 @@ export const ModalAddUser = ({ onClose, onUserAdded, extra }: ModalAddUser) => {
                                         })}
                                         type="email"
                                         placeholder="email"
+                                        disabled={isDisabled}
                                         autoComplete="email"
                                         onChange={() => setErrorRegister(null)}
                                         className={`mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:outline-none focus:border-button p-2 
-                                        ${errors.email ? 'border-red-500' : 'border-gray-300'
-                                            }`
-                                        }
+                                            ${errors.email ? 'border-red-500' : 'border-gray-300'}
+                                            ${isDisabled && 'text-gray-400'}
+                                        `}
                                     />
                                     {errors.email?.message && (
                                         <p className="text-red-500 text-sm mt-1">{String(errors.email.message)}</p>
@@ -172,9 +193,10 @@ export const ModalAddUser = ({ onClose, onUserAdded, extra }: ModalAddUser) => {
                                             required: 'Debe seleccionar un genero',
                                         })}
                                         defaultValue=""
+                                        disabled={isDisabled}
                                         className={`block w-full border border-gray-300 rounded-md py-2 px-3 shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-500
-                                        ${errors.grado ? 'border-red-500' : 'border-gray-300'}
-                                        `}
+                                         ${errors.genero ? 'border-red-500' : 'border-gray-300'}
+                                         `}
                                     >
                                         <option value="">Selecciona un género</option>
                                         <option value="masculino">Masculino</option>
@@ -201,6 +223,7 @@ export const ModalAddUser = ({ onClose, onUserAdded, extra }: ModalAddUser) => {
                                         })}
                                         type="text"
                                         placeholder="CIP"
+                                        disabled={isDisabled}
                                         pattern="[0-9]*"
                                         inputMode="numeric"
                                         maxLength={8}
@@ -209,8 +232,9 @@ export const ModalAddUser = ({ onClose, onUserAdded, extra }: ModalAddUser) => {
                                         //     e.target.value = onlyNumbers;
                                         // }}
                                         className={`mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:outline-none focus:border-button p-2
-                                    ${errors.cip ? 'border-red-500' : 'border-gray-300'}
-                                    `}
+                                        ${errors.cip ? 'border-red-500' : 'border-gray-300'}
+                                        ${isDisabled && 'text-gray-400'}
+                                        `}
                                     />
                                     {errors.cip && <p className="text-red-500 text-sm mt-1">{String(errors.cip.message)}</p>}
                                 </div>
@@ -230,6 +254,7 @@ export const ModalAddUser = ({ onClose, onUserAdded, extra }: ModalAddUser) => {
                                         })}
                                         type="text"
                                         placeholder="DNI"
+                                        disabled={isDisabled}
                                         pattern="[0-9]*"
                                         inputMode="numeric"
                                         maxLength={8}
@@ -238,8 +263,9 @@ export const ModalAddUser = ({ onClose, onUserAdded, extra }: ModalAddUser) => {
                                         //     e.target.value = onlyNumbers;
                                         // }}
                                         className={`mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:outline-none focus:border-button p-2
-                                    ${errors.dni ? 'border-red-500' : 'border-gray-300'}
-                                    `}
+                                            ${errors.dni ? 'border-red-500' : 'border-gray-300'}
+                                            ${isDisabled && 'text-gray-400'}
+                                        `}
                                     />
                                     {errors.dni && <p className="text-red-500 text-sm mt-1">{String(errors.dni.message)}</p>}
                                 </div>
@@ -259,16 +285,14 @@ export const ModalAddUser = ({ onClose, onUserAdded, extra }: ModalAddUser) => {
                                         })}
                                         type="text"
                                         placeholder="Telefono"
+                                        disabled={isDisabled}
                                         pattern="[0-9]*"
                                         inputMode="numeric"
                                         maxLength={9}
-                                        // onChange={(e) => {
-                                        //     const onlyNumbers = e.target.value.replace(/\D/g, '');
-                                        //     e.target.value = onlyNumbers;
-                                        // }}
                                         className={`mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:outline-none focus:border-button p-2
-                                    ${errors.telefono ? 'border-red-500' : 'border-gray-300'}
-                                    `}
+                                            ${errors.telefono ? 'border-red-500' : 'border-gray-300'}
+                                            ${isDisabled && 'text-gray-400'}
+                                        `}
                                     />
                                     {errors.telefono && <p className="text-red-500 text-sm mt-1">{String(errors.telefono.message)}</p>}
                                 </div>
@@ -282,23 +306,23 @@ export const ModalAddUser = ({ onClose, onUserAdded, extra }: ModalAddUser) => {
                                 </label>
                                 <div>
                                     <select
-                                        {...register('grado', {
+                                        {...register('idGrado', {
                                             required: 'Debe seleccionar un grado',
                                         })}
-                                        defaultValue=""
+                                        disabled={isDisabled}
                                         className={`block w-full border border-gray-300 rounded-md py-2 px-3 shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-500
-                                        ${errors.grado ? 'border-red-500' : 'border-gray-300'}
-                                        `}
+                                         ${errors.idGrado ? 'border-red-500' : 'border-gray-300'}
+                                         `}
                                     >
                                         <option value="">Selecciona un grado</option>
-                                        {grados.map((grado) => (
-                                            <option key={grado.idGrado} value={grado.idGrado}>
-                                                {grado.nombreGrado}
+                                        {grados.map((g) => (
+                                            <option key={g.idGrado} value={g.idGrado}>
+                                                {g.nombreGrado}
                                             </option>
                                         ))}
                                     </select>
-                                    {errors.grado && (
-                                        <p className="text-red-500 text-sm mt-1">{String(errors.grado.message)}</p>
+                                    {errors.idGrado && (
+                                        <p className="text-red-500 text-sm mt-1">{String(errors.idGrado.message)}</p>
                                     )}
                                 </div>
                             </div>
@@ -312,40 +336,40 @@ export const ModalAddUser = ({ onClose, onUserAdded, extra }: ModalAddUser) => {
                                 <div>
                                     <input
                                         {...register('username', { required: 'Este campo es obligatorio' })}
-                                        placeholder="Username"
+                                        placeholder="username"
+                                        disabled={isDisabled}
                                         className={`mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:outline-none focus:border-button p-2
-                                        ${errors.apellidos ? 'border-red-500' : 'border-gray-300'}
-                                    `}
+                                            ${errors.apellidos ? 'border-red-500' : 'border-gray-300'}
+                                            ${isDisabled && 'text-gray-400'}
+                                        `}
                                     />
                                     {errors.username && <p className="text-red-500 text-sm mt-1">{String(errors.username.message)}</p>}
                                 </div>
                             </div>
                             <div className="mb-4">
                                 <label className="block text-sm font-medium text-gray-700">
-                                    contraseña
+                                    perfil
                                 </label>
-                                <div className="relative">
-                                    <input
-                                        {...register("password", { required: "Este campo es obligatorio" })}
-                                        placeholder="Contraseña"
-                                        type={showPassword ? "text" : "password"}
-                                        autoComplete="password"
-                                        className={`mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:outline-none focus:border-button p-2 
-                                        ${errors.password ? 'border-red-500' : 'border-gray-300'
-                                            }`
-                                        }
-                                    />
-                                    <button
-                                        type="button"
-                                        // variant="ghost"
-                                        // size="icon"
-                                        className="absolute right-0 top-0 h-full px-3"
-                                        onClick={() => setShowPassword(!showPassword)}
+
+                                <div>
+                                    <select
+                                        {...register('idPerfil', {
+                                            required: 'Debe seleccionar un perfil',
+                                        })}
+                                        disabled={isDisabled}
+                                        className={`block w-full border border-gray-300 rounded-md py-2 px-3 shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-500
+                                         ${errors.idPerfil ? 'border-red-500' : 'border-gray-300'}
+                                         `}
                                     >
-                                        {showPassword ? <EyeClosed /> : <Eye />}
-                                    </button>
-                                    {errors.password && (
-                                        <p className="text-red-500 text-sm mt-1">{String(errors.password.message)}</p>
+                                        <option value="">Selecciona un perfil</option>
+                                        {perfiles.filter((p) => p.idPerfil !== "PF0001").map((perfil) => (
+                                            <option key={perfil.idPerfil} value={perfil.idPerfil}>
+                                                {perfil.nombrePerfil}
+                                            </option>
+                                        ))}
+                                    </select>
+                                    {errors.idPerfil && (
+                                        <p className="text-red-500 text-sm mt-1">{String(errors.idPerfil.message)}</p>
                                     )}
                                 </div>
                             </div>
@@ -354,13 +378,19 @@ export const ModalAddUser = ({ onClose, onUserAdded, extra }: ModalAddUser) => {
 
                     <div className="flex-grow border-b my-2"></div>
 
-                    <div className="flex justify-end space-x-4">
-                        <button type="submit" className="bg-button text-white px-4 py-2 rounded">
-                            Enviar
+                    <div className="flex justify-end space-x-4 mt-4">
+                        <button
+                            type="submit"
+                            disabled={isDisabled || loading}
+                            className={`bg-button text-white px-4 py-2 rounded
+                                ${isDisabled ? 'opacity-50 cursor-not-allowed' : ''}`}
+                        >
+                            {loading ? "Guardando..." : isEdit ? "Actualizar" : "Guardar"}
                         </button>
                         <button
+                            type="button"
                             onClick={onClose}
-                            className="px-4 py-1 border border-gray-300 rounded-lg hover:bg-gray-50"
+                            className="px-4 py-2 border rounded"
                         >
                             Cancelar
                         </button>
@@ -369,8 +399,12 @@ export const ModalAddUser = ({ onClose, onUserAdded, extra }: ModalAddUser) => {
                     {errorRegister && (
                         <p className="text-red-500 text-sm mt-2">{errorRegister}</p>
                     )}
+
+                    {isDisabled && (
+                        <p className="text-red-500 text-sm mt-2">No se puede editar este usuario, contacte al administrador del sistema</p>
+                    )}
                 </form>
             </div>
         </div>
-    );
-};
+    )
+}

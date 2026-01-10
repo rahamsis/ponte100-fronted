@@ -7,7 +7,7 @@ import { useSession } from "next-auth/react";
 
 import { startMeeting, saveStartMeeting } from "@/app/lib/actions";
 
-import SelectorUsers from "../selectors/selectorUsers";
+import SelectorUsers from "../../selectors/selectorUsers";
 
 interface ModalPractica {
     onClose: () => void;

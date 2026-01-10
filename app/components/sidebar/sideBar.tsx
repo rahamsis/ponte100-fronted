@@ -3,86 +3,28 @@
 /* eslint-disable */
 
 
-import { useState, useEffect, useCallback, useMemo } from "react"
+import { useState, useEffect, useCallback, useMemo, use } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { ChevronDown, ChevronRight, X, Bell } from "lucide-react"
 import { cn } from "@/app/lib/utils/cn"
-// import { getMainMenu } from "@/app/lib/actions"
+import { MenuItem, SubmenuItem } from "@/types/menu"
 import Image from "next/image"
 import { useSidebar } from "@/app/providers"
 import getSvgIcon from "@/app/lib/utils/icon.helper"
-
-type SubmenuItem = {
-  nombreSubMenu: string
-  hrefSubMenu?: string
-  iconSubMenu?: string
-  estadoSubMenu: string
-}
-
-type MenuItem = {
-  idMenu: string
-  nombre: string
-  ruta?: string
-  icon?: string
-  otrasRutas?: string[]
-  submenu?: SubmenuItem[]
-  estado?: boolean
-}
-
-// const ICON_MAP: Record<string, React.ComponentType<any>> = {
-//   inicio: House,
-//   actividades: NotebookPen,
-//   progreso: ChartSpline,
-//   temario: ScrollText,
-//   videos: TvMinimalPlay
-// }
-
-// const mainMenu = [
-//   {
-//     idMenu: "MN0001",
-//     nombre: "Inicio",
-//     ruta: "/inicio",
-//     icon: "inicio",
-//     otrasRutas: ["/inicio"]
-//   },
-//   {
-//     idMenu: "MN0002",
-//     nombre: "Actividades",
-//     ruta: "/actividades",
-//     icon: "actividades",
-//     otrasRutas: ["/actividades","/talleres-de-estudio", "/despierta-tu-inteligencia", "/control-de-habilidades", "/practica-un-tema", 
-//       "/primera-practica", "/primer-simulacro", "/preguntas-fallidas", "/examenes-no-repetidos"]
-//   },
-//   {
-//     idMenu: "MN0003",
-//     nombre: "Progreso",
-//     ruta: "/progreso",
-//     icon: "progreso",
-//     otrasRutas: ["/progreso"]
-//   },
-//   {
-//     idMenu: "MN0004",
-//     nombre: "Temario",
-//     ruta: "/temario",
-//     icon: "temario",
-//     otrasRutas: ["/temario"]
-//   },
-//   {
-//     idMenu: "MN0005",
-//     nombre: "Videos",
-//     ruta: "/videos",
-//     icon: "videos",
-//     otrasRutas: ["/videos"]
-//   },
-// ]
+import { buildMenuTree } from "@/helpers/menu.helper"
 
 type Props = {
   session: any; // o Session si tienes el tipo importado
 }
 
 export default function Sidebar({ session }: Props) {
-  const mainMenu: MenuItem[] = session.user.menu;
+  // const mainMenu: MenuItem[] = session.user.menu;
+  const mainMenu: MenuItem[] = useMemo(() => {
+    if (!session?.user?.menu) return []
+    return buildMenuTree(session.user.menu)
+  }, [session?.user?.menu])
+
   const { isOpen, closeSidebar } = useSidebar()
   const pathname = usePathname()
   const [isMobile, setIsMobile] = useState(false)
@@ -101,8 +43,6 @@ export default function Sidebar({ session }: Props) {
   // const [menuItems, setMenuItems] = useState<MenuItem[]>([])
   const [isSidebarOpen, setIsSidebarOpen] = useState(true)
   const [openMenus, setOpenMenus] = useState<Record<string, boolean>>({ productos: false })
-  // const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
 
   const closeAllMenus = useCallback(() => {
     setOpenMenus({})
@@ -116,21 +56,21 @@ export default function Sidebar({ session }: Props) {
     setIsSidebarOpen(true)
   }, [])
 
-  const toggleSidebar = useCallback(() => {
-    setIsSidebarOpen(prev => !prev)
-    closeAllMenus()
-  }, [closeAllMenus])
+  useEffect(() => {
+    document.body.style.overflow = isOpen ? "hidden" : "auto"
+    return () => {
+      document.body.style.overflow = "auto"
+    }
+  }, [isOpen])
 
   const renderMenuItem = useCallback((item: MenuItem, index: number) => {
     // const isActive = `/${item.ruta}` === pathname
-    const rutas = Array.isArray(item.otrasRutas) ? item.otrasRutas : JSON.parse(`${item.otrasRutas}`);
+    const rutas = item.otrasRutas ? Array.isArray(item.otrasRutas) ? item.otrasRutas : JSON.parse(`${item.otrasRutas}`) : [];
     const isActive: boolean = (rutas as string[]).some((ruta: string) => pathname.startsWith(ruta));
     const hasSubmenu = item.submenu && item.submenu.length > 0
     const isSubmenuOpen = openMenus[item.nombre]
-    const hasActiveChild = item.submenu?.some(sub => sub.hrefSubMenu === pathname)
+    const hasActiveChild = item.submenu?.some(sub => sub.rutaSubmenu === pathname)
     const highlightParent = (hasSubmenu && hasActiveChild && isSidebarOpen) || (isActive && !hasSubmenu)
-
-    // const IconComponent = item.icon ? ICON_MAP[item.icon] : null
 
     return (
       <div key={`${item.idMenu}-${index}`} className="mb-1">
@@ -156,56 +96,93 @@ export default function Sidebar({ session }: Props) {
             </span>
           </Link>
         ) : (
-          <>
+          <div className={cn(
+            "flex flex-col items-center mx-6",
+            !isOpen && "flex-col border-b border-gray-500"
+          )}>
             <button
               onClick={() => toggleMenu(item.nombre)}
               className={cn(
-                "flex items-center justify-between w-full px-3 py-2 rounded-md text-sm font-medium transition-colors",
-                highlightParent ? "bg-gray-100 text-gray-900" : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                "w-full flex flex-col items-center py-2 text-sm font-medium transition-colors",
+                highlightParent
+                  ? "bg-gray-100 text-gray-900"
+                  : "text-gray-500 hover:text-white",
+                isActive && "text-white",
+                isOpen ? "flex-row py-5" : "flex-col"
               )}
               aria-expanded={isSubmenuOpen}
               aria-controls={`submenu-${item.idMenu}`}
             >
-              <div className="flex items-center gap-3">
-                <span className={cn("ml-2 transition-opacity", !isSidebarOpen && "opacity-0 hidden md:block md:opacity-0")}>
-                  {item.nombre}
-                </span>
-              </div>
-              {hasSubmenu && (
-                <div className={cn("transition-opacity", !isSidebarOpen && "opacity-0 hidden md:block md:opacity-0")}>
-                  {isSubmenuOpen ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
+              <div className={cn(
+                "flex flex-col gap-3 items-center",
+                isOpen ? "flex-row" : "flex-col"
+              )}>
+                <div className={`shrink-0 p-1 ${isOpen ? "" : "rounded-md bg-white bg-opacity-30"}`}>
+                  <div
+                    className="shrink-0"
+                    dangerouslySetInnerHTML={{ __html: getSvgIcon(item.icon || "default") }}
+                  />
                 </div>
-              )}
+
+                <div className="flex items-center gap-1">
+                  <span
+                    className={cn(
+                      "whitespace-nowrap transition-opacity duration-200",
+                      !isSidebarOpen && "opacity-0 hidden md:block md:opacity-0"
+                    )}
+                  >
+                    {item.nombre}
+                  </span>
+
+                  {hasSubmenu && (
+                    <span
+                      className={cn(
+                        "transition-transform duration-200",
+                        isSubmenuOpen && "rotate-90"
+                      )}
+                    >
+                      <ChevronRight size={18} />
+                    </span>
+                  )}
+                </div>
+              </div>
             </button>
 
-            {hasSubmenu && isSubmenuOpen && (
+            {hasSubmenu && (
               <div
                 id={`submenu-${item.idMenu}`}
-                className={cn("ml-4 pl-2 mt-1", !isSidebarOpen && "hidden md:block")}
+                className={cn(
+                  "overflow-hidden transition-all duration-300",
+                  isSubmenuOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0",
+                  !isSidebarOpen && "hidden md:block",
+                )}
                 aria-hidden={!isSubmenuOpen}
               >
                 {item.submenu?.map((subItem, subIndex) => {
-                  const isSubActive = subItem.hrefSubMenu === pathname
+                  const isSubActive = "/" + subItem.rutaSubmenu === pathname
                   return (
                     <Link
-                      key={`${subItem.nombreSubMenu}-${subIndex}`}
-                      href={subItem.hrefSubMenu || "#"}
+                      key={`${subItem.nombreSubmenu}-${subIndex}`}
+                      href={subItem.rutaSubmenu || "#"}
                       className={cn(
-                        "flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors",
-                        isSubActive ? "bg-gray-100 text-gray-900" : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                        "flex items-center gap-2 py-2  rounded-md text-sm font-medium transition-colors",
+                        isSubActive
+                          ? "text-white"
+                          : "text-gray-500 hover:text-white"
                       )}
-                      aria-current={isSubActive ? "page" : undefined}
                     >
-                      <div className="shrink-0">2</div>
-                      <span className={cn("ml-2 transition-opacity", !isSidebarOpen && "opacity-0 hidden md:block md:opacity-0")}>
-                        {subItem.nombreSubMenu}
-                      </span>
+                      <div
+                        className="shrink-0"
+                        dangerouslySetInnerHTML={{ __html: getSvgIcon(subItem.iconSubmenu || "default") }}
+                      />
+                      <span>{subItem.nombreSubmenu}</span>
                     </Link>
                   )
                 })}
               </div>
             )}
-          </>
+          </div>
+
         )}
       </div>
     )
@@ -213,19 +190,6 @@ export default function Sidebar({ session }: Props) {
 
   // Evitar renderizado si está en la página de bienvenida
   if (pathname.startsWith("/bienvenida")) return null
-
-  // Estados de carga y error
-  // if (loading) return (
-  //   <div className="fixed inset-y-0 left-0 z-50 w-16 bg-primary flex items-center justify-center">
-  //     <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-white"></div>
-  //   </div>
-  // )
-
-  if (error) return (
-    <div className="fixed inset-y-0 left-0 z-50 w-16 bg-primary flex items-center justify-center text-white p-2">
-      Error
-    </div>
-  )
 
   return (
     <>
@@ -258,7 +222,7 @@ export default function Sidebar({ session }: Props) {
           />
         )}
         <aside
-          className={`fixed top-0 left-0 h-full bg-primary shadow-lg transform transition-transform duration-300 ease-in-out z-50
+          className={`fixed top-0 left-0 h-full bg-primary shadow-lg flex flex-col transform transition-transform duration-300 ease-in-out z-50
           ${isOpen ? "translate-x-0 w-9/12" : "-translate-x-full"}`}
           aria-hidden={!isOpen}
         >

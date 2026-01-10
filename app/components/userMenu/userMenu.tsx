@@ -112,13 +112,13 @@ export default function UserMenu() {
             }
           </div>
           {/* nombre usuario */}
-          <div className=" items-center text-center font-bold text-2xl text-button">
+          <div className=" items-center text-center font-bold text-xl text-button">
             {
               status === "authenticated" && session!.user!.name
             }
           </div>
 
-          <a href="/registro" className="block px-4 py-2 text-sm md:text-xl text-primary hover:bg-blue-100 rounded-md transition-all duration-200 ease-in-out">
+          <a href="/registro" className="block px-4 py-2 text-sm md:text-base text-primary hover:bg-blue-100 rounded-md transition-all duration-200 ease-in-out">
             Modificar perfil
           </a>
           <button
@@ -128,7 +128,7 @@ export default function UserMenu() {
               // router.push("/");
 
             }}
-            className="block w-full px-4 py-2 text-sm md:text-xl text-primary hover:bg-blue-100 rounded-md transition-all duration-200 ease-in-out"
+            className="block w-full px-4 py-2 text-sm md:text-base text-primary hover:bg-blue-100 rounded-md transition-all duration-200 ease-in-out"
           >
             Cerrar sesión
           </button>

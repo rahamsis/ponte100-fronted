@@ -1,5 +1,7 @@
 'use server';
 
+import { FormData, User } from "@/types/users";
+
 /* eslint-disable */
 
 export async function getGrados() {
@@ -622,8 +624,8 @@ export async function fetchAllUsers() {
         return data;
 
     } catch (error) {
-        console.error('Error al obtener id de los usuarios (fetchAllUsers):', error);
-        throw new Error("Error al obtener id de los usuarios (fetchAllUsers");
+        console.error('Error al obtener todos los usuarios (fetchAllUsers):', error);
+        throw new Error("Error al obtener todos los usuarios (fetchAllUsers");
     }
 }
 
@@ -729,19 +731,6 @@ export async function InsertOrUpdateTallerToOneUser(idUsuario: string, idTaller:
     }
 }
 
-interface FormData {
-    nombre: string;
-    apellidos: string;
-    email: string;
-    telefono: string;
-    cip: string;
-    dni: string;
-    grado: string;
-    genero: string;
-    username: string;
-    password: string;
-}
-
 export async function AddingUser(data: FormData) {
     try {
         const response = await fetch(`${process.env.APP_BACK_END}/backendApi/adding-user`, {
@@ -758,7 +747,8 @@ export async function AddingUser(data: FormData) {
                 cip: data.cip,
                 dni: data.dni,
                 telefono: data.telefono,
-                idGrado: data.grado,
+                idGrado: data.idGrado,
+                idPerfil: data.idPerfil,
                 username: data.username,
                 password: data.password
             }),
@@ -829,7 +819,7 @@ export async function updatePregunta(idPregunta: string, pregunta: string) {
             }),
             next: { revalidate: 0 }
         });
-        
+
         const responseData = await response.json();
         return responseData;
 
@@ -1052,5 +1042,185 @@ export async function getLastMeeting() {
 
     } catch (error) {
         console.error('Error al traer la ultima reunión (startMeeting):', error);
+    }
+}
+
+export async function getAllPerfiles() {
+    try {
+        const response = await fetch(`${process.env.APP_BACK_END}/backendApi/perfiles`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json'
+            },
+            next: { revalidate: 0 }
+        });
+
+        if (!response.ok) {
+            const errorBody = await response.text()
+            throw new Error(`Error ${response.status}: ${errorBody}`)
+        }
+
+        return await response.json();
+
+    } catch (error) {
+        console.error('Error al traer los perfiles getAllPerfiles():', error);
+    }
+}
+
+export async function createPerfil(nombrePerfil: string) {
+    try {
+        const response = await fetch(`${process.env.APP_BACK_END}/backendApi/create-perfil`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json'
+            },
+            body: JSON.stringify({
+                nombrePerfil: nombrePerfil
+            }),
+            cache: "no-store",
+        });
+
+        if (!response.ok) {
+            const errorBody = await response.text()
+            throw new Error(`Error ${response.status}: ${errorBody}`)
+        }
+
+        return await response.json();
+
+    } catch (error) {
+        console.error('Error al crear el perfil (createPerfil()):', error);
+    }
+}
+
+export async function updatePerfil(idPerfil: string, nombrePerfil: string) {
+    try {
+        const response = await fetch(`${process.env.APP_BACK_END}/backendApi/update-perfil/${idPerfil}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json'
+            },
+            body: JSON.stringify({
+                idPerfil: idPerfil,
+                nombrePerfil: nombrePerfil
+            }),
+            cache: "no-store",
+        });
+
+        if (!response.ok) {
+            const errorBody = await response.text()
+            throw new Error(`Error ${response.status}: ${errorBody}`)
+        }
+
+        return await response.json();
+
+    } catch (error) {
+        console.error('Error al actualizar el perfil (updatePerfil()):', error);
+    }
+}
+
+export async function deletePerfil(idPerfil: string) {
+    try {
+        const response = await fetch(`${process.env.APP_BACK_END}/backendApi/delete-perfil/${idPerfil}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json'
+            },
+            cache: "no-store",
+        });
+
+        if (!response.ok) {
+            const errorBody = await response.text()
+            throw new Error(`Error ${response.status}: ${errorBody}`)
+        }
+
+        return await response.json();
+
+    } catch (error) {
+        console.error('Error al actualizar el perfil (deletePerfil()):', error);
+    }
+}
+
+export async function deleteUsuario(idUsuario: string) {
+    try {
+        const response = await fetch(`${process.env.APP_BACK_END}/backendApi/delete-usuario/${idUsuario}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json'
+            },
+            cache: "no-store",
+        });
+
+        if (!response.ok) {
+            const errorBody = await response.text()
+            throw new Error(`Error ${response.status}: ${errorBody}`)
+        }
+
+        return await response.json();
+
+    } catch (error) {
+        console.error('Error al actualizar el usuario (deleteUsuario()):', error);
+    }
+}
+
+export async function getAccesosByIdPerfil(idPerfil: string) {
+    try {
+        const response = await fetch(`${process.env.APP_BACK_END}/backendApi/accesos/${idPerfil}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json'
+            },
+            next: { revalidate: 0 }
+        });
+
+        if (!response.ok) {
+            const errorBody = await response.text()
+            throw new Error(`Error ${response.status}: ${errorBody}`)
+        }
+
+        return await response.json();
+
+    } catch (error) {
+        console.error('Error al traer los accesos de un perfil getAccesosByIdPerfil():', error);
+    }
+}
+
+interface TreeNode {
+    id: string;
+    type: 'menu' | 'submenu' | 'permiso';
+    label: string;
+    children: TreeNode[];
+    checked?: boolean;
+}
+
+
+export async function saveAccesToPerfil(idPerfil: string, accesos: Record<string, boolean>) {
+    try {
+        const response = await fetch(`${process.env.APP_BACK_END}/backendApi/guardar-accesos/${idPerfil}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json'
+            },
+            body: JSON.stringify({
+                accesos: accesos
+            }),
+            cache: "no-store",
+        });
+
+        if (!response.ok) {
+            const errorBody = await response.text()
+            throw new Error(`Error ${response.status}: ${errorBody}`)
+        }
+
+        return await response.json();
+
+    } catch (error) {
+        console.error('Error al guardar los accesos (saveAccesToPerfil()):', error);
     }
 }

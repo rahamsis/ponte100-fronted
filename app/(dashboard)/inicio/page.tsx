@@ -17,11 +17,12 @@ import { ModalPracticaTema } from "@/app/components/modales/modalPractica";
 import { ModalPrimeraPractica } from "@/app/components/modales/modalPrimeraPractica";
 import { ModalPrimerSimulacro } from "@/app/components/modales/modalPrimerSimulacro";
 import { ModalPreguntasFalladas } from "@/app/components/modales/modalPreguntasFallidas";
-import { ModalZoom } from "@/app/components/modales/modalZoom";
-import { ModalZoomActive } from "@/app/components/modales/modalZoomActive";
+import { ModalZoom } from "@/app/components/modales/modalZoom/modalZoom";
+import { ModalZoomActive } from "@/app/components/modales/modalZoom/modalZoomActive";
 import CountDown from "@/app/components/countdown/countdown";
 
 import { fetchResultProgress, getQuantityFallidas, getActiveMeeting, getLastMeeting } from "@/app/lib/actions";
+import { formatTime } from "@/helpers/time.helper";
 
 function Banner() {
     const router = useRouter();
@@ -154,14 +155,6 @@ type ProgresoProps = {
     practicas: number | 0;
     simulacros: number | 0;
     totalPreguntas: number | 0;
-};
-
-const formatTime = (seconds: number) => {
-    const hours = Math.floor(seconds / 3600);
-    const minutes = Math.floor((seconds % 3600) / 60);
-    const secs = seconds % 60;
-
-    return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
 };
 
 function Progreso({ loading, quantityFallidas, tiempoDeUso, practicas, simulacros, totalPreguntas }: ProgresoProps) {

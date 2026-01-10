@@ -5,27 +5,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { ChevronDown, ChevronUp, Search } from 'lucide-react'
 import { fetchAllUsers } from '@/app/lib/actions'
-
-type Opcion = {
-    userId: string
-    usuario: string
-}
-
-type User = {
-    userId: string,
-    nombre: string,
-    apellidos: string,
-    genero: string,
-    idGrado: string,
-    nombreGrado: string,
-    email: string,
-    telefono: string,
-    cip: string,
-    dni: string,
-    username: string,
-    idPerfil: string, 
-    nombrePerfil: string,
-}
+import { User } from '@/types/users'
 
 interface SelectorUsersProps {
     onUserSelect: (user: User,) => void;

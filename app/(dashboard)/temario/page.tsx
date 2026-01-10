@@ -190,7 +190,6 @@ function Zona() {
             //         };
             //     })
             // );
-            console.log("Banco de preguntas cargado:", data);
             setLoadingBanco(false);
             setBanco(data);
         }
@@ -202,7 +201,6 @@ function Zona() {
             setLoadingNormas(true);
             const res = await fetch("/api/books-normas");
             const data = await res.json();
-            console.log("Normas institucionales cargadas:", data);
             setLoadingNormas(false);
             setNormas(data);
         }

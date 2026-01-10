@@ -13,8 +13,8 @@ import { ModalPrimeraPractica } from "@/app/components/modales/modalPrimeraPract
 import { ModalPrimerSimulacro } from "@/app/components/modales/modalPrimerSimulacro";
 import { ModalPreguntasFalladas } from "@/app/components/modales/modalPreguntasFallidas";
 
-import { ModalZoom } from "@/app/components/modales/modalZoom";
-import { ModalZoomActive } from "@/app/components/modales/modalZoomActive";
+import { ModalZoom } from "@/app/components/modales/modalZoom/modalZoom";
+import { ModalZoomActive } from "@/app/components/modales/modalZoom/modalZoomActive";
 
 import { getQuantityFallidas, getActiveMeeting, getLastMeeting } from "@/app/lib/actions";
 
