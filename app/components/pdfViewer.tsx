@@ -3,11 +3,13 @@
 /* eslint-disable */
 
 import { useState, useEffect, useRef, useCallback } from "react";
-import { getDocument, PDFDocumentProxy, GlobalWorkerOptions } from "pdfjs-dist/legacy/build/pdf";
+// import { getDocument, PDFDocumentProxy, GlobalWorkerOptions } from "pdfjs-dist/legacy/build/pdf";
+import * as pdfjsLib from "pdfjs-dist";
+import type { PDFDocumentProxy } from "pdfjs-dist";
 import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetTitle } from "../ui/pdf/sheet";
 
 
-GlobalWorkerOptions.workerSrc =
+pdfjsLib.GlobalWorkerOptions.workerSrc =
   "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
 
 interface PDFViewerProps {
@@ -29,7 +31,7 @@ const MyPDFViewer: React.FC<PDFViewerProps> = ({ fileUrl, onClose }) => {
     const loadPDF = async () => {
       setIsLoading(true); // Activar el spinner
       try {
-        const loadingTask = getDocument(fileUrl);
+        const loadingTask = pdfjsLib.getDocument(fileUrl);
         const pdf = await loadingTask.promise;
         pdfRef.current = pdf;
         setNumPages(pdf.numPages);
