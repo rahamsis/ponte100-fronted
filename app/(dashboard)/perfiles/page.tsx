@@ -41,6 +41,9 @@ function PerfilesAll() {
     const [currentPage, setCurrentPage] = useState(1);
     const perfilPerPage = 10;
 
+    // const [statusRegister, setStatusRegister] = useState<boolean | null>(null)
+    const statusRegister = null
+
     const filteredPerfil = perfil.filter((perfil) =>
         perfil.nombrePerfil.toLowerCase().includes(searchTerm.toLowerCase())
     );
@@ -256,50 +259,46 @@ function PerfilesAll() {
                     </div>
                 </div>
             </div>
-            {
-                activeModal && (
-                    <ModalUpdatePerfil
-                        mode={modalMode}
-                        perfil={selectedPerfil}
-                        onClose={() => {
-                            setActiveModal(false)
-                            setSelectedPerfil(null)
-                        }}
-                        onSuccess={() => {
-                            setActiveModal(false)
-                            setSelectedPerfil(null)
-                            cargarPerfiles()
-                        }}
-                    />
-                )
-            }
 
-            {
-                deletePerfilModal && (
-                    <ModalDeletePerfil
-                        perfil={deletePerfil}
-                        onClose={() => {
-                            setDeletePerfilModal(false)
-                            setSelectedPerfil(null)
-                        }}
-                        onSuccess={() => {
-                            setDeletePerfilModal(false)
-                            setSelectedPerfil(null)
-                            cargarPerfiles()
-                        }}
-                        onError={(msg) => setError(msg)}
-                    />
-                )
-            }
+            {activeModal && (
+                <ModalUpdatePerfil
+                    mode={modalMode}
+                    perfil={selectedPerfil}
+                    onClose={() => {
+                        setActiveModal(false)
+                        setSelectedPerfil(null)
+                    }}
+                    onSuccess={() => {
+                        setActiveModal(false)
+                        setSelectedPerfil(null)
+                        cargarPerfiles()
+                    }}
+                />
+            )}
 
-            {
-                error && (
-                    <ModalStatusDb
-                        message={error}
-                        onClose={() => setError(null)}
-                    />
-                )
-            }
+            {deletePerfilModal && (
+                <ModalDeletePerfil
+                    perfil={deletePerfil}
+                    onClose={() => {
+                        setDeletePerfilModal(false)
+                        setSelectedPerfil(null)
+                    }}
+                    onSuccess={() => {
+                        setDeletePerfilModal(false)
+                        setSelectedPerfil(null)
+                        cargarPerfiles()
+                    }}
+                    onError={(msg) => setError(msg)}
+                />
+            )}
+
+            {error && (
+                <ModalStatusDb
+                    statusRegister={statusRegister}
+                    message={error}
+                    onClose={() => setError(null)}
+                />
+            )}
         </div >
     );
 }
