@@ -1,6 +1,6 @@
 'use server';
 
-import { FormData, User } from "@/types/users";
+import { FormData } from "@/types/users";
 
 /* eslint-disable */
 

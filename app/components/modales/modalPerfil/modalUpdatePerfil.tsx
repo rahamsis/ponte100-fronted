@@ -49,7 +49,7 @@ export const ModalUpdatePerfil = ({
 
       onSuccess()
     } catch (error) {
-      setErrorRegister("Ocurrió un error al guardar el perfil")
+      setErrorRegister(`Ocurrió un error al guardar el perfil {${error}}`)
     } finally {
       setLoading(false)
     }

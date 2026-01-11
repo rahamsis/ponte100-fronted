@@ -25,7 +25,7 @@ export const ModalUpdateSuccessfull = ({ onClose, handleFinish, status, message 
                             status === true ? (
                                 <Image
                                     src={"/images/status/true.png"}
-                                    alt="true"
+                                    alt="brito good"
                                     width={500}
                                     height={500}
                                     className="w-1/2 h-1/2"
@@ -33,7 +33,7 @@ export const ModalUpdateSuccessfull = ({ onClose, handleFinish, status, message 
                             ) : (
                                 <Image
                                     src={"/images/status/false.png"}
-                                    alt="false"
+                                    alt="brito bad"
                                     width={500}
                                     height={500}
                                     className="w-1/2 h-1/2"

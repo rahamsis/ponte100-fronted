@@ -1,14 +1,14 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { KeyRound, Search, SquarePen, Trash } from "lucide-react";
+import { BookOpenCheck, KeyRound, Search, SquarePen, Trash } from "lucide-react";
 import { fetchAllUsers } from "@/app/lib/actions";
 import { User } from '@/types/users';
-import { ModalDeletePerfil } from '@/app/components/modales/modalPerfil/modalDeletePerfil';
 import { ModalStatusDb } from '@/app/components/modales/modalStatusDb';
 import { ModalAddUser } from '@/app/components/modales/modalUser/modalAddUser';
 import { ModalResetPassword } from '@/app/components/modales/modalUser/modalResetPassword';
 import { ModalDeleteUser } from '@/app/components/modales/modalUser/modalDeleteUser';
+import { ModalAddTalleres } from '@/app/components/modales/modalAddTalleres';
 
 function Inicio() {
     return (
@@ -42,6 +42,8 @@ function UsuariosAll() {
     const [currentPage, setCurrentPage] = useState(1);
     const usuarioPerPage = 10;
 
+    const [addTalleres, setAddTalleres] = useState<{ userId: string, nombre: string } | null>(null);
+
     const filteredUsuarios = usuarios.filter((usuario) =>
         usuario.nombre.toLowerCase().includes(searchTerm.toLowerCase())
     );
@@ -53,7 +55,8 @@ function UsuariosAll() {
     const [resetUserId, setResetUserId] = useState<string | null>(null);
 
     const [isLoading, setIsLoading] = useState(true);
-    const [statusRegister, setStatusRegister] = useState<boolean | null>(null)
+    // const [statusRegister, setStatusRegister] = useState<boolean | null>(null)
+    const statusRegister = null
     const [error, setError] = useState<string | null>(null)
 
     const cargarUsuarios = async () => {
@@ -126,6 +129,7 @@ function UsuariosAll() {
                                             <th className="border border-gray-300 px-4 py-2 text-left whitespace-nowrap">Telefono</th>
                                             <th className="border border-gray-300 px-4 py-2 text-left whitespace-nowrap">CIP/DNI</th>
                                             <th className="border border-gray-300 px-4 py-2 text-left whitespace-nowrap">Editar</th>
+                                            <th className="border border-gray-300 px-4 py-2 text-left whitespace-nowrap">Talleres</th>
                                             <th className="border border-gray-300 px-4 py-2 text-left whitespace-nowrap">Resetear</th>
                                             <th className="border border-gray-300 px-4 py-2 text-left whitespace-nowrap">Eliminar</th>
                                         </tr>
@@ -188,6 +192,14 @@ function UsuariosAll() {
                                                         // onClick={() => setAdd({ userId: user.userId, nombre: user.nombre + ' ' + (user.apellidos ? user.apellidos : '') })}
                                                         // disabled={!this.state.reset}
                                                         ><SquarePen className='text-orange-500 w-4 h-4' /></button>
+                                                    </td>
+                                                    <td className="border text-center">
+                                                        <button
+                                                            className="border border-button2 p-2 rounded-md"
+                                                            title="talleres"
+                                                            onClick={() => setAddTalleres({ userId: user.userId, nombre: user.nombre + ' ' + (user.apellidos ? user.apellidos : '') })}
+                                                        // disabled={!this.state.reset}
+                                                        ><BookOpenCheck className='text-button2 w-4 h-4' /></button>
                                                     </td>
                                                     <td className="border text-center">
                                                         <button
@@ -322,6 +334,13 @@ function UsuariosAll() {
                     message={error}
                     onClose={() => setError(null)}
                 />
+            )}
+
+            {addTalleres && (
+                <ModalAddTalleres
+                    userId={addTalleres.userId}
+                    nombre={addTalleres.nombre}
+                    onClose={() => setAddTalleres(null)} />
             )}
         </div >
     );

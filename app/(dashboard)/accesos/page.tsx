@@ -2,9 +2,10 @@
 
 import { ModalStatusDb } from "@/app/components/modales/modalStatusDb";
 import { getAccesosByIdPerfil, getAllPerfiles, saveAccesToPerfil } from "@/app/lib/actions";
+import { TreeNode, TreeNodeProps, TreeState } from "@/types/tree";
 import { Perfil } from "@/types/users";
 import { MinusSquare, PlusSquare } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 function Inicio() {
     return (
@@ -26,22 +27,14 @@ function Inicio() {
     )
 }
 
-interface TreeNode {
-    id: string;
-    type: 'menu' | 'submenu' | 'permiso';
-    label: string;
-    children: TreeNode[];
-    checked?: boolean;
-}
-
 // ---- Componente recursivo ----
-function TreeNode({ node, state, setState }: { node: TreeNode; state: any; setState: any; }) {
+function TreeNodeRender({ node, state, setState }: TreeNodeProps) {
     const hasChildren = node.children && node.children.length > 0;
     const expanded = !!state.expanded[node.id];
     const checked = !!state.checked[node.id];
 
     const toggleExpand = () => {
-        setState((prev: any) => ({
+        setState((prev: TreeState) => ({
             ...prev,
             expanded: {
                 ...prev.expanded,
@@ -51,7 +44,7 @@ function TreeNode({ node, state, setState }: { node: TreeNode; state: any; setSt
     };
 
     const toggleCheck = () => {
-        setState((prev: any) => ({
+        setState((prev: TreeState) => ({
             ...prev,
             checked: {
                 ...prev.checked,
@@ -77,8 +70,8 @@ function TreeNode({ node, state, setState }: { node: TreeNode; state: any; setSt
 
             {hasChildren && expanded && (
                 <div className="border-l border-primary ml-2">
-                    {node.children.map((child: any) => (
-                        <TreeNode
+                    {node.children.map((child: TreeNode) => (
+                        <TreeNodeRender
                             key={child.id}
                             node={child}
                             state={state}
@@ -100,7 +93,7 @@ function ModuloAccesos() {
     const [messageRegister, setMessageRegister] = useState<string | null>(null)
 
     const [accesos, setAccesos] = useState<TreeNode[]>([]);
-    const [state, setState] = useState({
+    const [state, setState] = useState<TreeState>({
         expanded: {},
         checked: {},
     });
@@ -112,12 +105,13 @@ function ModuloAccesos() {
             .catch(console.error);
     }, []);
 
-    const collectChecked = (nodes: any[], acc: Record<string, boolean>) => {
+    const collectChecked = useCallback(
+        (nodes: TreeNode[], acc: Record<string, boolean>) => {
         nodes.forEach(n => {
             if (n.checked) acc[String(n.id)] = true;
             if (n.children?.length) collectChecked(n.children, acc);
         });
-    };
+    }, []);
 
     // accesos por perfil
     useEffect(() => {
@@ -129,7 +123,6 @@ function ModuloAccesos() {
             setAccesos(data);
 
             const initialChecked: Record<string, boolean> = {};
-
             collectChecked(data, initialChecked);
 
             setState({
@@ -137,7 +130,7 @@ function ModuloAccesos() {
                 checked: initialChecked,
             });
         })();
-    }, [perfilSeleccionado]);
+    }, [perfilSeleccionado, collectChecked]);
 
     const handleGuardar = async () => {
         try {
@@ -154,7 +147,7 @@ function ModuloAccesos() {
             setActiveModal(true)
 
         } catch (error) {
-            setMessageRegister("Ocurrió un error al guardar el perfil")
+            setMessageRegister(`Ocurrió un error al guardar el perfil {${error}}`)
         }
     }
 
@@ -183,7 +176,7 @@ function ModuloAccesos() {
 
                 <div className={` rounded p-4 ${perfilSeleccionado && "border"}`}>
                     {accesos.map((node) => (
-                        <TreeNode
+                        <TreeNodeRender
                             key={node.id}
                             node={node}
                             state={state}
