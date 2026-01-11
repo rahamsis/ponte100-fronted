@@ -68,6 +68,7 @@ const MyPDFViewer: React.FC<PDFViewerProps> = ({ fileUrl, onClose }) => {
     canvas.height = viewport.height;
 
     const renderContext = {
+      canvas,
       canvasContext: context,
       viewport: viewport,
     };
@@ -77,8 +78,11 @@ const MyPDFViewer: React.FC<PDFViewerProps> = ({ fileUrl, onClose }) => {
 
     try {
       await renderTaskRef.current.promise; // Esperar a que termine la renderización
-    } catch (error: any) {
-      if (error.name === "RenderingCancelledException") {
+    } catch (error) {
+      if (
+        error instanceof Error &&
+        error.name === "RenderingCancelledException"
+      ) {
         console.log("Renderización cancelada.");
       } else {
         console.error("Error al renderizar la página:", error);
