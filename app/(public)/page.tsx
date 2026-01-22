@@ -130,6 +130,11 @@ function Fundamentos() {
             title: "Programación Neurolingüística",
             concept: "Conecta lenguaje, mente y acción. En PONTE 100™ la usamos para motivarte y personalizar tu aprendizaje."
         },
+        {
+            imagen: "/images/fundamentos/fundamento4.png",
+            title: "Memoria Espaciada",
+            concept: "Repasa en intervalos estratégicos para fijar el aprendizaje en la memoria a largo plazo."
+        }
     ]
 
     // Inicio del carrusel de fundamentos cientificos
@@ -154,7 +159,7 @@ function Fundamentos() {
                                 <h2 className="text-xl md:text-3xl font-bold tracking-tighter sm:text-4xl text-center mb-8 text-button">
                                     Nuestros fundamentos científicos
                                 </h2>
-                                <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+                                <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
                                     {arrayFundamento.map((object, i) => (
                                         <div key={i} className="flex flex-col bg-white rounded-xl items-start p-10 text-left shadow-lg">
                                             <div className="rounded-lg">

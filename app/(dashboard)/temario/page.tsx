@@ -154,58 +154,92 @@ const books = [
     },
 ]
 
+const bancoDePreguntas = [
+    {
+        name: "BANCO DE PREGUNTAS DE SUB OFICIALES DE ARMAS - 2024 PALABRAS CLAVES.pdf",
+        url: "/document/bancodepreguntas/BANCO DE PREGUNTAS DE SUB OFICIALES DE ARMAS - 2024 PALABRAS CLAVES.pdf"
+    },
+    {
+        name: "BANCO DE PREGUNTAS DE SUB OFICIALES DE ARMAS Y SERVICIOS - 2025 PALABRAS CLAVES.pdf",
+        url: "/document/bancodepreguntas/BANCO DE PREGUNTAS DE SUB OFICIALES DE ARMAS Y SERVICIOS - 2025 PALABRAS CLAVES.pdf"
+    },
+];
+
+const normasInstitucionales = [
+    {
+        name: "RCG N° 430-2025-CG PNPSECEJE-DIRREHUM del 04JUN2025.pdf",
+        url: "/document/normasinstitucionales/RCG N° 430-2025-CG PNPSECEJE-DIRREHUM del 04JUN2025.pdf"
+    }
+]
+
 function Zona() {
-    const [banco, setBanco] = useState<{ name: string; url: string; poster: string }[]>([]);
+    const [banco, setBanco] = useState<{ name: string; url: string; imageUrl: string }[]>([]);
     const [normas, setNormas] = useState<{ name: string; url: string; imageUrl: string }[]>([]);
     const [selectedBanco, setSelectedBanco] = useState<string>("");
     const [isPdfViewerOpen, setIsPdfViewerOpen] = useState(false);
     const [loadingBanco, setLoadingBanco] = useState(true);
     const [loadingNormas, setLoadingNormas] = useState(true);
 
+    // banco de preguntas
     useEffect(() => {
-        async function fetchBancos() {
+        async function loadBooks() {
             setLoadingBanco(true);
-            const res = await fetch("/api/books");
-            const data = await res.json();
 
-            // const booksWithImages = await Promise.all(
-            //     data.books.map(async (book: { name: string; url: string }) => {
+            const booksWithImages = await Promise.all(
+                bancoDePreguntas.map(async (book) => {
+                    const imagePath = `/images/covers/${book.name.replace(".pdf", "")}.png`;
 
-            //         const localImagePath = `/images/covers/${book.name.replace(".pdf", "")}.png`;
-            //         //   console.log("imagen existe", book.name)
-            //         // Verifica si la imagen existe localmente
-            //         const imageExists = await fetch(localImagePath, { method: "HEAD" })
-            //             .then((res) => res.ok)
-            //             .catch(() => false);
+                    const imageExists = await fetch(imagePath, { method: "HEAD" })
+                        .then((res) => res.ok)
+                        .catch(() => false);
 
-            //         if (imageExists) {
-            //             return { ...book, imageUrl: localImagePath };
-            //         }
+                    return {
+                        ...book,
+                        imageUrl: imageExists
+                            ? imagePath
+                            : "/images/librodefault.png",
+                    };
+                })
+            );
 
-            //         const imageRes = await fetch(`/api/covers?bucket=coversponte100&file=${book.name}.png`);
-            //         const imageData = await imageRes.json();
-            //         return {
-            //             ...book,
-            //             imageUrl: imageData.filePath || "/images/librodefault.png", // Usa una imagen por defecto si falla
-            //         };
-            //     })
-            // );
+            setBanco(booksWithImages);
             setLoadingBanco(false);
-            setBanco(data);
         }
-        fetchBancos();
+
+        loadBooks();
     }, []);
 
+    //normas
+    // useEffect(() => {
+    //     async function fetchNormas() {
+    //         setLoadingNormas(true);
+    //         const res = await fetch("/api/books-normas");
+    //         const data = await res.json();
+    //         setLoadingNormas(false);
+    //         setNormas(data);
+    //     }
+
+    //     fetchNormas();
+    // }, []);
+    
     useEffect(() => {
-        async function fetchNormas() {
+        async function loadBooks() {
             setLoadingNormas(true);
-            const res = await fetch("/api/books-normas");
-            const data = await res.json();
+
+            const booksWithImages = await Promise.all(
+                normasInstitucionales.map(async (book) => {
+                    return {
+                        ...book,
+                        imageUrl: "/images/librodefault.png",
+                    };
+                })
+            );
+
+            setNormas(booksWithImages);
             setLoadingNormas(false);
-            setNormas(data);
         }
 
-        fetchNormas();
+        loadBooks();
     }, []);
 
     const [tabIndex, setTabIndex] = useState(0);
@@ -268,12 +302,12 @@ function Zona() {
                                                     {/* Imagen */}
                                                     <div className="flex items-center justify-center h-[120px] w-[90px]">
                                                         <Image
-                                                            src={banco.poster}
+                                                            src={banco.imageUrl}
                                                             alt={banco.name}
                                                             width={90}
                                                             height={120}
                                                             className="object-cover rounded-lg"
-                                                            unoptimized 
+                                                            unoptimized
                                                         />
                                                     </div>
 
@@ -408,7 +442,7 @@ function BookCard({ book }: { book: { name: string; url: string; imageUrl: strin
                         width={90}
                         height={120}
                         className="object-cover rounded-lg"
-                        unoptimized 
+                        unoptimized
                     />
                 </a>
             </div>
