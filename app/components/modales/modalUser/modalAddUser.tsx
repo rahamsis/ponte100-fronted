@@ -328,24 +328,7 @@ export const ModalAddUser = ({
                             </div>
                         </div>
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div className="mb-4">
-                                <label className="block text-sm font-medium text-gray-700">
-                                    Username
-                                </label>
-                                <div>
-                                    <input
-                                        {...register('username', { required: 'Este campo es obligatorio' })}
-                                        placeholder="username"
-                                        disabled={isDisabled}
-                                        className={`mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:outline-none focus:border-button p-2
-                                            ${errors.apellidos ? 'border-red-500' : 'border-gray-300'}
-                                            ${isDisabled && 'text-gray-400'}
-                                        `}
-                                    />
-                                    {errors.username && <p className="text-red-500 text-sm mt-1">{String(errors.username.message)}</p>}
-                                </div>
-                            </div>
+                        <div className="grid grid-cols-1 w-full">
                             <div className="mb-4">
                                 <label className="block text-sm font-medium text-gray-700">
                                     perfil
@@ -371,6 +354,43 @@ export const ModalAddUser = ({
                                     {errors.idPerfil && (
                                         <p className="text-red-500 text-sm mt-1">{String(errors.idPerfil.message)}</p>
                                     )}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="mb-4">
+                                <label className="block text-sm font-medium text-gray-700">
+                                    Username
+                                </label>
+                                <div>
+                                    <input
+                                        {...register('username', { required: 'Este campo es obligatorio' })}
+                                        placeholder="username"
+                                        disabled={isDisabled}
+                                        className={`mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:outline-none focus:border-button p-2
+                                            ${errors.apellidos ? 'border-red-500' : 'border-gray-300'}
+                                            ${isDisabled && 'text-gray-400'}
+                                        `}
+                                    />
+                                    {errors.username && <p className="text-red-500 text-sm mt-1">{String(errors.username.message)}</p>}
+                                </div>
+                            </div>
+                            <div className="mb-4">
+                                <label className="block text-sm font-medium text-gray-700">
+                                    Password
+                                </label>
+                                <div>
+                                    <input
+                                        {...register('password', { required: 'Este campo es obligatorio' })}
+                                        placeholder="password"
+                                        disabled={isDisabled || isEdit} // No se puede editar el password en modo edición
+                                        className={`mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:outline-none focus:border-button p-2
+                                            ${errors.password ? 'border-red-500' : 'border-gray-300'}
+                                            ${isDisabled && 'text-gray-400'}
+                                        `}
+                                    />
+                                    {errors.password && <p className="text-red-500 text-sm mt-1">{String(errors.password.message)}</p>}
                                 </div>
                             </div>
                         </div>

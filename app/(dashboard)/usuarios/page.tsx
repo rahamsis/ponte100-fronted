@@ -295,10 +295,12 @@ function UsuariosAll() {
                     usuario={selectedUsuario}
                     onClose={() => {
                         setActiveModal(false)
+                        setModalMode("create")
                         setSelectedUsuario(null)
                     }}
                     onSuccess={() => {
                         setActiveModal(false)
+                        setModalMode("create")
                         setSelectedUsuario(null)
                         cargarUsuarios()
                     }}
