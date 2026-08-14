@@ -36,7 +36,7 @@ function Banner() {
                                     </div>
                                 ) : (
                                     <Image
-                                        src="/images/home_principal.png"
+                                        src="/images/home_principal2.png"
                                         alt="Landing page builder illustration"
                                         width={800}
                                         height={800}
@@ -95,7 +95,7 @@ function Banner() {
                                     </div>
                                 ) : (
                                     <Image
-                                        src="/images/home_principal.png?height=720&width=1280"
+                                        src="/images/home_principal2.png?height=720&width=1280"
                                         alt="Landing page builder illustration"
                                         width={1500}
                                         height={720}
