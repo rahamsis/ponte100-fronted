@@ -32,7 +32,7 @@ function Banner() {
         {
             id: 1,
             image: '/images/banners/imgBanner1.png',
-            title: 'Conoce las estadísticas de los Procesos de Ascenso de la Policía Nacional del Perú, años 2023 - 2024',
+            title: 'Conoce las estadísticas de los Procesos de Ascenso de la Policía Nacional del Perú, años 2023 - 2024 - 2025',
             description: 'Conoce los principales resultados del proceso de ascenso de grado de la Policía Nacional del Perú',
             link: '/estadisticas',
             ancho: 500,
@@ -485,7 +485,7 @@ function Conocimientos({ quantityFallidas }: ConocimientoProps) {
             imagen: "/assets/frames/frame7.png",
             title: "Examen no repetidos",
             subtitle: "Diversos Temas",
-            concept: "22 asignaturas, 30 exámenes únicos y 3,000 preguntas, 100% aleatorias que pondrán a prueba tu verdadero nivel.",
+            concept: "22 asignaturas, 15 exámenes únicos y 1,500 preguntas, 100% aleatorias que pondrán a prueba tu verdadero nivel.",
             ruta: "/examenes-no-repetidos",
             modalType: "none"
         },

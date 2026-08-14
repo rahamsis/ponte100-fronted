@@ -755,7 +755,7 @@ function Ceremonia() {
                         <div className="items-center text-center">
                             <p className="py-4 text-base lg:text-xl">
                                 El método de estudio PONTE 100™ ha sido clave en el rendimiento académico de los postulantes al proceso de ascenso de la
-                                Policía Nacional del Perú, promociones 2023 y 2024, permitiéndoles alcanzar el grado inmediato superior con excelentes calificaciones.
+                                Policía Nacional del Perú, promociones 2023, 2024 y 2025, permitiéndoles alcanzar el grado inmediato superior con excelentes calificaciones.
                             </p>
                         </div>
                     </div>
